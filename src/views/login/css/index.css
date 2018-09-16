@@ -1,0 +1,258 @@
+.loginBox .login-body {
+  background: url(../../../../static/images/homebackgroundimg.jpg) 50%;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame p, .loginBox [class*=login-] .body-box .loginFrame p, .loginBox [class*=login-] .body-box .registerFrame p {
+  font-size: 24px;
+  color: #5fbbfc;
+  margin-bottom: 30px;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .register, .loginBox [class*=login-] .body-box .loginFrame .register, .loginBox [class*=login-] .body-box .registerFrame .register {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
+  color: #ff8a52;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame, .loginBox [class*=login-] .body-box .loginFrame, .loginBox [class*=login-] .body-box .registerFrame {
+  width: 420px;
+  height: 420px;
+  background: #fff;
+  border-radius: 4px;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 80px;
+  box-shadow: 0 0 13px 0 #5fbbfc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .inputBox-userName, .loginBox [class*=login-] .body-box .loginFrame .inputBox-userName, .loginBox [class*=login-] .body-box .registerFrame .inputBox-userName {
+  margin-bottom: 20px;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame [class*=inputBox], .loginBox [class*=login-] .body-box .loginFrame [class*=inputBox], .loginBox [class*=login-] .body-box .registerFrame [class*=inputBox] {
+  width: 100%;
+  height: 50px;
+  position: relative;
+}
+
+.icon-email {
+  background: url(../../../../static/images/email.png) no-repeat 50%;
+  height: 40px;
+  width: 40px;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame [class*=inputBox] [class*=icon-], .loginBox [class*=login-] .body-box .loginFrame [class*=inputBox] [class*=icon-], .loginBox [class*=login-] .body-box .registerFrame [class*=inputBox] [class*=icon-] {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.icon-password {
+  background: url(../../../../static/images/pwd.png) no-repeat 50%;
+  height: 40px;
+  width: 40px;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select, .loginBox [class*=login-] .body-box .loginFrame .options-select, .loginBox [class*=login-] .body-box .registerFrame .options-select {
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  color: rgba(42, 51, 59, .8);
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select [class*=select-], .loginBox [class*=login-] .body-box .loginFrame .options-select [class*=select-], .loginBox [class*=login-] .body-box .registerFrame .options-select [class*=select-] {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select .select-forget, .loginBox [class*=login-] .body-box .loginFrame .options-select .select-forget, .loginBox [class*=login-] .body-box .registerFrame .options-select .select-forget {
+  color: #5fbbfc;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select [class*=select-], .loginBox [class*=login-] .body-box .loginFrame .options-select [class*=select-], .loginBox [class*=login-] .body-box .registerFrame .options-select [class*=select-] {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select [class*=select-] .middle, .loginBox [class*=login-] .body-box .loginFrame .options-select [class*=select-] .middle, .loginBox [class*=login-] .body-box .registerFrame .options-select [class*=select-] .middle {
+  margin: auto;
+  position: relative;
+  cursor: pointer;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select [class*=select-] .middle [class*=icon-], .loginBox [class*=login-] .body-box .loginFrame .options-select [class*=select-] .middle [class*=icon-], .loginBox [class*=login-] .body-box .registerFrame .options-select [class*=select-] .middle [class*=icon-] {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: -4px;
+  left: -26px;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select [class*=select-] .middle, .loginBox [class*=login-] .body-box .loginFrame .options-select [class*=select-] .middle, .loginBox [class*=login-] .body-box .registerFrame .options-select [class*=select-] .middle {
+  margin: auto;
+  position: relative;
+  cursor: pointer;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select [class*=select-] .middle [class*=-isOn], .loginBox [class*=login-] .body-box .loginFrame .options-select [class*=select-] .middle [class*=-isOn], .loginBox [class*=login-] .body-box .registerFrame .options-select [class*=select-] .middle [class*=-isOn] {
+  background: url(../../../../static/images/choice.png) no-repeat 50%;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .options-select [class*=select-] .middle [class*=-isOff], .loginBox [class*=login-] .body-box .loginFrame .options-select [class*=select-] .middle [class*=-isOff], .loginBox [class*=login-] .body-box .registerFrame .options-select [class*=select-] .middle [class*=-isOff] {
+  background: url(../../../../static/images/unchoice.png) no-repeat 50%;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .loginBtnBox, .loginBox [class*=login-] .body-box .loginFrame .loginBtnBox, .loginBox [class*=login-] .body-box .registerFrame .loginBtnBox {
+  width: 100%;
+  margin-top: 50px;
+  position: relative;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .loginBtnBox .loginHint, .loginBox [class*=login-] .body-box .loginFrame .loginBtnBox .loginHint, .loginBox [class*=login-] .body-box .registerFrame .loginBtnBox .loginHint {
+  color: #ff8a52;
+  position: absolute;
+  left: 0;
+  top: -20px;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .loginBtnBox .btn-login, .loginBox [class*=login-] .body-box .loginFrame .loginBtnBox .btn-login, .loginBox [class*=login-] .body-box .registerFrame .loginBtnBox .btn-login {
+  font-size: 18px;
+  width: 100%;
+  line-height: 50px;
+  height: 50px;
+  border-radius: 4px;
+  background: #5fbbfc;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 10px 0 rgba(95, 187, 252, .8);
+}
+
+.anime {
+  transition: .3s cubic-bezier(.3, .87, .49, .98);
+}
+
+.loginBox [class*=login-] {
+  width: 100%;
+  text-align: center;
+}
+
+.loginBox [class*=login-] [class*=-box] {
+  max-width: 1280px;
+  min-width: 1200px;
+  margin: 0 auto;
+}
+
+.loginBox [class*=login-] .bottom-box {
+  padding: 20px 0;
+  color: rgba(42, 51, 59, .6);
+  line-height: 30px;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame [class*=inputBox-], .loginBox [class*=login-] .body-box .registerFrame [class*=inputBox-] {
+  margin-bottom: 20px;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .applyBtnBox, .loginBox [class*=login-] .body-box .applyFrame .registerBtnBox, .loginBox [class*=login-] .body-box .registerFrame .applyBtnBox, .loginBox [class*=login-] .body-box .registerFrame .registerBtnBox {
+  width: 100%;
+  position: relative;
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .applyBtnBox .btn-apply, .loginBox [class*=login-] .body-box .applyFrame .applyBtnBox .btn-register, .loginBox [class*=login-] .body-box .applyFrame .registerBtnBox .btn-apply, .loginBox [class*=login-] .body-box .applyFrame .registerBtnBox .btn-register, .loginBox [class*=login-] .body-box .registerFrame .applyBtnBox .btn-apply, .loginBox [class*=login-] .body-box .registerFrame .applyBtnBox .btn-register, .loginBox [class*=login-] .body-box .registerFrame .registerBtnBox .btn-apply, .loginBox [class*=login-] .body-box .registerFrame .registerBtnBox .btn-register {
+  font-size: 18px;
+  width: 100%;
+  line-height: 50px;
+  height: 50px;
+  border-radius: 4px;
+  background: #5fbbfc;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 10px 0 rgba(95, 187, 252, .8);
+}
+.findPasswordBox .title {
+  height: 60px;
+  background: #fff;
+  padding: 15px 0;
+  position: relative;
+  z-index: 1;
+}
+.findPasswordBox .autoFix {
+  max-width: 1280px;
+  min-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  height: 100%;
+}
+.findPasswordBox .title .icon-logo {
+  background: url(../../../../static/images/logo.png) no-repeat 50%;
+  width: 196px;
+  height: 37px;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.findPasswordBox .btn {
+  border: 1px solid #5fbbfc;
+  line-height: 30px;
+  height: 30px;
+  width: 100px;
+  text-align: center;
+  color: #5fbbfc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.findPasswordBox .title .returnLogin {
+  position: absolute;
+  right: 20px;
+  line-height: 30px;
+  height: 30px;
+  font-size: 18px;
+}
+.findPasswordBox .path {
+  height: 60px;
+  background: #5fbbfc;
+  position: relative;
+  z-index: 1;
+}
+.findPasswordBox .path .pathBox {
+  position: absolute;
+  left: 20px;
+  font-size: 18px;
+  color: #fff;
+}
+.findPasswordBox .path .pathBox [class*=path-] {
+  line-height: 60px;
+  height: 60px;
+}
+.findPasswordBox .body {
+  height: 100%;
+  background: #ebf0f5;
+  position: relative;
+  top: -120px;
+}

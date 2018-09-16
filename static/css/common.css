@@ -1,0 +1,114 @@
+.icon-email {
+  background: url(../images/email.png) no-repeat 50%;
+  height: 40px;
+  width: 40px
+}
+
+.icon-password {
+  background: url(../images/pwd.png) no-repeat 50%;
+  height: 40px;
+  width: 40px
+}
+
+.icon-phone {
+  background: url(../images/phone.png) no-repeat 50%;
+  height: 40px;
+  width: 40px
+}
+
+.icon-code {
+  background: url(../images/note.png) no-repeat 50%;
+  height: 40px;
+  width: 40px
+}
+
+.btn-countDown, .btn-getVerifyCode {
+  border: 1px solid #5fbbfc;
+  color: #5fbbfc;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  background: #fff;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  border-radius: 4px;
+  width: 90px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer
+}
+
+.btn-countDown {
+  cursor: default
+}
+
+.loginBox {
+  position: absolute;
+  width: 100%;
+  top: 2%
+}
+
+.loginBox .login-title {
+  margin-bottom: 14px
+}
+
+.loginBox [class*=login-] {
+  width: 100%;
+  text-align: center
+}
+
+.loginBox [class*=login-] [class*=-box] {
+  max-width: 1280px;
+  min-width: 1200px;
+  margin: 0 auto
+}
+
+.loginBox [class*=login-] .icon-logo {
+  width: 430px;
+  height: 46px;
+  margin-left: 25px;
+  background: url(../images/logo-dengluye.png) no-repeat 50%
+}
+
+.loginBox [class*=login-] .body-box {
+  height: 580px;
+  position: relative;
+  background: url(../images/title.png) no-repeat 124px 190px
+}
+
+.loginBox [class*=login-] .body-box .applyFrame, .loginBox [class*=login-] .body-box .loginFrame, .loginBox [class*=login-] .body-box .registerFrame {
+  width: 420px;
+  height: 420px;
+  background: #fff;
+  border-radius: 4px;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 80px;
+  box-shadow: 0 0 13px 0 #5fbbfc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .applySucceed, .loginBox [class*=login-] .body-box .loginFrame .applySucceed, .loginBox [class*=login-] .body-box .registerFrame .applySucceed {
+  width: 100%;
+  height: 100%;
+  color: #5fbbfc;
+  font-size: 16px
+}
+
+.loginBox [class*=login-] .body-box .applyFrame .icon-applySucceed, .loginBox [class*=login-] .body-box .loginFrame .icon-applySucceed, .loginBox [class*=login-] .body-box .registerFrame .icon-applySucceed {
+  width: 130px;
+  height: 100px;
+  margin: 40px auto;
+  background: url(../images/logo-dengluye.png) no-repeat 50%;
+}
+
