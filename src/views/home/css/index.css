@@ -381,3 +381,14 @@
 #ui-ss-container .hide {
   display: none
 }
+
+.com-navMenu_menu .menu_icon--user{
+  background-image: url("../i/user.png");
+}
+
+.com-navMenu_menu .menu_icon--attach{
+  background-image: url("../i/sheets.png");
+}
+.com-navMenu_menu .menu_icon--data{
+  background-image: url("../i/data.png");
+}
