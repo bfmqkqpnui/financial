@@ -89,6 +89,7 @@
           </div>
         </div>
       </div>
+      <navComponent :menuList="menuList"></navComponent>
     </div>
 
 
@@ -155,7 +156,7 @@
         </div>
       </div>
     </div>
-    <navComponent :menuList="menuList"></navComponent>
+
   </div>
 </template>
 

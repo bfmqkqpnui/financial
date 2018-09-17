@@ -41,6 +41,7 @@
 <style>
   .topnav {
     width: 100%;
+    height: 40px;
     background: #2a333b;
   }
 
