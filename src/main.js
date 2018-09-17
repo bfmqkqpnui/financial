@@ -12,6 +12,26 @@ Vue.use(VueResource)
 // FastClick 调用提高移动端点击响应时间
 FastClick.attach(document.body)
 
+Vue.http.options.xhr = { withCredentials: true }
+Vue.http.options.credentials = true;
+Vue.http.interceptors.push((request, next) => {
+  console.log("拦截结果：" + request.body)
+  if (request.body && request.body.needLogin) {
+    delete request.body.needLogin
+  }
+  next((response) => {
+    // 优化如果token失效重新跳转到登录页面登录
+    if (response.body.resCode &&
+      response.body.result == "2") {
+      console.log(location.href)
+      localStorage.removeItem('userInfo')
+      location.href = '//localhost:8899/login'
+    } else {
+      return response
+    }
+  });
+})
+
 require('./base')
 router.beforeEach(({ meta, path, fullPath, query }, from, next) => {
   if (meta.title) {
