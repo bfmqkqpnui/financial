@@ -5,10 +5,12 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import FastClick from 'fastclick'
-
+import bluer from './components/index'
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
+
+Vue.use(bluer)
 // FastClick 调用提高移动端点击响应时间
 FastClick.attach(document.body)
 

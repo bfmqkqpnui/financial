@@ -9,6 +9,10 @@
       <li>历史数据</li>
       <li>自动配置</li>
     </ul>
+
+    <div class="body">
+      <booksTable></booksTable>
+    </div>
   </div>
 </template>
 
@@ -38,7 +42,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .topnav {
     width: 100%;
     height: 50px;
@@ -74,4 +78,6 @@
     vertical-align: middle;
   }
 
+  .topnav .body{
+  }
 </style>

@@ -91,13 +91,11 @@
       </div>
       <!-- 二级导航 -->
       <navComponent :menuList="menuList"></navComponent>
-
-      <div class="body"></div>
     </div>
 
 
     <!-- 当前用户信息 -->
-    <div class="site-mask anime ng-scope" :class="canShowInfo ? 'site-mask--shade' : ''">
+    <div class="site-mask anime ng-scope site-mask--shade" v-if="canShowInfo">
       <div class="site-popup anime personalBox site-popup--expand">
         <div :class="page.title == 'info' ? 'comInfoSwitchBtn-info-on' : 'comInfoSwitchBtn-info-off'"
              @click="switchPage('info')">信息编辑

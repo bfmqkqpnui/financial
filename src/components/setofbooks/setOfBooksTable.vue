@@ -1,0 +1,1519 @@
+<template>
+  <div class="site-content ng-scope" ui-view="">
+    <div class="module-title ng-scope">
+      <div class="com-issue ng-isolate-scope" ui-issue="" i-link-system="true" i-show-title="true">
+        <div class="com-issue_display" ng-show="iShowTitle === 'true'" ng-click="showPicker()">
+          <div class="display_icon icon-40"></div>
+          <div class="display_tag ng-binding">2018-03期</div>
+        </div>
+        <div class="com-issue_container anime com-issue_container--hidden"
+             ng-class="{'com-issue_container--hidden': !show}">
+          <div click-test="" listen="clicktest" onmouselost="hidePicker()" class="ng-isolate-scope" yjpijgfx="">
+            <div class="year">
+              <div class="year_btn--last ng-hide" ng-show="isLastYearValid()" ng-click="lastYear()"></div>
+              <div class="year_tag ng-binding">2018</div>
+              <div class="year_btn--next ng-hide" ng-show="isNextYearValid()" ng-click="nextYear()"></div>
+            </div>
+            <div class="month"> <!-- ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 1
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 2
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope month_box--valid month_box--focus" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 3
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 4
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 5
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 6
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 7
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 8
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 9
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 10
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 11
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
+              <div class="month_box anime ng-binding ng-scope" ng-class="{
+               'month_box--valid': isMonthValid(month),
+               'month_box--focus': isCurrentMonth(month)
+             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 12
+              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] --> </div>
+          </div>
+        </div>
+      </div>
+      <div class="com-cs ng-scope" ui-comp-status="">
+        <div class="brief"><p class="brief_name ng-binding">天机</p>
+          <p class="brief_type ng-binding">[小规模纳税人&amp;季报]</p></div>
+        <div class="state ng-binding">
+          <div class="button equilibrium ng-hide" ng-hide="equilibrium" ng-click="showEquilibrium()"></div>
+          做账中
+        </div>
+        <div class="button switch ng-hide" v-show="canSwitch" ng-click="switchState()">
+          <div class="switch_icon"></div>
+          <p class="switch_tag ng-binding">做账中</p></div>
+      </div>
+
+      <div class="module-title_gap"></div>
+      <div class="com-memo anime ng-scope" ui-memo="">
+        <div class="icon-noteBtn" ng-click="toggle($event)" title="备忘录"></div>
+        <div class="pointer ng-binding ng-hide" ng-show="memos.length !== 0">0</div>
+        <div class="memoBox ng-isolate-scope" v-if="remarkComponentFlag">
+          <div class="memo-title">备忘录</div>
+          <div class="memo-containerBox">
+            <div class="container-top"><textarea placeholder="填写备忘" ng-model="text"
+                                                 class="ng-pristine ng-untouched ng-valid ng-empty"></textarea></div>
+            <div class="container-bottom">
+              <div class="memo-container-left ng-binding">2018-09</div>
+              <div class="memo-container-right anime" title="提交备忘" ng-click="addMemo()"></div>
+            </div>
+          </div>
+          <div class="memo-listBox ps-container ps-theme-default" scroll="" scroll-behavior="top"
+               data-ps-id="80fe126e-101d-d442-4a93-44b9f8f08a6f"> <!-- ngRepeat: x in memos -->
+            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+              <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+            </div>
+            <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+              <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="com-ds ng-scope" ui-data-source="">
+        <div class="com-ds_switch icon-dataSource icon-40" title="数据源" ng-click="open()"></div>
+        <div class="com-ds_frame anime" ng-class="{'com-ds_frame--on': on}">
+          <div class="frame_menus"> <!-- ngRepeat: menu in menuTool.list --><!-- ngIf: menu.show -->
+            <div class="frame_menu anime ng-scope"
+                 ng-class="{'frame_menu--on': menu.type == menuTool.currentMenu.type}"
+                 ng-repeat="menu in menuTool.list" ng-if="menu.show">
+              <div class="frame_menu-tab anime ng-binding"
+                   ng-class="{'frame_menu-tab--on': menu.type == menuTool.currentMenu.type}"
+                   ng-click="selectMenu(menu)">银行数据
+              </div>
+            </div><!-- end ngIf: menu.show --><!-- end ngRepeat: menu in menuTool.list --><!-- ngIf: menu.show -->
+            <div class="frame_menu anime ng-scope"
+                 ng-class="{'frame_menu--on': menu.type == menuTool.currentMenu.type}"
+                 ng-repeat="menu in menuTool.list" ng-if="menu.show">
+              <div class="frame_menu-tab anime ng-binding"
+                   ng-class="{'frame_menu-tab--on': menu.type == menuTool.currentMenu.type}"
+                   ng-click="selectMenu(menu)">进项清单
+              </div>
+            </div><!-- end ngIf: menu.show --><!-- end ngRepeat: menu in menuTool.list --><!-- ngIf: menu.show -->
+            <div class="frame_menu anime ng-scope"
+                 ng-class="{'frame_menu--on': menu.type == menuTool.currentMenu.type}"
+                 ng-repeat="menu in menuTool.list" ng-if="menu.show">
+              <div class="frame_menu-tab anime ng-binding"
+                   ng-class="{'frame_menu-tab--on': menu.type == menuTool.currentMenu.type}"
+                   ng-click="selectMenu(menu)">销项数据
+              </div>
+            </div><!-- end ngIf: menu.show --><!-- end ngRepeat: menu in menuTool.list --><!-- ngIf: menu.show -->
+            <div class="frame_menu anime ng-scope"
+                 ng-class="{'frame_menu--on': menu.type == menuTool.currentMenu.type}"
+                 ng-repeat="menu in menuTool.list" ng-if="menu.show">
+              <div class="frame_menu-tab anime ng-binding"
+                   ng-class="{'frame_menu-tab--on': menu.type == menuTool.currentMenu.type}"
+                   ng-click="selectMenu(menu)">报销费用
+              </div>
+            </div><!-- end ngIf: menu.show --><!-- end ngRepeat: menu in menuTool.list --><!-- ngIf: menu.show -->
+            <div class="frame_menu anime ng-scope"
+                 ng-class="{'frame_menu--on': menu.type == menuTool.currentMenu.type}"
+                 ng-repeat="menu in menuTool.list" ng-if="menu.show">
+              <div class="frame_menu-tab anime ng-binding"
+                   ng-class="{'frame_menu-tab--on': menu.type == menuTool.currentMenu.type}"
+                   ng-click="selectMenu(menu)">扫描票据
+              </div>
+            </div><!-- end ngIf: menu.show --><!-- end ngRepeat: menu in menuTool.list --><!-- ngIf: menu.show -->
+            <div class="frame_menu anime ng-scope"
+                 ng-class="{'frame_menu--on': menu.type == menuTool.currentMenu.type}"
+                 ng-repeat="menu in menuTool.list" ng-if="menu.show">
+              <div class="frame_menu-tab anime ng-binding"
+                   ng-class="{'frame_menu-tab--on': menu.type == menuTool.currentMenu.type}"
+                   ng-click="selectMenu(menu)">电子发票
+              </div>
+            </div><!-- end ngIf: menu.show --><!-- end ngRepeat: menu in menuTool.list --> </div>
+          <div class="frame_page frame_page--wrapper ng-hide" ui-data-source-bank=""
+               ng-show="menuTool.currentMenu.type === 'bank'">
+            <header>
+              <div class="title ng-binding"> （0家）</div>
+              <div class="button refresh icon-30 g-icon-refresh" ng-click="refreshBankList()" title="刷新数据"></div>
+              <div class="flex-polyfill"></div>
+              <div class="robot com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" title="银行数据重新处理(再学习过程)" ui-button="" btn-type="hollow"
+                   btn-click="robotLearnBankflow()" ng-show="canOperate">
+                <ng-transclude><span class="ng-scope"> 重新学习 </span></ng-transclude>
+              </div>
+              <div class="upload com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" title="银行交易流水 (限xls/xlsx格式)" ui-button="" btn-type="hollow"
+                   ng-show="canOperate">
+                <ng-transclude><label for="uploadBank" class="ng-scope">上传</label></ng-transclude>
+              </div>
+              <input id="uploadBank" type="file" ng-file-model="transaction_file" multiple="multiple"
+                     accept=".xls,.xlsx" on-upload="uploadTransactionDetail(values)" class="ng-isolate-scope">
+            </header>
+            <section scroll="" scroll-behavior="top" class="ps-container ps-theme-default"
+                     data-ps-id="1c0bc3b7-a386-dbdd-9045-eff3d658a907">
+              <!-- ngRepeat: bankInfo in cacheData.listFromBank -->
+              <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+              </div>
+              <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+              </div>
+            </section>
+          </div>
+          <div class="frame_page frame_page--wrapper ng-hide" ui-data-source-scan=""
+               ng-show="menuTool.currentMenu.type === 'scan'">
+            <header>
+              <div class="title ng-binding"> （0张）</div>
+              <div class="refresh icon-30 button g-icon-refresh" ng-click="refreshScannerList()" title="刷新数据"></div>
+              <div class="flex-polyfill"></div>
+              <div class="legends">
+                <div class="legend">
+                  <div class="legend_icon legend_icon--unknown icon-16"></div>
+                  <div class="legend_text">未知票据</div>
+                </div>
+                <div class="legend">
+                  <div class="legend_icon legend_icon--scaning icon-16"></div>
+                  <div class="legend_text">正在识别</div>
+                </div>
+                <div class="legend">
+                  <div class="legend_icon legend_icon--done icon-16"></div>
+                  <div class="legend_text">识别完成</div>
+                </div>
+                <div class="legend">
+                  <div class="legend_icon legend_icon--deleted icon-16"></div>
+                  <div class="legend_text">已删票据</div>
+                </div>
+              </div>
+              <div class="filter">
+                <div class="ui-select ng-isolate-scope" options="scannerFilters" title="title"
+                     current="scannerFilter">
+                  <div class="select-title" ng-click="expand()"><p class="name ng-binding ng-hide" ng-show="mask"></p>
+                    <p class="name ng-binding" ng-hide="mask">全部票据</p> <i class="icon anime"
+                                                                          ng-class="{'icon--revert': showOptions}"></i>
+                  </div>
+                  <div class="select-list anime ng-isolate-scope ps-container ps-theme-default"
+                       ng-class="{'select-list--expand': showOptions}" scroll="" click-test="" listen="showOptions"
+                       onmouselost="hide()" data-ps-id="6db145ef-4f2f-3320-5dfd-f20bd4fb8886" waysdthr="">
+                    <!-- ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                           ng-repeat="option in options" ng-click="select(option)"
+                                                           title="全部票据">全部票据</p>
+                    <!-- end ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                               ng-repeat="option in options" ng-click="select(option)"
+                                                               title="未知票据">未知票据</p>
+                    <!-- end ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                               ng-repeat="option in options" ng-click="select(option)"
+                                                               title="正在识别">正在识别</p>
+                    <!-- end ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                               ng-repeat="option in options" ng-click="select(option)"
+                                                               title="已删票据">已删票据</p>
+                    <!-- end ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                               ng-repeat="option in options" ng-click="select(option)"
+                                                               title="识别完成">识别完成</p>
+                    <!-- end ngRepeat: option in options -->
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                      <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                      <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="robot com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" title="扫描票据重新处理(再学习过程)" ui-button="" btn-type="hollow"
+                   btn-click="robotLearnScanner()" ng-show="canOperate">
+                <ng-transclude><span class="ng-scope"> 重新学习 </span></ng-transclude>
+              </div>
+            </header>
+            <section scroll="" scroll-behavior="top" class="ps-container ps-theme-default"
+                     data-ps-id="3d4a6a2e-0bc6-093a-1adc-d27969151f73">
+              <div class="bills">
+                <!-- ngRepeat: data in cacheData.listFromScanner | filter: { stateFlag: scannerFilter.flag } --> </div>
+              <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+              </div>
+              <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+              </div>
+            </section>
+          </div>
+          <div class="frame_page frame_page--wrapper com-ds-helper ng-hide" ui-data-source-helper=""
+               ng-show="menuTool.currentMenu.type === 'helper'">
+            <header>
+              <div class="title ng-binding"> （0张）</div>
+              <div class="button refresh icon-30 g-icon-refresh" ng-click="refreshInvoiceList()" title="刷新数据"></div>
+              <div class="flex-polyfill"></div> <!-- ngIf: isInvoiceFromClient --> <!-- ngIf: isInvoiceFromClient -->
+              <!-- ngIf: isInvoiceFromClient -->
+              <div class="robot com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" title="开票数据重新处理(再学习过程)" ui-button="" btn-type="hollow"
+                   btn-click="robotLearnInvoice()" ng-show="canOperate">
+                <ng-transclude><span class="ng-scope"> 重新学习 </span></ng-transclude>
+              </div>
+              <div class="upload com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" ui-button="" btn-type="hollow" title="开票数据(限xls/xlsx格式)" ng-show="canOperate">
+                <ng-transclude><label for="uploadInvoice" class="ng-scope">上传</label></ng-transclude>
+              </div>
+              <input id="uploadInvoice" type="file" ng-file-model="invoice_files" multiple="multiple"
+                     accept=".xls,.xlsx" on-upload="uploadInvoiceDetail(values)" class="ng-isolate-scope">
+              <div class="button deleteIcon icon-30 g-icon-delete-multi ng-hide" title="删除所有数据"
+                   ng-show="canDeleteInvoice" ng-click="deleteInvoice()"></div>
+            </header>
+            <section class="invoices--valid" ng-style="{'max-height': hasDeletedContent ? '50%' : 'unset'}"
+                     style="max-height: unset;">
+              <div class="invoiceTitle">
+                <div class="totals">1、销售数据</div>
+                <div class="flex-polyfill"></div>
+                <div class="button download g-icon-download icon-30 ng-hide" title="下载开票数据"
+                     ng-show="invoiceSource() === 'file'" ng-click="openLink(cacheData.listFromInvoice.src)"></div>
+              </div>
+              <div class="tableTitle"><p class="col-time-invoice">发票号码</p>
+                <p class="col-payer">购买单位</p>
+                <p class="col-item">商品摘要</p>
+                <p class="col-sum-invoice">金额</p>
+                <p class="col-taxRate">税率</p>
+                <p class="col-tax">税额</p>
+                <p class="col-taxTotal">含税价</p>
+                <p class="col-invoice">发票</p></div>
+              <div class="tableContent ps-container ps-theme-default" scroll="" scroll-behavior="top"
+                   data-ps-id="6733b133-74fe-5a5f-39e9-70f4ccb26015">
+                <!-- ngRepeat: invoice in cacheData.listFromInvoice.resources -->
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                  <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                  <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                </div>
+              </div>
+              <div class="tableFooter">
+                <div class="tableRow"><p class="col-time-invoice">合计：</p>
+                  <p class="col-payer">-</p>
+                  <p class="col-item">-</p>
+                  <p class="col-sum-invoice ng-binding" title="0.00">0.00</p>
+                  <p class="col-taxRate">-</p>
+                  <p class="col-tax ng-binding" title="0.00">0.00</p>
+                  <p class="col-taxTotal ng-binding" title="0.00">0.00</p>
+                  <p class="col-invoice">-</p></div>
+              </div>
+            </section>
+            <section class="invoices--invalid ng-hide" ng-show="hasDeletedContent">
+              <div class="invoiceTitle">
+                <div class="totals">2、作废发票</div>
+              </div>
+              <div class="tableTitle"><p class="col-time-invoice">发票号码</p>
+                <p class="col-payer">购买单位</p>
+                <p class="col-item">商品摘要</p>
+                <p class="col-sum-invoice">金额</p>
+                <p class="col-taxRate">税率</p>
+                <p class="col-tax">税额</p>
+                <p class="col-taxTotal">含税价</p></div>
+              <div class="tableContent ps-container ps-theme-default" scroll="" scroll-behavior="top"
+                   data-ps-id="8a91b259-1f05-0381-e626-5a24c173ae74">
+                <!-- ngRepeat: invoice in cacheData.listFromInvoice.discards -->
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                  <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                  <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="frame_page frame_page--wrapper ds-einvoice ng-isolate-scope ng-hide" ng-show="on"
+               ui-data-source-einvoice="" by="menuTool.currentMenu.type">
+            <header>
+              <div class="title ng-binding"> 电子发票 （0张）</div>
+              <div class="refresh icon-30 button g-icon-refresh" ng-click="refresh()" title="刷新数据"></div>
+              <div class="flex-polyfill"></div>
+              <div class="legends">
+                <div class="legend">
+                  <div class="legend_icon legend_icon--unknown icon-16"></div>
+                  <div class="legend_text">未知票据</div>
+                </div>
+                <div class="legend">
+                  <div class="legend_icon legend_icon--scaning icon-16"></div>
+                  <div class="legend_text">正在识别</div>
+                </div>
+                <div class="legend">
+                  <div class="legend_icon legend_icon--done icon-16"></div>
+                  <div class="legend_text">识别完成</div>
+                </div>
+                <div class="legend">
+                  <div class="legend_icon legend_icon--deleted icon-16"></div>
+                  <div class="legend_text">已删票据</div>
+                </div>
+              </div>
+              <div class="filter">
+                <div class="ui-select ng-isolate-scope" options="eInvoicesFilters" title="title"
+                     current="eInvoicesFilter">
+                  <div class="select-title" ng-click="expand()"><p class="name ng-binding ng-hide" ng-show="mask"></p>
+                    <p class="name ng-binding" ng-hide="mask">全部票据</p> <i class="icon anime"
+                                                                          ng-class="{'icon--revert': showOptions}"></i>
+                  </div>
+                  <div class="select-list anime ng-isolate-scope ps-container ps-theme-default"
+                       ng-class="{'select-list--expand': showOptions}" scroll="" click-test="" listen="showOptions"
+                       onmouselost="hide()" data-ps-id="b5bbc908-128d-2038-ef29-71fee3c929dc" sihfqjmw="">
+                    <!-- ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                           ng-repeat="option in options" ng-click="select(option)"
+                                                           title="全部票据">全部票据</p>
+                    <!-- end ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                               ng-repeat="option in options" ng-click="select(option)"
+                                                               title="未知票据">未知票据</p>
+                    <!-- end ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                               ng-repeat="option in options" ng-click="select(option)"
+                                                               title="正在识别">正在识别</p>
+                    <!-- end ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                               ng-repeat="option in options" ng-click="select(option)"
+                                                               title="已删票据">已删票据</p>
+                    <!-- end ngRepeat: option in options --><p class="option anime ng-binding ng-scope"
+                                                               ng-repeat="option in options" ng-click="select(option)"
+                                                               title="识别完成">识别完成</p>
+                    <!-- end ngRepeat: option in options -->
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                      <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                      <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="upload com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" ui-button="" btn-type="hollow" title="电子发票(限pdf格式)" ng-show="canOperate">
+                <ng-transclude><label for="uploadEinvoice" class="ng-scope">上传</label></ng-transclude>
+              </div>
+              <input id="uploadEinvoice" type="file" accept=".jpg, .pdf" multiple="multiple" file-model=""
+                     keep-file="false"></header>
+            <section scroll="" scroll-behavior="top" class="ps-container ps-theme-default"
+                     data-ps-id="58b19276-5304-2b48-4887-023a5663cff9">
+              <div class="bills">
+                <!-- ngRepeat: data in eInvoices | filter: { stateFlag: eInvoicesFilter.flag } --> </div>
+              <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+              </div>
+              <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+              </div>
+            </section>
+          </div>
+          <div class="frame_page frame_page--wrapper com-ds-ivat ng-isolate-scope ng-hide" ng-show="on"
+               ui-data-source-ivat="" by="menuTool.currentMenu.type">
+            <header>
+              <div class="title ng-binding">进项数据 （0张）</div>
+              <div class="button refresh icon-30 g-icon-refresh" ng-click="refresh()" title="刷新数据"></div>
+              <div class="flex-polyfill"></div> <!-- ngIf: isIvatFromClient --> <!-- ngIf: isIvatFromClient -->
+              <!-- ngIf: isIvatFromClient -->
+              <div class="com-button anime ng-isolate-scope com-button--hollow" ng-class="class" ng-click=";click();"
+                   title="进项数据重新处理(再学习过程)" ui-button="" btn-type="hollow" btn-click="robotLearnInputDetail()"
+                   ng-show="canOperate">
+                <ng-transclude><span class="ng-scope"> 重新学习 </span></ng-transclude>
+              </div>
+              <div class="com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click="downloadInvoicesTemplate() ;click();" ui-button="" btn-type="hollow">
+                <ng-transclude><span class="ng-scope">下载模板</span></ng-transclude>
+              </div>
+              <div class="upload com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" title="进项清单(限xls/xlsx格式)" ui-button="" btn-type="hollow" ng-show="canOperate">
+                <ng-transclude><label for="uploadIvat" class="ng-scope">上传</label></ng-transclude>
+              </div>
+              <input id="uploadIvat" type="file" accept=".xls,.xlsx" file-model="" keep-file="false">
+              <div class="button deleteIcon icon-30 g-icon-delete-multi ng-hide" title="删除所有数据"
+                   ng-show="canDeleteIvat" ng-click="delete()"></div>
+            </header>
+            <section ng-show="hasIvat" class="ng-hide">
+              <div class="invoiceTitle">
+                <div ng-show="hasQuerying" class="list--querying ng-hide">数据查询中，预计凭证5分钟后生成。</div>
+                <div ng-show="!hasQuerying" class="list--queryed">数据查询完成，凭证已自动生成。</div>
+              </div>
+              <div class="tableTitle"><p class="col-time-invoice">发票号码</p>
+                <p class="col-payer">销售单位</p>
+                <p class="col-item">商品摘要</p>
+                <p class="col-sum-invoice">金额</p>
+                <p class="col-taxRate">税率</p>
+                <p class="col-tax">税额</p>
+                <p class="col-taxTotal">含税价</p>
+                <p class="col-invoice">发票</p></div>
+              <div class="tableContent ps-container ps-theme-default" scroll="" scroll-behavior="top"
+                   data-ps-id="76a5340d-07c6-8edf-19ce-1e88e9d96c44"> <!-- ngRepeat: entry in ivatInfo.resources -->
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                  <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                  <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                </div>
+              </div>
+              <div class="tableFooter">
+                <div class="tableRow"><p class="col-time-invoice">合计：</p>
+                  <p class="col-payer">-</p>
+                  <p class="col-item">-</p>
+                  <p class="col-sum-invoice ng-binding" title="0.00">0.00</p>
+                  <p class="col-taxRate">-</p>
+                  <p class="col-tax ng-binding" title="0.00">0.00</p>
+                  <p class="col-taxTotal ng-binding" title="0.00">0.00</p>
+                  <p class="col-invoice">-</p></div>
+              </div>
+            </section>
+          </div>
+          <div class="frame_page frame_page--wrapper ds-fee ng-isolate-scope ng-hide" ng-show="on"
+               ui-data-source-fee="" by="menuTool.currentMenu.type">
+            <header>
+              <div class="title">报销费用&nbsp;</div>
+              <div class="button refresh icon-30 g-icon-refresh" ng-click="refresh()" title="刷新数据"></div>
+              <div class="flex-polyfill"></div>
+              <div class="com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click="downloadTemplate() ;click();" ui-button="" btn-type="hollow">
+                <ng-transclude><span class="ng-scope">下载模板</span></ng-transclude>
+              </div>
+              <div class="upload com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" ui-button="" btn-type="hollow" title="报销费用单(限xls/xlsx格式)"
+                   ng-show="canOperate">
+                <ng-transclude><label for="uploadFee" class="ng-scope">上传</label></ng-transclude>
+              </div>
+              <input id="uploadFee" type="file" accept=".xls,.xlsx" file-model="" keep-file="false"></header>
+            <section scroll="" scroll-behavior="top" ng-show="hasFee" class="ps-container ps-theme-default ng-hide"
+                     data-ps-id="cf11e607-a96b-fd24-02fe-87d3da30da96">
+              <div class="invoiceTitle">
+                <div class="flex-polyfill"></div>
+                <div class="button deleteIcon icon-30 g-icon-delete-multi ng-hide" title="删除所有数据"
+                     ng-show="canDeleteFee" ng-click="delete()"></div>
+                <div class="button download g-icon-download icon-30" title="下载报销费用单"
+                     ng-click="download(feeInfo.src)"></div>
+              </div>
+              <div class="tableTitle"><p class="col-summary">摘要</p>
+                <p class="col-subject">入账科目</p>
+                <p class="col-type">类别</p>
+                <p class="col-money">金额</p>
+                <p class="col-payment">支付方式</p>
+                <p class="col-name">报销人</p>
+                <p class="col-remark">备注</p></div>
+              <div class="tableContent"> <!-- ngRepeat: entry in feeInfo.items --> </div>
+              <div class="tableFooter">
+                <div class="tableRow"><p class="col-summary">合计：</p>
+                  <p class="col-subject">-</p>
+                  <p class="col-type">-</p>
+                  <p class="col-money ng-binding" title=""></p>
+                  <p class="col-payment">-</p>
+                  <p class="col-name">-</p>
+                  <p class="col-remark">-</p></div>
+              </div>
+              <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+              </div>
+              <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+              </div>
+            </section>
+          </div>
+          <div class="frame_page"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 凭证列表 -->
+    <div class="module-content ng-scope">
+      <div class="module-content_wrapper">
+        <div class="module-content_page page-vouchers">
+          <div class="page-title"><p class="title title--on" ng-class="{'title--on': tab === 'list'}"
+                                     ng-click="selectTab('list')">凭证列表</p>
+            <p class="title ng-hide" ng-class="{'title--on': tab === 'report'}" ng-click="selectTab('report')"
+               ng-show="!isCurrentIssue">结账报告</p>
+            <p class="title" ng-class="{'title--on': tab === 'accrue'}" ng-click="selectTab('accrue')">计提配置</p>
+            <p class="title" ng-class="{'title--on': tab === 'adjust'}" ng-click="selectTab('adjust')">往来调账</p>
+            <div class="title-gap"></div>
+          </div>
+          <div class="page-tab ng-isolate-scope" ng-show="on" ui-vouchers-list="" by="tab">
+            <div class="page-tools">
+              <div class="title-gap"></div>
+              <div class="searchInput"><input class="search ng-pristine ng-untouched ng-valid ng-empty" type="text"
+                                              placeholder="搜索凭证..." ng-model="voucherFilter"> <i
+                class="search-icon icon-search icon-30" ng-show="voucherFilter === ''"></i> <i
+                class="search-icon g-icon-close icon-30 ng-hide" ng-hide="voucherFilter === ''"
+                ng-click="clearFilter()"></i></div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" ui-button="" btn-type="hollow" btn-click="initialize()">
+                <ng-transclude><span class="ng-scope"> 刷新列表</span></ng-transclude>
+              </div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--disabled com-button--cancel"
+                   ng-class="class" ng-click=";click();" ui-button="" btn-type="hollow"
+                   btn-enabled="canSwitchIssueState" btn-click="switchCarryoverState()">
+                <ng-transclude><span class="ng-binding ng-scope"> 结账</span></ng-transclude>
+              </div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--disabled com-button--cancel"
+                   ng-class="class" ng-click=";click();" ng-show="isCurrentIssue" ui-button="" btn-type="hollow"
+                   btn-enabled="canAccrue" btn-click="openAccrueReport()">
+                <ng-transclude><span class="ng-scope"> 自动计提</span></ng-transclude>
+              </div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
+                   ng-click=";click();" ng-show="canCreateVoucher" ui-button="" btn-type="hollow"
+                   btn-click="createVoucher()">
+                <ng-transclude><span class="ng-scope"> 新建凭证</span></ng-transclude>
+              </div>
+              <div class="button funcBtn30 icon-archive icon-30 ng-hide" title="查看交接文件" ng-show="canCheckArchives"
+                   ng-click="showArchives()"><span ng-show="hasFileToPost" class="ng-hide"></span></div>
+              <div class="button funcBtn30 icon-attach icon-30" title="查看辅助文件" ng-click="showAttaches()"></div>
+              <div class="button funcBtn30 icon-bin icon-30" title="查看回收票据" ng-click="showBin()"></div>
+            </div>
+            <div class="page-content">
+              <div class="contentTitle">
+                <div class="titleBar">
+                  <div class="v-col-type"></div>
+                  <div class="v-col-content"><p class="h-name">摘要</p>
+                    <p class="h-subject">科目</p>
+                    <p class="h-debit">借方金额</p>
+                    <p class="h-credit">贷方金额</p></div>
+                  <div class="v-col-audit">
+                    <div class="button icon-25 fullAuditIndicator icon-unaudited" title="全部审核" ng-class="{true: 'icon-audited', false:'icon-unaudited'}
+                          [isAllAudited]" ng-click="switchVouchersState()"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="toolTitle" ng-show="vouchers.length !== 0">
+                <ul class="voucherTypes">
+                  <li><span class="circle cir-types vou-gather"></span>收</li>
+                  <li><span class="circle cir-types vou-payment"></span>付</li>
+                  <li><span class="circle cir-types vou-transfer"></span>转</li>
+                </ul>
+                <div class="button sortSwitcher" ng-click="switchListOrder()"><p class="ng-binding">降序排列</p>
+                  <div class="icon-sort icon-20 sort"></div>
+                </div>
+                <div class="button sortSwitcher" ng-click="sortByTransaction()" ng-show="isCurrentIssue"><p>按收付转排序</p>
+                  <div class="icon-sort icon-20 sort"></div>
+                </div>
+                <div class="button sortSwitcher" ng-click="sortByCatagory()" ng-show="isCurrentIssue"><p>按业务类型排序</p>
+                  <div class="icon-sort icon-20 sort"></div>
+                </div>
+                <div class="button vouOprSwitcher" ng-click="splitVouchers()" ng-show="isCurrentIssue"><p>拆分凭证</p>
+                </div>
+                <div class="button vouOprSwitcher" ng-click="integrationVouchers()" ng-show="isCurrentIssue"><p>
+                  汇总凭证</p></div>
+                <div class="gap"></div>
+                <p class="button subTitle ng-binding" title="全部收缩" ng-click="switchFoldeds()"> 共有3张凭证，已审核2张 </p>
+                <div class="vouSwitcher">
+                  <div class="anime icon-expand expand" ng-class="{'expand-s' : isAllFolded}"></div>
+                </div>
+              </div>
+              <div class="contentPage ps-container ps-theme-default ps-active-y" scroll="" scroll-behavior="top"
+                   data-ps-id="4bbadf81-f1f5-3674-536e-993a57f0c4a8">
+                <div class="pageWrapper">
+                  <!-- ngRepeat: v in vouchers | filter: voucherFilter | orderBy: voucherListOrder -->
+                  <div class="anime entryContainer ng-scope entryContainer--unremarked" on-repeat-finished=""
+                       ng-show="showVoucherList"
+                       ng-repeat="v in vouchers | filter: voucherFilter | orderBy: voucherListOrder"
+                       ng-class="v.hasRemark ? 'entryContainer--remarked' : 'entryContainer--unremarked'">
+                    <div class="anime containerBorder"></div>
+                    <div class="v-col-type">
+                      <div class="circle cir-vouList vou-payment" ng-class="{'vou-gather':v.transaction == '1',
+              'vou-payment':v.transaction == '2','vou-transfer':v.transaction == '3'}" title="付款凭证"></div>
+                    </div>
+                    <div class="v-col-content">
+                      <div class="entryTitlebar" ng-click="switchFolded(v)">
+                        <div class="col-index"><label for="vl0" class="ng-binding">记-001</label>
+                          <!-- ngIf: !v.vAudited --><input id="vl0" type="text" ng-model="v.vSeq" ng-if="!v.vAudited"
+                                                           ng-focus="seqInputOnfocus($event)"
+                                                           ng-blur="changeVoucherSeq(v)"
+                                                           ng-click="$event.stopPropagation();"
+                                                           ng-keydown="seqInputKeydown($event)"
+                                                           class="ng-pristine ng-untouched ng-valid ng-scope">
+                          <!-- end ngIf: !v.vAudited --> </div>
+                        <p class="col-summary ng-binding">缴税</p>
+                        <p class="col-source ng-binding"> 数据来源： <span class="span-source ng-binding"
+                                                                      ng-class="{'span-source-on' : v.vSource == '系统生成'}">手动新建</span>
+                        </p>
+                        <div class="entryOptsBox"> <!-- ngIf: !v.vAudited && canDeleteVoucher(v) -->
+                          <div class="button entryOpt ng-scope" ng-if="!v.vAudited &amp;&amp; canDeleteVoucher(v)"
+                               ng-click="deleteVoucher(v, $event)">
+                            <div class="optIcon icon-40 icon-voucher-delete"></div>
+                            <p class="optTag optTag--orange">删除</p></div>
+                          <!-- end ngIf: !v.vAudited && canDeleteVoucher(v) -->
+                          <!-- ngIf: !v.vAudited && canEditVoucher(v) -->
+                          <div class="button entryOpt ng-scope" ng-if="!v.vAudited &amp;&amp; canEditVoucher(v)"
+                               ng-click="showVoucherEditor(v, $event)">
+                            <div class="optIcon icon-40 icon-voucher-edit"></div>
+                            <p class="optTag optTag--blue">编辑</p></div>
+                          <!-- end ngIf: !v.vAudited && canEditVoucher(v) -->
+                          <!-- ngIf: v.vAudited || !isMyAccount --> <!-- ngIf: canEditRemark -->
+                          <div class="button entryOpt ng-scope" ng-if="canEditRemark"
+                               ng-click="editVoucherRemark(v, $event)">
+                            <div class="optIcon icon-40 icon-voucher-remark"></div>
+                            <p class="optTag optTag--blue">批注 </p></div><!-- end ngIf: canEditRemark --> </div>
+                      </div> <!-- ngRepeat: e in v.entries -->
+                      <div class="entryBar ng-scope" ng-repeat="e in v.entries" ng-show="!v.vFold"
+                           ng-click="showVoucherEditor(v, $event)"><p class="col-name ng-binding">1111</p>
+                        <p class="col-subNum ng-binding">1001</p>
+                        <p class="col- ng-binding col-subName"
+                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'">库存现金</p>
+                        <div class="col-cur ng-hide" ng-show="e.isForeign || e.isAmount"><p ng-show="e.isAmount"
+                                                                                            class="ng-binding ng-hide">
+                          数量: 1.00 </p>
+                          <p ng-show="e.isAmount" class="ng-binding ng-hide"> 单价: 0.00CNY </p>
+                          <p ng-show="e.isForeign &amp;&amp; !e.isAmount" class="ng-binding ng-hide"> CNY: 0.00 </p>
+                          <p ng-show="e.isForeign" class="ng-binding ng-hide"> 汇率: 0.0000 </p></div>
+                        <p class="col-debit ng-binding"></p>
+                        <p class="col-credit ng-binding">100.00</p></div><!-- end ngRepeat: e in v.entries -->
+                      <div class="sumBar">
+                        <div class="sumIcon icon-sum"></div>
+                        <p class="col-name">总借贷</p>
+                        <p class="col-subject"></p>
+                        <p class="col-debit ng-binding">0.00</p>
+                        <p class="col-credit ng-binding">100.00</p></div>
+                      <div class="remarkBar ng-hide" ng-show="v.hasRemark || v.vRemarkOnEdit"
+                           ng-click="editVoucherRemark(v, $event)"><p class="remark-label">批注：</p>
+                        <div class="remark-content ng-binding" title="">  <!-- ngIf: v.vRemarkOnEdit --> </div>
+                      </div>
+                    </div>
+                    <div class="v-col-audit">
+                      <div class="button icon-25 icon-audited auditIndicator icon-unaudited" data-toggle="tooltip"
+                           title="确认审核" ng-class="{true: 'icon-audited', false:'icon-unaudited'}[v.vAudited]"
+                           ng-click="switchVoucherState(v, $event)"></div>
+                    </div>
+                  </div><!-- end ngRepeat: v in vouchers | filter: voucherFilter | orderBy: voucherListOrder -->
+                  <div class="anime entryContainer ng-scope entryContainer--unremarked" on-repeat-finished=""
+                       ng-show="showVoucherList"
+                       ng-repeat="v in vouchers | filter: voucherFilter | orderBy: voucherListOrder"
+                       ng-class="v.hasRemark ? 'entryContainer--remarked' : 'entryContainer--unremarked'">
+                    <div class="anime containerBorder"></div>
+                    <div class="v-col-type">
+                      <div class="circle cir-vouList vou-payment" ng-class="{'vou-gather':v.transaction == '1',
+              'vou-payment':v.transaction == '2','vou-transfer':v.transaction == '3'}" title="付款凭证"></div>
+                    </div>
+                    <div class="v-col-content">
+                      <div class="entryTitlebar" ng-click="switchFolded(v)">
+                        <div class="col-index"><label for="vl1" class="ng-binding">记-002</label>
+                          <!-- ngIf: !v.vAudited --> </div>
+                        <p class="col-summary ng-binding">付款</p>
+                        <p class="col-source ng-binding"> 数据来源： <span class="span-source ng-binding"
+                                                                      ng-class="{'span-source-on' : v.vSource == '系统生成'}">手动新建</span>
+                        </p>
+                        <div class="entryOptsBox"> <!-- ngIf: !v.vAudited && canDeleteVoucher(v) -->
+                          <!-- ngIf: !v.vAudited && canEditVoucher(v) --> <!-- ngIf: v.vAudited || !isMyAccount -->
+                          <div class="button entryOpt ng-scope" ng-if="v.vAudited || !isMyAccount"
+                               ng-click="showVoucherEditor(v, $event)">
+                            <div class="optIcon icon-40 icon-voucher-view"></div>
+                            <p class="optTag optTag--blue">查看</p></div><!-- end ngIf: v.vAudited || !isMyAccount -->
+                          <!-- ngIf: canEditRemark -->
+                          <div class="button entryOpt ng-scope" ng-if="canEditRemark"
+                               ng-click="editVoucherRemark(v, $event)">
+                            <div class="optIcon icon-40 icon-voucher-remark"></div>
+                            <p class="optTag optTag--blue">批注 </p></div><!-- end ngIf: canEditRemark --> </div>
+                      </div> <!-- ngRepeat: e in v.entries -->
+                      <div class="entryBar ng-scope" ng-repeat="e in v.entries" ng-show="!v.vFold"
+                           ng-click="showVoucherEditor(v, $event)"><p class="col-name ng-binding">提现</p>
+                        <p class="col-subNum ng-binding">1001</p>
+                        <p class="col- ng-binding col-subName"
+                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'">库存现金</p>
+                        <div class="col-cur ng-hide" ng-show="e.isForeign || e.isAmount"><p ng-show="e.isAmount"
+                                                                                            class="ng-binding ng-hide">
+                          数量: 1.00 </p>
+                          <p ng-show="e.isAmount" class="ng-binding ng-hide"> 单价: 0.00CNY </p>
+                          <p ng-show="e.isForeign &amp;&amp; !e.isAmount" class="ng-binding ng-hide"> CNY: 0.00 </p>
+                          <p ng-show="e.isForeign" class="ng-binding ng-hide"> 汇率: 0.0000 </p></div>
+                        <p class="col-debit ng-binding"></p>
+                        <p class="col-credit ng-binding">100.00</p></div><!-- end ngRepeat: e in v.entries -->
+                      <div class="entryBar ng-scope" ng-repeat="e in v.entries" ng-show="!v.vFold"
+                           ng-click="showVoucherEditor(v, $event)"><p class="col-name ng-binding">提现</p>
+                        <p class="col-subNum ng-binding">1002</p>
+                        <p class="col- ng-binding col-subName"
+                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'">银行存款</p>
+                        <div class="col-cur ng-hide" ng-show="e.isForeign || e.isAmount"><p ng-show="e.isAmount"
+                                                                                            class="ng-binding ng-hide">
+                          数量: 1.00 </p>
+                          <p ng-show="e.isAmount" class="ng-binding ng-hide"> 单价: 0.00CNY </p>
+                          <p ng-show="e.isForeign &amp;&amp; !e.isAmount" class="ng-binding ng-hide"> CNY: 0.00 </p>
+                          <p ng-show="e.isForeign" class="ng-binding ng-hide"> 汇率: 0.0000 </p></div>
+                        <p class="col-debit ng-binding">100.00</p>
+                        <p class="col-credit ng-binding"></p></div><!-- end ngRepeat: e in v.entries -->
+                      <div class="sumBar">
+                        <div class="sumIcon icon-sum"></div>
+                        <p class="col-name">总借贷</p>
+                        <p class="col-subject"></p>
+                        <p class="col-debit ng-binding">100.00</p>
+                        <p class="col-credit ng-binding">100.00</p></div>
+                      <div class="remarkBar ng-hide" ng-show="v.hasRemark || v.vRemarkOnEdit"
+                           ng-click="editVoucherRemark(v, $event)"><p class="remark-label">批注：</p>
+                        <div class="remark-content ng-binding" title="">  <!-- ngIf: v.vRemarkOnEdit --> </div>
+                      </div>
+                    </div>
+                    <div class="v-col-audit">
+                      <div class="button icon-25 icon-audited auditIndicator" data-toggle="tooltip" title="取消审核"
+                           ng-class="{true: 'icon-audited', false:'icon-unaudited'}[v.vAudited]"
+                           ng-click="switchVoucherState(v, $event)"></div>
+                    </div>
+                  </div><!-- end ngRepeat: v in vouchers | filter: voucherFilter | orderBy: voucherListOrder -->
+                  <div class="anime entryContainer ng-scope entryContainer--unremarked" on-repeat-finished=""
+                       ng-show="showVoucherList"
+                       ng-repeat="v in vouchers | filter: voucherFilter | orderBy: voucherListOrder"
+                       ng-class="v.hasRemark ? 'entryContainer--remarked' : 'entryContainer--unremarked'">
+                    <div class="anime containerBorder"></div>
+                    <div class="v-col-type">
+                      <div class="circle cir-vouList vou-gather" ng-class="{'vou-gather':v.transaction == '1',
+              'vou-payment':v.transaction == '2','vou-transfer':v.transaction == '3'}" title="收款凭证"></div>
+                    </div>
+                    <div class="v-col-content">
+                      <div class="entryTitlebar" ng-click="switchFolded(v)">
+                        <div class="col-index"><label for="vl2" class="ng-binding">记-003</label>
+                          <!-- ngIf: !v.vAudited --> </div>
+                        <p class="col-summary ng-binding">其他</p>
+                        <p class="col-source ng-binding"> 数据来源： <span class="span-source ng-binding"
+                                                                      ng-class="{'span-source-on' : v.vSource == '系统生成'}">手动新建</span>
+                        </p>
+                        <div class="entryOptsBox"> <!-- ngIf: !v.vAudited && canDeleteVoucher(v) -->
+                          <!-- ngIf: !v.vAudited && canEditVoucher(v) --> <!-- ngIf: v.vAudited || !isMyAccount -->
+                          <div class="button entryOpt ng-scope" ng-if="v.vAudited || !isMyAccount"
+                               ng-click="showVoucherEditor(v, $event)">
+                            <div class="optIcon icon-40 icon-voucher-view"></div>
+                            <p class="optTag optTag--blue">查看</p></div><!-- end ngIf: v.vAudited || !isMyAccount -->
+                          <!-- ngIf: canEditRemark -->
+                          <div class="button entryOpt ng-scope" ng-if="canEditRemark"
+                               ng-click="editVoucherRemark(v, $event)">
+                            <div class="optIcon icon-40 icon-voucher-remark"></div>
+                            <p class="optTag optTag--blue">批注 </p></div><!-- end ngIf: canEditRemark --> </div>
+                      </div> <!-- ngRepeat: e in v.entries -->
+                      <div class="entryBar ng-scope" ng-repeat="e in v.entries" ng-show="!v.vFold"
+                           ng-click="showVoucherEditor(v, $event)"><p class="col-name ng-binding">aa</p>
+                        <p class="col-subNum ng-binding">1002</p>
+                        <p class="col- ng-binding col-subName"
+                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'">银行存款</p>
+                        <div class="col-cur ng-hide" ng-show="e.isForeign || e.isAmount"><p ng-show="e.isAmount"
+                                                                                            class="ng-binding ng-hide">
+                          数量: 1.00 </p>
+                          <p ng-show="e.isAmount" class="ng-binding ng-hide"> 单价: 0.00CNY </p>
+                          <p ng-show="e.isForeign &amp;&amp; !e.isAmount" class="ng-binding ng-hide"> CNY: 0.00 </p>
+                          <p ng-show="e.isForeign" class="ng-binding ng-hide"> 汇率: 0.0000 </p></div>
+                        <p class="col-debit ng-binding">111.00</p>
+                        <p class="col-credit ng-binding"></p></div><!-- end ngRepeat: e in v.entries -->
+                      <div class="entryBar ng-scope" ng-repeat="e in v.entries" ng-show="!v.vFold"
+                           ng-click="showVoucherEditor(v, $event)"><p class="col-name ng-binding">bb</p>
+                        <p class="col-subNum ng-binding">1012001</p>
+                        <p class="col- ng-binding col-subName"
+                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'">其他货币资金 - 银行汇票</p>
+                        <div class="col-cur ng-hide" ng-show="e.isForeign || e.isAmount"><p ng-show="e.isAmount"
+                                                                                            class="ng-binding ng-hide">
+                          数量: 1.00 </p>
+                          <p ng-show="e.isAmount" class="ng-binding ng-hide"> 单价: 0.00CNY </p>
+                          <p ng-show="e.isForeign &amp;&amp; !e.isAmount" class="ng-binding ng-hide"> CNY: 0.00 </p>
+                          <p ng-show="e.isForeign" class="ng-binding ng-hide"> 汇率: 0.0000 </p></div>
+                        <p class="col-debit ng-binding"></p>
+                        <p class="col-credit ng-binding">111.00</p></div><!-- end ngRepeat: e in v.entries -->
+                      <div class="sumBar">
+                        <div class="sumIcon icon-sum"></div>
+                        <p class="col-name">总借贷</p>
+                        <p class="col-subject"></p>
+                        <p class="col-debit ng-binding">111.00</p>
+                        <p class="col-credit ng-binding">111.00</p></div>
+                      <div class="remarkBar ng-hide" ng-show="v.hasRemark || v.vRemarkOnEdit"
+                           ng-click="editVoucherRemark(v, $event)"><p class="remark-label">批注：</p>
+                        <div class="remark-content ng-binding" title="">  <!-- ngIf: v.vRemarkOnEdit --> </div>
+                      </div>
+                    </div>
+                    <div class="v-col-audit">
+                      <div class="button icon-25 icon-audited auditIndicator" data-toggle="tooltip" title="取消审核"
+                           ng-class="{true: 'icon-audited', false:'icon-unaudited'}[v.vAudited]"
+                           ng-click="switchVoucherState(v, $event)"></div>
+                    </div>
+                  </div><!-- end ngRepeat: v in vouchers | filter: voucherFilter | orderBy: voucherListOrder -->
+                </div>
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                  <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px; height: 432px;">
+                  <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 391px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page-tab ng-isolate-scope ng-hide" ng-show="on" ui-vouchers-config="" by="tab">
+            <div class="page-tools">
+              <div class="title-gap"></div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow ng-hide" ng-class="class"
+                   ng-click=";click();" ng-show="hasChange" btn-click="cancel()" ui-button="" btn-type="hollow">
+                <ng-transclude><span class="ng-scope">取消</span></ng-transclude>
+              </div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow ng-hide" ng-class="class"
+                   ng-click=";click();" ng-show="hasChange" btn-click="save()" ui-button="" btn-type="hollow">
+                <ng-transclude><span class="ng-scope">保存</span></ng-transclude>
+              </div>
+            </div>
+            <div class="page-content">
+              <div class="contentPage ps-container ps-theme-default" scroll="" scroll-behavior="top"
+                   data-ps-id="53852e84-2079-40e0-14bd-c1dde3f13c87">
+                <div class="pageWrapper vouchersConfig">
+                  <div class="ui-accrue ng-isolate-scope" type="page"> <!-- ngIf: theme === 'page' -->
+                    <!-- ngIf: theme === 'pop' --> </div>
+                </div>
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                  <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                  <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page-tab ng-isolate-scope ng-hide" ng-show="on" ui-vouchers-report="" by="tab">
+            <div class="page-tools">
+              <div class="title-gap"></div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow ng-hide" ng-class="class"
+                   ng-click=";click();" ng-show="hasChange" btn-click="cancel()" ui-button="" btn-type="hollow">
+                <ng-transclude></ng-transclude>
+              </div>
+            </div>
+            <div class="page-content">
+              <div class="contentPage">
+                <div class="pageWrapper reportContainer">
+                  <div class="closeReport ps-container ps-theme-default ng-hide" scroll="" scroll-behavior="top"
+                       ng-show="reports.length > 0" data-ps-id="33c37b23-ca94-3907-2afb-9f4bade9b5af">
+                    <!-- ngRepeat: report in reports -->
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                      <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                      <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                    </div>
+                  </div>
+                  <div class="noData" ng-show="reports.length === 0">
+                    <div class="icon-noData"></div>
+                    <p>本期无结账数据</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page-tab ng-isolate-scope ng-hide" ng-show="on" ui-vouchers-adjust="" by="tab">
+            <div class="page-tools" style="margin-right:30px">
+              <div class="title-gap"></div>
+              <div class="searchInput"><input class="search ng-pristine ng-untouched ng-valid ng-empty" type="text"
+                                              placeholder="搜索科目..." ng-model="subFilter"> <i
+                class="search-icon icon-search icon-30" ng-show="subFilter === ''"></i> <i
+                class="search-icon g-icon-close icon-30 ng-hide" ng-hide="subFilter === ''"
+                ng-click="clearFilter()"></i></div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow ng-hide" ng-class="class"
+                   ng-click=";click();" ng-show="hasChange &amp;&amp; canEdit" btn-click="cancel()" ui-button=""
+                   btn-type="hollow">
+                <ng-transclude><span class="ng-scope">取消</span></ng-transclude>
+              </div>
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow ng-hide" ng-class="class"
+                   ng-click=";click();" ng-show="hasChange &amp;&amp; canEdit" btn-click="save()" ui-button=""
+                   btn-type="hollow">
+                <ng-transclude><span class="ng-scope">保存</span></ng-transclude>
+              </div>
+            </div>
+            <div class="page-content">
+              <div class="contentPage ps-container ps-theme-default" scroll="" scroll-behavior="top"
+                   data-ps-id="6553c580-accb-10b1-35f9-4be2666362ad">
+                <div class="pageWrapper vouchersAdjust">
+                  <div class="page-sidebar page-sidebar--right"> <!-- ngRepeat: n in navSidebars -->
+                    <div class="page-sidebar_item ng-binding ng-scope"
+                         ng-class="{'page-sidebar_item--on': n.type === nav.type}" ng-repeat="n in navSidebars"
+                         ng-click="switchAdjustType(n)">现金收款付款
+                    </div><!-- end ngRepeat: n in navSidebars -->
+                    <div class="page-sidebar_item ng-binding ng-scope"
+                         ng-class="{'page-sidebar_item--on': n.type === nav.type}" ng-repeat="n in navSidebars"
+                         ng-click="switchAdjustType(n)">预收预付调整
+                    </div><!-- end ngRepeat: n in navSidebars --> </div>
+                  <div class="page-table">
+                    <div class="page-table-rel">
+                      <div class="table-header">
+                        <table>
+                          <tbody>
+                          <tr>
+                            <td class="span-30">科目名称</td>
+                            <td class="span-20">科目余额</td>
+                            <td class="span-20"> 调整金额 <i class="icon-transform btn-transform icon-transform--white"
+                                                         ng-click="transformAll()" ng-show="canEdit"></i></td>
+                            <td class="span-30">调整科目</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="table-body ps-container ps-theme-default" scroll=""
+                           data-ps-id="8ad1b3c9-4cbe-a9df-2117-420cde942c4d">
+                        <table ng-show="data[nav.type].length !== 0">
+                          <tbody><!-- ngRepeat: row in data[nav.type] | filter: {from: subFilter} --> </tbody>
+                        </table>
+                        <div ng-show="data[nav.type].length === 0" class="noData ng-hide"><i class="icon-nodata"></i>
+                          <p>暂无数据</p></div>
+                        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                          <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                        </div>
+                        <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                          <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                  <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                  <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  //Js部分尽量采用ES6语法，webpack babel插件会转义兼容
+  export default {
+    //组件私有数据（必须是function，而且要return对象类型）
+    data() {
+      return {
+        //备忘录组件
+        remarkComponentFlag: false,
+
+      }
+    },
+    //计算属性
+    computed: {},
+    //函数集，自己封装，便于开发使用
+    methods: {},
+    //生命周期钩子：组件实例渲染完成时调用
+    mounted() {
+
+    },
+    //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
+    components: {}
+  }
+</script>
+
+<style scoped>
+  .module-content{
+    height: 590px;
+  }
+  .page-vouchers .page-title {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 0 10px;
+  }
+
+  .page-vouchers .page-title .title {
+    margin-right: 20px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    cursor: pointer;
+  }
+
+  .page-vouchers .page-title .title--on, .page-vouchers .page-title .title--on:hover {
+    border-bottom: 5px solid #5fbbfc;
+  }
+
+  .page-vouchers .title-gap {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+  }
+
+  .page-vouchers .page-tools {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 40px;
+    width: 70%;
+    z-index: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 0 10px;
+  }
+  .page-vouchers .title-gap {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+  }
+  .page-vouchers .searchInput {
+    position: relative;
+  }
+  .page-vouchers .searchInput .search {
+    height: 30px;
+  }
+  .icon-search {
+    background-image: url(./i/search.png);
+  }
+  .page-vouchers .searchInput .search-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
+  .page-vouchers .page-title .title:hover {
+    border-bottom: 5px solid rgba(95,187,252,.8);
+  }
+  .page-vouchers .funcBtn {
+    margin-left: 10px;
+    width: 100px;
+  }
+  .page-vouchers .funcBtn30 {
+    position: relative;
+    margin-left: 10px;
+  }
+  .icon-attach {
+    background-image: url(./i/attach.png);
+  }
+  .icon-bin {
+    background-image: url(./i/bin.png);
+  }
+  .page-vouchers .page-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  .page-vouchers .contentTitle {
+    padding-left: 10px;
+    padding-right: 10px;
+    min-height: 40px;
+  }
+  .page-vouchers .page-content .titleBar {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    border-radius: 2px;
+    background-color: #5fbbfc;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .page-vouchers .v-col-type {
+    min-width: 30px;
+    max-width: 30px;
+    border-right: 1px solid #dadfe8;
+  }
+  .page-vouchers .page-content .titleBar .v-col-type {
+    border: none;
+  }
+  .page-vouchers .v-col-content {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+  }
+  .page-vouchers [class|=col], .page-vouchers [class|=h] {
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 8px;
+    border-right: 1px solid #dadfe8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .page-vouchers .page-content [class|=h] {
+    text-align: center;
+    color: #fff;
+  }
+  .page-vouchers .page-content .col-name, .page-vouchers .page-content .h-name {
+    width: 25%;
+  }
+  .page-vouchers .page-content .col-subject, .page-vouchers .page-content .h-subject {
+    width: 45%;
+  }
+  .page-vouchers .page-content .col-credit, .page-vouchers .page-content .col-debit, .page-vouchers .page-content .h-credit, .page-vouchers .page-content .h-debit {
+    width: 15%;
+  }
+  .page-vouchers .page-content .col-credit, .page-vouchers .page-content .col-debit {
+    text-align: right;
+  }
+  .page-vouchers .v-col-audit {
+    position: relative;
+    min-width: 50px;
+    max-width: 50px;
+  }
+  .icon-unaudited {
+    background-image: url(./i/unaudited.png);
+  }
+  .icon-audited {
+    background-image: url(./i/audited.png);
+  }
+  .page-vouchers .page-content .fullAuditIndicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+  }
+  .page-vouchers .toolTitle {
+    min-height: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0 10px;
+    margin-top: 8px;
+  }
+  .page-vouchers .toolTitle .voucherTypes {
+    width: 120px;
+  }
+  .page-vouchers .toolTitle .voucherTypes li {
+    float: left;
+    width: 40px;
+    line-height: 20px;
+    text-indent: 15px;
+    position: relative;
+    font-size: 12px;
+  }
+  .page-vouchers .page-content .circle {
+    position: absolute;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+  .page-vouchers .voucherTypes .cir-types {
+    top: 5px;
+    left: 0;
+  }
+  .page-vouchers .page-content .vou-gather {
+    background-color: #ff8c8c;
+  }
+  .page-vouchers .page-content .vou-payment {
+    background-color: #ffcb6a;
+  }
+  .page-vouchers .page-content .vou-transfer {
+    background-color: #99aeff;
+  }
+  .page-vouchers .toolTitle .sortSwitcher {
+    position: relative;
+    height: 20px;
+    margin-right: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+  }
+  .page-vouchers .toolTitle .sortSwitcher p {
+    line-height: 20px;
+    font-size: 12px;
+  }
+  .icon-sort {
+    background-image: url(./i/sort.png);
+  }
+  .page-vouchers .toolTitle .sortSwitcher .sort {
+    width: 18px;
+    height: 18px;
+  }
+  .page-vouchers .toolTitle .vouOprSwitcher {
+    position: relative;
+    height: 20px;
+    margin-right: 10px;
+  }
+  .page-vouchers .toolTitle .vouOprSwitcher p {
+    line-height: 20px;
+    font-size: 12px;
+  }
+  .page-vouchers .toolTitle .gap {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+  }
+  .page-vouchers .toolTitle .subTitle {
+    line-height: 20px;
+    font-size: 12px;
+  }
+  .page-vouchers .toolTitle .vouSwitcher {
+    position: relative;
+    width: 10px;
+    height: 20px;
+  }
+  .icon-expand {
+    background-image: url(./i/expand.png);
+  }
+  .page-vouchers .toolTitle .expand {
+    position: absolute;
+    top: 7px;
+    right: 0;
+    width: 7px;
+    height: 9px;
+  }
+  /**凭证列表表格*/
+  .page-vouchers .page-content .contentPage {
+    position: relative;
+    height: 100%;
+  }
+  .page-vouchers .page-content .pageWrapper {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+  }
+  .page-vouchers .entryContainer--unremarked:hover {
+    box-shadow: 0 0 3px #5fbbfc;
+  }
+  .page-vouchers .entryContainer {
+    position: relative;
+    width: 100%;
+    margin-top: 3px;
+    margin-bottom: 7px;
+    background-color: #fff;
+    box-shadow: 0 0 2px 0 #5fbbfc;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .page-vouchers .page-content .containerBorder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .page-vouchers .v-col-type {
+    min-width: 30px;
+    max-width: 30px;
+    border-right: 1px solid #dadfe8;
+  }
+  .page-vouchers .page-content .circle {
+    position: absolute;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+  .page-vouchers .page-content .cir-vouList {
+    left: 10px;
+    top: 14px;
+  }
+  .page-vouchers .page-content .vou-payment {
+    background-color: #ffcb6a;
+  }
+  .page-vouchers .page-content .entryTitlebar, .page-vouchers .page-content .sumBar {
+    position: relative;
+    width: 100%;
+    display: table;
+  }
+  .page-vouchers .page-content .entryTitlebar {
+    border-bottom: 1px solid #dadfe8;
+  }
+  .page-vouchers [class|=col], .page-vouchers [class|=h] {
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 8px;
+    border-right: 1px solid #dadfe8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .page-vouchers .page-content .col-index {
+    width: 10%;
+  }
+  .page-vouchers .page-content .col-index>input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    line-height: 40px;
+    opacity: 0;
+    border: none;
+    outline: none;
+    padding: 0 8px;
+  }
+  .page-vouchers .page-content .col-summary {
+    width: 15%;
+  }
+  .page-vouchers .page-content .col-source {
+    width: 75%;
+    color: #b6c0d3;
+  }
+  .page-vouchers .page-content .entryOptsBox {
+    position: absolute;
+    right: 0;
+    display: none;
+  }
+  .page-vouchers .page-content .entryOpt {
+    position: relative;
+    float: right;
+    width: 65px;
+    height: 40px;
+  }
+  .icon-voucher-delete {
+    background-image: url(./i/delete.png);
+  }
+  .icon-voucher-edit {
+    background-image: url(./i/edit.png);
+  }
+
+  .page-vouchers .page-content .entryOpt .optIcon {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .page-vouchers .page-content .entryOpt .optTag {
+    position: absolute;
+    right: 8px;
+    font-size: 12px;
+    line-height: 40px;
+  }
+  .page-vouchers .page-content .entryOpt .optTag--orange {
+    color: #ff8a52;
+  }
+  .page-vouchers .page-content .entryContainer .entryBar {
+    height: 40px;
+    border-bottom: 1px solid #dadfe8;
+  }
+  .page-vouchers .page-content .col-subNum {
+    width: 10%;
+  }
+  .page-vouchers .page-content .col-subName {
+    width: 35%;
+  }
+  .page-vouchers .entryContainer--unremarked:hover .containerBorder {
+    box-shadow: inset 0 0 0 2px #5fbbfc;
+  }
+  .page-vouchers .page-content .col-cur {
+    width: 12%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+  }
+  .page-vouchers .page-content .col-cur>p {
+    font-size: 12px;
+    line-height: 13px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .icon-sum {
+    background-image: url(./i/sum.png);
+  }
+  .page-vouchers .page-content .sumIcon {
+    position: absolute;
+    top: 14px;
+    left: 8px;
+    width: 13px;
+    height: 13px;
+  }
+  .page-vouchers .page-content .sumBar .col-name {
+    padding-left: 30px;
+  }
+  .page-vouchers .page-content .sumBar .col-credit, .page-vouchers .page-content .sumBar .col-debit {
+    color: #66b2ff;
+  }
+  .page-vouchers .remarkBar {
+    position: relative;
+    line-height: 40px;
+    padding: 0 8px;
+    border-top: 1px solid #dadfe8;
+    border-right: 1px solid #dadfe8;
+    color: #ff8a52;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .page-vouchers .remarkBar .remark-content {
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 880px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .page-vouchers .remarkBar input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    font-size: 14px;
+    padding: 0;
+    border: none;
+    background-color: #fff;
+  }
+  .page-vouchers .page-content .auditIndicator {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+  .page-vouchers .page-content .entryContainer:hover .span-source, .page-vouchers .page-content .span-source-on {
+    color: #ffa448;
+  }
+  .page-vouchers .entryContainer:hover .entryOptsBox {
+    display: block;
+  }
+  .icon-voucher-remark {
+    background-image: url(./i/remark.png);
+  }
+  .icon-voucher-view {
+    background-image: url(./i/view.png);
+  }
+
+
+
+  [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
+    display: none !important;
+  }
+</style>
