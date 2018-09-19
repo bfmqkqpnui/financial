@@ -34,7 +34,7 @@
       <div class="site-aside anime" ng-class="{'site-aside--shrink': isShrinked}">
         <div class="site-aside_logoBox icon-logo">
           <span>财税通</span>
-          <div class="aside_flipper" ng-class="{'aside_flipper--flip': isShrinked}" ng-click="switchShrinked()">
+          <div class="aside_flipper">
             <div class="flipper anime"></div>
           </div>
           <div class="asite_group" ng-class="userGroupIcon"></div>
@@ -89,7 +89,10 @@
           </div>
         </div>
       </div>
+      <!-- 二级导航 -->
       <navComponent :menuList="menuList"></navComponent>
+
+      <div class="body"></div>
     </div>
 
 

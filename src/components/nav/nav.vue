@@ -1,8 +1,8 @@
 <template>
   <div class="topnav">
     <ul class="">
-      <li class="focus"><span class="menu">凭证列表</span></li>
-      <li class="com-navMenu_menu"><div class="menu_icon menu_icon--focus menu_icon--accounts">会计账簿</div></li>
+      <li class="focus">凭证列表</li>
+      <li >会计账簿</li>
       <li>财务报表</li>
       <li>账套设置</li>
       <li>凭证打印</li>
@@ -57,6 +57,7 @@
     margin: 0 10px;
     padding: 0 20px;
     text-align: center;
+    cursor: pointer;
   }
 
   .topnav ul li:hover,.topnav ul li.focus {
@@ -68,7 +69,7 @@
     display: inline-block;
   }
   .topnav span:before{
-    content: url("../../views/home/i/list.png");
+    content: url("./i/list.png");
     margin-right: .2rem;
     vertical-align: middle;
   }
