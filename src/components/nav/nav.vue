@@ -1,7 +1,8 @@
 <template>
   <div class="topnav">
     <ul class="">
-      <li class="focus">凭证列表</li>
+      <li class="focus">账套列表</li>
+      <li class="">凭证列表</li>
       <li >会计账簿</li>
       <li>财务报表</li>
       <li>账套设置</li>

@@ -79,7 +79,7 @@
         <div class="site-aside_opBox">
           <div class="opBox" @click="editUserInfo()">
             <div class="opBox_icon anime icon-user"></div>
-            <div class="opBox_name anime ng-binding">菟子</div>
+            <div class="opBox_name anime ng-binding" v-text="user.name"></div>
             <div class="opBox_tag anime ng-hide" v-show="isShrinked">编辑用户信息</div>
           </div>
           <div class="opBox opBox--logout" @click="logout()">
@@ -122,8 +122,7 @@
           </div>
           <div class="com-infor margin-top-bottom">
             <div class="com-title">电子邮箱</div>
-            <input v-model="copyUser.email" type="tel" ng-change="checkEmail()"
-                   class="ng-pristine ng-untouched ng-valid ng-empty">
+            <input v-model="copyUser.email" type="text" class="ng-pristine ng-untouched ng-valid ng-empty">
             <div class="errorTips ng-binding" v-text="hint.email"></div>
           </div>
           <div class="com-infor margin-top-bottom">
@@ -162,7 +161,8 @@
 </template>
 
 <script>
-  import navComponent from '../../components/nav/nav'
+  import utils from '../../utils'
+  import api from './api/index'
 
   export default {
     name: "home",
@@ -179,20 +179,25 @@
           title: 'info',
           content: '用户信息编辑'
         },
-        // 是否显示登录密码
-        viewPassword: false,
-        //密码修改对象
+        // 是否显示登录密码***
+        viewPassword: true,
+        // 错误信息对象
         hint: {
-          originName: '',
           name: '',
           phone: '',
           email: '',
-          originEmail: '',
+          password: ''
+        },
+        //密码修改对象
+        copyUser: {
+          name: '',
+          phone: '',
+          email: '',
           oldPassword: '',
           newPassword: ''
         },
-        // 错误信息对象
-        copyUser: {
+        user: {
+          id: '',
           name: '',
           phone: '',
           email: '',
@@ -219,6 +224,8 @@
       // 编辑用户信息
       editUserInfo() {
         this.canShowInfo = true
+        this.infoInit()
+        this.hintInit()
       },
       // 关闭用户信息
       close() {
@@ -231,26 +238,88 @@
       // 修改登录密码
       editPwd() {
         console.log("修改登录密码")
+        if (this.copyUser.oldPassword && this.copyUser.newPassword && utils.isExist(this.copyUser.oldPassword) && utils.isExist(this.copyUser.newPassword)) {
+          if(this.copyUser.oldPassword == this.copyUser.newPassword){
+            this.hint.password = '*旧密码和新密码不能相同'
+          }else{
+            this.hint.password = ''
+            let params = {
+              id: this.user.id,
+              oldPassWord: this.copyUser.oldPassword,
+              newPassWord: this.copyUser.newPassWord
+            }
+            api.updatePwd(params).then(res => {
+              console.log(JSON.stringify(res.body))
+            })
+          }
+        } else {
+          this.hint.password = '*请完整输入旧密码及新密码'
+        }
       },
       // 修改个人信息
       editInfo() {
         console.log("修改个人信息")
+        if (this.checkEmail() && this.checkName()) {
+          let params = {}
+          api.updateInfo().then(res => {
+
+          })
+        }
       },
       pwdInit() {
         this.copyUser.oldPassword = ''
         this.copyUser.newPassword = ''
       },
       infoInit() {
-        this.copyUser.name = this.copyUser.originName
-        this.copyUser.email = this.copyUser.originEmail
+        this.copyUser.name = this.user.name
+        this.copyUser.email = this.user.email
+        this.copyUser.phone = this.user.phone
+      },
+      hintInit() {
+        this.hint.name = ''
+        this.hint.phone = ''
+        this.hint.email = ''
+        this.hint.oldPassword = ''
+        this.hint.newPassword = ''
+      },
+      // 获取用户信息
+      copyUserConfig() {
+        let User = utils.dbGet("userInfo")
+        if (utils.isExist(User)) {
+          this.copyUser.name = User.adminName
+          this.copyUser.phone = User.phone
+          this.copyUser.email = User.email
+          this.user.name = User.adminName
+          this.user.phone = User.phone
+          this.user.email = User.email
+          this.user.id = User.id
+        }
+      },
+      checkEmail() {
+        let flag = utils.checkEmail(this.copyUser.email)
+        if (!flag) {
+          this.hint.email = '*邮箱格式不正确'
+        } else {
+          this.hint.email = ''
+        }
+        return flag;
+      },
+      checkName() {
+        if (utils.isExist(this.copyUser.name)) {
+          this.hint.name = ''
+          return true;
+        } else {
+          this.hint.name = '*用户名不能为空'
+          return false;
+        }
       }
     },
-    components: {
-      navComponent
+    components: {},
+    mounted() {
+      this.copyUserConfig()
     }
   }
 </script>
 
-<style src="../../../static/css/common.css">
-</style>
+<style src="../../../static/css/common.css"></style>
 <style src="./css/index.css" scoped></style>

@@ -301,6 +301,17 @@ const valPhone = (phone) => {
   return true;
 }
 
+// 验证邮箱
+const checkEmail = (email) => {
+  if (email == null || email == "") {
+    return false;
+  } else if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(email)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 /**
  * 获取url里 ? 的字段
  * @param    {[String]}                 name [key]
@@ -354,5 +365,6 @@ export default {
   GetQueryString,
   urlRemoveToken,
   isExist,
-  giveCardCountDown
+  giveCardCountDown,
+  checkEmail
 }
