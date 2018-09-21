@@ -3,7 +3,7 @@ export default [{
   meta: {
     title: '账户',
     notLoading: true,
-    needLogin: false
+    needLogin: true
   },
   component: r => require.ensure([], () => r(require('./home')), 'home')
   }

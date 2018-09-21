@@ -62,12 +62,7 @@
                     <div class="multiRow-body"> <!-- ngRepeat: sub in title.subLevel --> </div>
                   </div>
                 </div><!-- end ngRepeat: title in tableInfo[user.type].head -->
-                <div ng-repeat="title in tableInfo[user.type].head" ng-class="title.span" class="ng-scope span-30">
-                  <div ng-show="title.value !== '数据源' &amp;&amp; title.value !== '数据中心'" title=""
-                       ng-class="title.path ? 'isOrderBy' : ''" ng-click="orderByValue(title.path)"
-                       class="ng-binding ng-hide"> 数据源 <span ng-show="orderBy.order == title.path"
-                                                             ng-class="orderBy.type == '-' ? 'icon-orderBy-down' : 'icon-orderBy-up'"
-                                                             class="ng-hide icon-orderBy-up">▼</span></div>
+                <div ng-repeat="title in tableInfo[user.type].head" ng-class="title.span" class="ng-scope span-40">
                   <div class="multiRowBox" ng-show="title.value == '数据源'">
                     <div class="multiRow-head">数据源</div>
                     <div class="multiRow-body"> <!-- ngRepeat: sub in title.subLevel -->
@@ -87,41 +82,6 @@
                         ng-class="orderBy.type == '-' ? 'icon-orderBy-down' : 'icon-orderBy-up'"
                         class="ng-hide icon-orderBy-up">▼</span></div><!-- end ngRepeat: sub in title.subLevel -->
                     </div>
-                  </div>
-                  <div class="multiRowBox ng-hide" ng-show="title.value == '数据中心'">
-                    <div class="multiRow-head">数据中心</div>
-                    <div class="multiRow-body"> <!-- ngRepeat: sub in title.subLevel -->
-                      <div ng-repeat="sub in title.subLevel" title="按 开票 排序" ng-click="orderByValue(sub.path)"
-                           ng-class="sub.class" class="ng-binding ng-scope span-33 isOrderBy"> 开票 <span
-                        ng-show="orderBy.order == sub.path"
-                        ng-class="orderBy.type == '-' ? 'icon-orderBy-down' : 'icon-orderBy-up'"
-                        class="ng-hide icon-orderBy-up">▼</span></div><!-- end ngRepeat: sub in title.subLevel -->
-                      <div ng-repeat="sub in title.subLevel" title="按 银行 排序" ng-click="orderByValue(sub.path)"
-                           ng-class="sub.class" class="ng-binding ng-scope span-33 isOrderBy"> 银行 <span
-                        ng-show="orderBy.order == sub.path"
-                        ng-class="orderBy.type == '-' ? 'icon-orderBy-down' : 'icon-orderBy-up'"
-                        class="ng-hide icon-orderBy-up">▼</span></div><!-- end ngRepeat: sub in title.subLevel -->
-                      <div ng-repeat="sub in title.subLevel" title="按 扫描 排序" ng-click="orderByValue(sub.path)"
-                           ng-class="sub.class" class="ng-binding ng-scope span-33 isOrderBy"> 扫描 <span
-                        ng-show="orderBy.order == sub.path"
-                        ng-class="orderBy.type == '-' ? 'icon-orderBy-down' : 'icon-orderBy-up'"
-                        class="ng-hide icon-orderBy-up">▼</span></div><!-- end ngRepeat: sub in title.subLevel -->
-                    </div>
-                  </div>
-                </div><!-- end ngRepeat: title in tableInfo[user.type].head -->
-                <div ng-repeat="title in tableInfo[user.type].head" ng-class="title.span" class="ng-scope span-10">
-                  <div ng-show="title.value !== '数据源' &amp;&amp; title.value !== '数据中心'" title="按 账期 排序"
-                       ng-class="title.path ? 'isOrderBy' : ''" ng-click="orderByValue(title.path)"
-                       class="ng-binding isOrderBy"> 账期 <span ng-show="orderBy.order == title.path"
-                                                              ng-class="orderBy.type == '-' ? 'icon-orderBy-down' : 'icon-orderBy-up'"
-                                                              class="ng-hide icon-orderBy-up">▼</span></div>
-                  <div class="multiRowBox ng-hide" ng-show="title.value == '数据源'">
-                    <div class="multiRow-head">数据源</div>
-                    <div class="multiRow-body"> <!-- ngRepeat: sub in title.subLevel --> </div>
-                  </div>
-                  <div class="multiRowBox ng-hide" ng-show="title.value == '数据中心'">
-                    <div class="multiRow-head">数据中心</div>
-                    <div class="multiRow-body"> <!-- ngRepeat: sub in title.subLevel --> </div>
                   </div>
                 </div><!-- end ngRepeat: title in tableInfo[user.type].head -->
                 <div ng-repeat="title in tableInfo[user.type].head" ng-class="title.span" class="ng-scope span-13">
@@ -162,15 +122,11 @@
                   <!-- ngIf: tableInfo[user.type].body.customer --> <!-- ngIf: tableInfo[user.type].body.common -->
                   <!-- ngIf: tableInfo[user.type].body.mgr --> <!-- ngIf: tableInfo[user.type].body.dataOrigin -->
                   <div ng-class="tableInfo[user.type].body.dataOrigin" ng-if="tableInfo[user.type].body.dataOrigin"
-                       class="ng-scope span-30 multiLine">
+                       class="ng-scope span-40 multiLine">
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0/0</div>
                   </div><!-- end ngIf: tableInfo[user.type].body.dataOrigin -->
-                  <div ng-class="tableInfo[user.type].body.issueTime + ' ' +
-      (compareIssue(x.issueTime, accountsInfo.systemIssue) ? 'colorRed' : '')" class="ng-binding span-10 colorRed">
-                    2018-03
-                  </div> <!-- ngIf: tableInfo[user.type].body.file -->
                   <!-- ngIf: tableInfo[user.type].body.isAllAudited -->
                   <div ng-class="tableInfo[user.type].body.issueState" class="span-13"> <!-- ngIf: !x.equilibrium -->
                     <span class="accountStateBox ng-binding stateBox-ing" ng-class="getTabView('class', x.issueState)"> 做账中 </span>
@@ -196,15 +152,11 @@
                   <!-- ngIf: tableInfo[user.type].body.customer --> <!-- ngIf: tableInfo[user.type].body.common -->
                   <!-- ngIf: tableInfo[user.type].body.mgr --> <!-- ngIf: tableInfo[user.type].body.dataOrigin -->
                   <div ng-class="tableInfo[user.type].body.dataOrigin" ng-if="tableInfo[user.type].body.dataOrigin"
-                       class="ng-scope span-30 multiLine">
+                       class="ng-scope span-40 multiLine">
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0/0</div>
                   </div><!-- end ngIf: tableInfo[user.type].body.dataOrigin -->
-                  <div ng-class="tableInfo[user.type].body.issueTime + ' ' +
-      (compareIssue(x.issueTime, accountsInfo.systemIssue) ? 'colorRed' : '')" class="ng-binding span-10 colorRed">
-                    2018-03
-                  </div> <!-- ngIf: tableInfo[user.type].body.file -->
                   <!-- ngIf: tableInfo[user.type].body.isAllAudited -->
                   <div ng-class="tableInfo[user.type].body.issueState" class="span-13"> <!-- ngIf: !x.equilibrium -->
                     <span class="accountStateBox ng-binding stateBox-not" ng-class="getTabView('class', x.issueState)"> 未开始 </span>
@@ -230,15 +182,11 @@
                   <!-- ngIf: tableInfo[user.type].body.customer --> <!-- ngIf: tableInfo[user.type].body.common -->
                   <!-- ngIf: tableInfo[user.type].body.mgr --> <!-- ngIf: tableInfo[user.type].body.dataOrigin -->
                   <div ng-class="tableInfo[user.type].body.dataOrigin" ng-if="tableInfo[user.type].body.dataOrigin"
-                       class="ng-scope span-30 multiLine">
+                       class="ng-scope span-40 multiLine">
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0/0</div>
                   </div><!-- end ngIf: tableInfo[user.type].body.dataOrigin -->
-                  <div ng-class="tableInfo[user.type].body.issueTime + ' ' +
-      (compareIssue(x.issueTime, accountsInfo.systemIssue) ? 'colorRed' : '')" class="ng-binding span-10 colorRed">
-                    2018-03
-                  </div> <!-- ngIf: tableInfo[user.type].body.file -->
                   <!-- ngIf: tableInfo[user.type].body.isAllAudited -->
                   <div ng-class="tableInfo[user.type].body.issueState" class="span-13"> <!-- ngIf: !x.equilibrium -->
                     <span class="accountStateBox ng-binding stateBox-not" ng-class="getTabView('class', x.issueState)"> 未开始 </span>
@@ -290,17 +238,21 @@
     height: 30px;
     margin-top: 10px;
   }
+
   .accountsTitle-left {
     float: left;
   }
+
   .accountsTitle-left .accountsTitle-size, .accountsTitle-left .btn-refreshList {
     float: left;
   }
+
   .accountsTitle-left .accountsTitle-size {
     height: 30px;
     padding-top: 2px;
     border-bottom: 5px solid #5fbbfc;
   }
+
   .accountsTitle-left .btn-refreshList {
     width: 25px;
     height: 25px;
@@ -309,10 +261,12 @@
     cursor: pointer;
     margin-top: -2px;
   }
+
   .accountsTitle-left, .accountsTitle-right {
     height: 30px;
     margin-top: 10px;
   }
+
   .accountsTitle-right {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -322,6 +276,7 @@
     -ms-flex-flow: row-reverse;
     flex-flow: row-reverse;
   }
+
   /**page-content*/
   .accountsBody {
     width: 100%;
@@ -335,9 +290,11 @@
     -ms-flex-direction: column;
     flex-direction: column;
   }
+
   [class*=-tableHead-2] {
     height: 60px;
   }
+
   [class*=accBody-tableHead] {
     width: 100%;
     background: #5fbbfc;
@@ -345,23 +302,43 @@
     border-left: 1px solid #5fbbfc;
     border-right: 1px solid #5fbbfc;
   }
-  [class*=-tableHead-2] .tabHeadBox>div {
+
+  [class*=-tableHead-2] .tabHeadBox > div {
     line-height: 60px;
   }
+
   [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
     display: none !important;
   }
+
   .tabHeadBox .multiRowBox {
     height: 60px;
   }
+
   .tabHeadBox .multiRowBox .multiRow-body, .tabHeadBox .multiRowBox .multiRow-head {
     width: 100%;
     height: 50%;
     line-height: 30px;
     position: relative;
   }
+
   .tabHeadBox .multiRowBox .multiRow-head {
     border-bottom: 1px solid #fff;
+  }
+  .multiRowBox .multiRow-body>div {
+    float: left;
+  }
+  .multiRowBox .multiRow-body>div {
+    border-right: 1px solid #fff;
+  }
+  .multiLine>div:last-child, .multiRowBox .multiRow-body>div:last-child {
+    border-right: none;
+  }
+  .multiLine>div {
+    float: left;
+    height: 100%;
+    position: relative;
+    border-right: 1px solid #dadfe8;
   }
 
 </style>

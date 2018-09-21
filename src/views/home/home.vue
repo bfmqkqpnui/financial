@@ -136,7 +136,7 @@
         <div class="personalInfoContent" v-if="page.title == 'pwd'">
           <div class="com-infor">
             <div class="com-title">旧&nbsp;密&nbsp;码</div>
-            <input type="text" v-model="copyUser.oldPassword"
+            <input type="password" v-model="copyUser.oldPassword"
                    class="ng-pristine ng-untouched ng-valid ng-empty"></div>
           <div class="com-infor margin-top-bottom" style="margin-top:45px">
             <div class="com-title">新&nbsp;密&nbsp;码</div>
@@ -157,6 +157,33 @@
       </div>
     </div>
 
+    <!-- 蒙层信息 -->
+    <div class="site-mask anime ng-isolate-scope" v-if="errMsg">
+      <div class="site-popup anime popup-message flex--column site-popup--expand" ng-class="{'site-popup--expand': on}">
+        <div class="site-popup_head">
+          <div class="site-popup_title">财税通提醒您：</div>
+          <div class="site-popup_close g-icon-close" ng-click="hide()"></div>
+        </div>
+        <div class="site-popup_body">
+          <div class="site-popup_type">
+            <div class="typeIcon g-icon-error"></div>
+            <p class="typeTitle typeTitle--error">操作失败</p></div>
+          <div class="site-popup_message"><p class="ng-binding" v-text="errMsg"></p>
+            <!--<div v-show="msgList" class="msgList_wrapper ps-container ps-theme-default" id="msgListWrapper"
+                 data-ps-id="31c016ce-12ca-880b-3a30-1bc7527da0b0">
+              <div class="site-popup_msgList"> &lt;!&ndash; ngRepeat: x in msgList track by $index &ndash;&gt;</div>
+              <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+              </div>
+              <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+              </div>
+            </div>-->
+          </div>
+        </div>
+        <div class="site-popup_footer"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -201,10 +228,13 @@
           name: '',
           phone: '',
           email: '',
-          password: ''
+          password: '',
+          token: ''
         },
         // 二级菜单集合
         menuList: [],
+        // 错误消息
+        errMsg: '',
       }
     },
     methods: {
@@ -230,6 +260,7 @@
       // 关闭用户信息
       close() {
         this.canShowInfo = false
+        this.switchPage('info')
       },
       // 设置登录密码是否铭文展示
       switchPassword() {
@@ -239,14 +270,15 @@
       editPwd() {
         console.log("修改登录密码")
         if (this.copyUser.oldPassword && this.copyUser.newPassword && utils.isExist(this.copyUser.oldPassword) && utils.isExist(this.copyUser.newPassword)) {
-          if(this.copyUser.oldPassword == this.copyUser.newPassword){
+          if (this.copyUser.oldPassword == this.copyUser.newPassword) {
             this.hint.password = '*旧密码和新密码不能相同'
-          }else{
+          } else {
             this.hint.password = ''
             let params = {
               id: this.user.id,
               oldPassWord: this.copyUser.oldPassword,
-              newPassWord: this.copyUser.newPassWord
+              newPassWord: this.copyUser.newPassword,
+              token: this.user.token
             }
             api.updatePwd(params).then(res => {
               console.log(JSON.stringify(res.body))
@@ -260,9 +292,21 @@
       editInfo() {
         console.log("修改个人信息")
         if (this.checkEmail() && this.checkName()) {
-          let params = {}
-          api.updateInfo().then(res => {
-
+          let params = {
+            phone: this.user.phone,
+            adminName: this.copyUser.name,
+            email: this.copyUser.email,
+            id: this.user.id,
+            token: this.user.token
+          }
+          api.updateInfo(params).then(res => {
+            console.log(JSON.stringify(res.body))
+            if (res.body.result == 0) {
+              utils.dbSet("userInfo", JSON.stringify(res.body.data))
+              this.this.copyUserConfig()
+            } else {
+              this.setErrMsg(res.body.msg)
+            }
           })
         }
       },
@@ -293,6 +337,7 @@
           this.user.phone = User.phone
           this.user.email = User.email
           this.user.id = User.id
+          this.user.token = User.token
         }
       },
       checkEmail() {
@@ -311,6 +356,11 @@
         } else {
           this.hint.name = '*用户名不能为空'
           return false;
+        }
+      },
+      setErrMsg(message) {
+        if(utils.isExist(message)){
+          this.errMsg = message
         }
       }
     },
