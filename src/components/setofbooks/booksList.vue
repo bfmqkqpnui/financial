@@ -10,7 +10,7 @@
           <div class="accountsTitle-right">
             <div class="com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
                  ng-click="showAddAccPop() ;click();" ui-button="" btn-type="hollow" ng-show="showAddAccBtn()">
-              <ng-transclude><span class="ng-scope">添加账套</span></ng-transclude>
+              <div><span class="ng-scope">添加账套</span></div>
             </div> <!-- ngIf: canShowTemplates() --> </div>
         </div>
         <div class="page-content">
@@ -100,9 +100,8 @@
                   </div>
                 </div><!-- end ngRepeat: title in tableInfo[user.type].head --> </div>
             </div>
-            <div class="accBody-tabBody ps-container ps-theme-default" id="accountsListBox"
-                 data-ps-id="afbb472c-c98f-90dd-5057-0ca41e5cca4c">
-              <acc-tab-body-list> <!-- ngRepeat: x in accountsInfo.list |
+            <div class="accBody-tabBody ps-container ps-theme-default">
+              <div> <!-- ngRepeat: x in accountsInfo.list |
                 filter: search.commonKeyWord |
                 orderBy: orderBy.type + orderBy.order -->
                 <div class="tabBodyBox accTabBody ng-scope" on-repeat-finished="" ng-repeat="x in accountsInfo.list |
@@ -196,7 +195,7 @@
                 filter: search.commonKeyWord |
                 orderBy: orderBy.type + orderBy.order -->
                 <div class="dataIsNull ng-hide" ng-show="show.dataIsNull">暂无账套信息</div>
-              </acc-tab-body-list>
+              </div>
               <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
                 <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
               </div>
@@ -339,6 +338,12 @@
     height: 100%;
     position: relative;
     border-right: 1px solid #dadfe8;
+  }
+  .accBody-tabBody {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    position: relative;
   }
 
 </style>

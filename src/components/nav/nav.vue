@@ -1,19 +1,18 @@
 <template>
-  <div class="topnav">
-    <ul class="">
-      <li class="focus">账套列表</li>
-      <li class="">凭证列表</li>
-      <li >会计账簿</li>
-      <li>财务报表</li>
-      <li>账套设置</li>
-      <li>凭证打印</li>
-      <li>历史数据</li>
-      <li>自动配置</li>
-    </ul>
-
-    <div class="body">
-      <booksTable></booksTable>
+  <div class="site-content ng-scope">
+    <div class="topnav">
+      <ul class="">
+        <li class="focus">账套列表</li>
+        <li class="">凭证列表</li>
+        <li>会计账簿</li>
+        <li>财务报表</li>
+        <li>账套设置</li>
+        <li>凭证打印</li>
+        <li>历史数据</li>
+        <li>自动配置</li>
+      </ul>
     </div>
+    <booksTable></booksTable>
   </div>
 </template>
 
@@ -65,20 +64,21 @@
     cursor: pointer;
   }
 
-  .topnav ul li:hover,.topnav ul li.focus {
+  .topnav ul li:hover, .topnav ul li.focus {
     background-color: #5fbbfc;
     color: #fff;
   }
 
-  .topnav span{
+  .topnav span {
     display: inline-block;
   }
-  .topnav span:before{
+
+  .topnav span:before {
     content: url("./i/list.png");
     margin-right: .2rem;
     vertical-align: middle;
   }
 
-  .topnav .body{
+  .topnav .body {
   }
 </style>

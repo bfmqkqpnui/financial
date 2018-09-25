@@ -1,11 +1,11 @@
 <template>
-  <div class="site-content ng-scope">
+  <div>
     <!-- 导航 -->
     <bodyNav v-if="isSecondMenuFlag"></bodyNav>
-    <!-- 账套列表 -->
-    <booksList></booksList>
-    <!-- 凭证列表 -->
-    <voucher v-if="remarkComponentFlag"></voucher>
+      <!-- 账套列表 -->
+      <booksList v-if="isBooksList"></booksList>
+      <!-- 凭证列表 -->
+      <voucher v-if="isVoucher"></voucher>
   </div>
 </template>
 
@@ -20,6 +20,10 @@
         remarkComponentFlag: false,
         // 是否为二级目录
         isSecondMenuFlag: true,
+        // 账套列表
+        isBooksList: false,
+        // 凭证列表
+        isVoucher: true,
       }
     },
     //计算属性
@@ -36,10 +40,6 @@
 </script>
 
 <style scoped>
-  .module-content {
-    height: 590px;
-  }
-
   .page-vouchers .page-title {
     display: -webkit-box;
     display: -ms-flexbox;

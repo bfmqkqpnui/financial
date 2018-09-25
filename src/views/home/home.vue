@@ -169,16 +169,6 @@
             <div class="typeIcon g-icon-error"></div>
             <p class="typeTitle typeTitle--error">操作失败</p></div>
           <div class="site-popup_message"><p class="ng-binding" v-text="errMsg"></p>
-            <!--<div v-show="msgList" class="msgList_wrapper ps-container ps-theme-default" id="msgListWrapper"
-                 data-ps-id="31c016ce-12ca-880b-3a30-1bc7527da0b0">
-              <div class="site-popup_msgList"> &lt;!&ndash; ngRepeat: x in msgList track by $index &ndash;&gt;</div>
-              <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-              </div>
-              <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
-                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-              </div>
-            </div>-->
           </div>
         </div>
         <div class="site-popup_footer"></div>
@@ -359,7 +349,7 @@
         }
       },
       setErrMsg(message) {
-        if(utils.isExist(message)){
+        if (utils.isExist(message)) {
           this.errMsg = message
         }
       }

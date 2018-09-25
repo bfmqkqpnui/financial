@@ -11,6 +11,4 @@ export default {
 }
 </script>
 
-<style >
-
-</style>
+<style src="../static/css/app.css"></style>
