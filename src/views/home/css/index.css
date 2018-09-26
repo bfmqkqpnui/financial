@@ -385,3 +385,25 @@
 #ui-ss-container .hide {
   display: none
 }
+/**添加账套蒙层样式*/
+.pop-container .btn-closePop {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+}
+.pop-container .btn-closePop {
+  background: url(../i/closePop.png) no-repeat 50%;
+}
+.message-input .icon-required {
+  background: url(../i/required.png) no-repeat 50%;
+  background-size: 7px;
+}
+.popSelectBox .icon-select-radio-on {
+  background: url(../i/selected.png) no-repeat 50%;
+}
+.popSelectBox .icon-select-radio-off {
+  background: url(../i/unselected.png) no-repeat 50%;
+}

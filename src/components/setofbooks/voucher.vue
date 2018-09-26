@@ -1172,6 +1172,10 @@
     mounted() {
 
     },
+    created() {
+      console.log("创建组建开始")
+      this.$emit('sel', {index:2})
+    },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
     components: {}
   }

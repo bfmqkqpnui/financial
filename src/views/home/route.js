@@ -1,14 +1,28 @@
 export default [{
   path: '/home',
-  meta: {
-    title: '账套管理',
-    notLoading: true,
-    needLogin: true
-  },
   component: r => require.ensure([], () => r(require('./home')), 'home'),
+  redirect: '/home/booksManager',
   children: [
     /**账套列表*/
-    {path: 'booksManager', component: r => require.ensure([], () => r(require('../../components/setofbooks/index.vue')), 'index')}
+    {
+      path: 'booksManager',
+      meta: {
+        title: '账套列表',
+        notLoading: true,
+        needLogin: true
+      },
+      component: r => require.ensure([], () => r(require('../../components/setofbooks/booksList.vue')), 'booksList')
+    },
+    /**凭证列表*/
+    {
+      path: 'voucher',
+      meta: {
+        title: '凭证列表',
+        notLoading: true,
+        needLogin: true
+      },
+      component: r => require.ensure([], () => r(require('../../components/setofbooks/voucher.vue')), 'voucher')
+    }
   ]
 }
 ]

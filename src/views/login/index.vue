@@ -165,8 +165,10 @@
           api.validateCode({phone: this.registerInfo.phone, code: this.registerInfo.code}).then(res => {
             if (res.body.result == 0) {
               api.regist({phone: this.registerInfo.phone, passWord: this.registerInfo.passWord}).then(res => {
-                if (res.body.result == 1) {
+                if (res.body.result == 0) {
                   this.errorMsg = '注册成功'
+                  utils.dbSet("userInfo", JSON.stringify(res.body.data))
+                  this.$router.push({path: '/home'});
                 } else {
                   this.errorMsg = res.body.msg
                 }

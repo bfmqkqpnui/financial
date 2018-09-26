@@ -1,5 +1,5 @@
 <template>
-  <div class="module-content ng-scope">
+  <div class="module-content ng-scope booksList">
     <div class="module-content_wrapper">
       <div class="module-content_page">
         <div class="page-title">
@@ -9,7 +9,7 @@
           </div>
           <div class="accountsTitle-right">
             <div class="com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
-                 ng-click="showAddAccPop() ;click();" ui-button="" btn-type="hollow" ng-show="showAddAccBtn()">
+                 @click="showAddAccPop" ui-button="" btn-type="hollow" ng-show="showAddAccBtn()">
               <div><span class="ng-scope">添加账套</span></div>
             </div>
           </div>
@@ -102,8 +102,7 @@
             </div>
             <div class="accBody-tabBody ps-container ps-theme-default">
               <div>
-                <div class="tabBodyBox accTabBody ng-scope" ng-class="{'rowLight': light.row == x._id}"
-                     ng-click="enterAccount(x)">
+                <div class="tabBodyBox accTabBody ng-scope rowLight" @click="enterAccount">
                   <div ng-class="tableInfo[user.type].body.index" class="ng-binding span-5"> 1</div>
                   <div ng-class="tableInfo[user.type].body.name" title="天机" style="text-align:left"
                        class="ng-binding span-32"> 天机
@@ -114,21 +113,17 @@
                     <div class="remarkTag ng-hide" ng-show="(x.vouStat.remarked || 0) !== 0"></div>
                   </div>
                   <div ng-class="tableInfo[user.type].body.taxpayerType" class="ng-binding span-10"> 小规模</div>
-                  <!-- ngIf: tableInfo[user.type].body.customer --> <!-- ngIf: tableInfo[user.type].body.common -->
-                  <!-- ngIf: tableInfo[user.type].body.mgr --> <!-- ngIf: tableInfo[user.type].body.dataOrigin -->
                   <div ng-class="tableInfo[user.type].body.dataOrigin" ng-if="tableInfo[user.type].body.dataOrigin"
                        class="ng-scope span-40 multiLine">
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0/0</div>
-                  </div><!-- end ngIf: tableInfo[user.type].body.dataOrigin -->
-                  <!-- ngIf: tableInfo[user.type].body.isAllAudited -->
-                  <div ng-class="tableInfo[user.type].body.issueState" class="span-13"> <!-- ngIf: !x.equilibrium -->
+                  </div>
+                  <div ng-class="tableInfo[user.type].body.issueState" class="span-13">
                     <span class="accountStateBox ng-binding stateBox-ing" ng-class="getTabView('class', x.issueState)"> 做账中 </span>
-                    <span class="icon-deleteAccount" title="删除账套" ng-show="canDeleteAcount(x)"
-                          ng-click="showDelAccPop(x, $event)"></span></div>
+                  </div>
                 </div>
-                <div class="tabBodyBox accTabBody ng-scope" ng-class="{'rowLight': light.row == x._id}"
+                <!--<div class="tabBodyBox accTabBody ng-scope" ng-class="{'rowLight': light.row == x._id}"
                      ng-click="enterAccount(x)">
                   <div ng-class="tableInfo[user.type].body.index" class="ng-binding span-5"> 2</div>
                   <div ng-class="tableInfo[user.type].body.name" title="天柃" style="text-align:left"
@@ -140,16 +135,16 @@
                     <div class="remarkTag ng-hide" ng-show="(x.vouStat.remarked || 0) !== 0"></div>
                   </div>
                   <div ng-class="tableInfo[user.type].body.taxpayerType" class="ng-binding span-10"> 一般</div>
-                  <!-- ngIf: tableInfo[user.type].body.customer --> <!-- ngIf: tableInfo[user.type].body.common -->
-                  <!-- ngIf: tableInfo[user.type].body.mgr --> <!-- ngIf: tableInfo[user.type].body.dataOrigin -->
+                  &lt;!&ndash; ngIf: tableInfo[user.type].body.customer &ndash;&gt; &lt;!&ndash; ngIf: tableInfo[user.type].body.common &ndash;&gt;
+                  &lt;!&ndash; ngIf: tableInfo[user.type].body.mgr &ndash;&gt; &lt;!&ndash; ngIf: tableInfo[user.type].body.dataOrigin &ndash;&gt;
                   <div ng-class="tableInfo[user.type].body.dataOrigin" ng-if="tableInfo[user.type].body.dataOrigin"
                        class="ng-scope span-40 multiLine">
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0/0</div>
-                  </div><!-- end ngIf: tableInfo[user.type].body.dataOrigin -->
-                  <!-- ngIf: tableInfo[user.type].body.isAllAudited -->
-                  <div ng-class="tableInfo[user.type].body.issueState" class="span-13"> <!-- ngIf: !x.equilibrium -->
+                  </div>&lt;!&ndash; end ngIf: tableInfo[user.type].body.dataOrigin &ndash;&gt;
+                  &lt;!&ndash; ngIf: tableInfo[user.type].body.isAllAudited &ndash;&gt;
+                  <div ng-class="tableInfo[user.type].body.issueState" class="span-13"> &lt;!&ndash; ngIf: !x.equilibrium &ndash;&gt;
                     <span class="accountStateBox ng-binding stateBox-not" ng-class="getTabView('class', x.issueState)"> 未开始 </span>
                     <span class="icon-deleteAccount" title="删除账套" ng-show="canDeleteAcount(x)"
                           ng-click="showDelAccPop(x, $event)"></span></div>
@@ -166,20 +161,20 @@
                     <div class="remarkTag ng-hide" ng-show="(x.vouStat.remarked || 0) !== 0"></div>
                   </div>
                   <div ng-class="tableInfo[user.type].body.taxpayerType" class="ng-binding span-10"> 独资合伙</div>
-                  <!-- ngIf: tableInfo[user.type].body.customer --> <!-- ngIf: tableInfo[user.type].body.common -->
-                  <!-- ngIf: tableInfo[user.type].body.mgr --> <!-- ngIf: tableInfo[user.type].body.dataOrigin -->
+                  &lt;!&ndash; ngIf: tableInfo[user.type].body.customer &ndash;&gt; &lt;!&ndash; ngIf: tableInfo[user.type].body.common &ndash;&gt;
+                  &lt;!&ndash; ngIf: tableInfo[user.type].body.mgr &ndash;&gt; &lt;!&ndash; ngIf: tableInfo[user.type].body.dataOrigin &ndash;&gt;
                   <div ng-class="tableInfo[user.type].body.dataOrigin" ng-if="tableInfo[user.type].body.dataOrigin"
                        class="ng-scope span-40 multiLine">
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0</div>
                     <div class="span-33 ng-binding"> 0/0</div>
-                  </div><!-- end ngIf: tableInfo[user.type].body.dataOrigin -->
-                  <!-- ngIf: tableInfo[user.type].body.isAllAudited -->
-                  <div ng-class="tableInfo[user.type].body.issueState" class="span-13"> <!-- ngIf: !x.equilibrium -->
+                  </div>&lt;!&ndash; end ngIf: tableInfo[user.type].body.dataOrigin &ndash;&gt;
+                  &lt;!&ndash; ngIf: tableInfo[user.type].body.isAllAudited &ndash;&gt;
+                  <div ng-class="tableInfo[user.type].body.issueState" class="span-13"> &lt;!&ndash; ngIf: !x.equilibrium &ndash;&gt;
                     <span class="accountStateBox ng-binding stateBox-not" ng-class="getTabView('class', x.issueState)"> 未开始 </span>
                     <span class="icon-deleteAccount" title="删除账套" ng-show="canDeleteAcount(x)"
                           ng-click="showDelAccPop(x, $event)"></span></div>
-                </div>
+                </div>-->
                 <div class="dataIsNull" v-if="show.dataIsNull">暂无账套信息</div>
               </div>
               <!--<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
@@ -205,17 +200,29 @@
     data() {
       return {
         show: {
+          // 是否有账套标识
           dataIsNull: false,
+          // 账套列表
+          tableList: [],
         }
       }
     },
     //计算属性
     computed: {},
     //函数集，自己封装，便于开发使用
-    methods: {},
+    methods: {
+      enterAccount() {
+        console.log("选择账套")
+      },
+      // 添加账套
+      showAddAccPop() {
+        console.log("添加账套")
+        this.$emit("accPop")
+      }
+    },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
-
+      this.$emit('sel', {index: 1})
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
     components: {}
@@ -341,5 +348,7 @@
     flex: 1;
     position: relative;
   }
-
+  .accTabBody {
+    cursor: pointer;
+  }
 </style>

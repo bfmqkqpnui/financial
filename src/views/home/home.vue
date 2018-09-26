@@ -44,23 +44,23 @@
           <div class="com-nadata-ps-id=de3f4491-8f0a-0ec7-abc2-903474880cd9">
             <div
               class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand com-navMenu_menu--1"
-              ng-click="navTo(menu)">
+              :class="defaultMenu.userManager ? 'com-navMenu_menu--focus' : ''" @click="navTo('user')">
               <div class="menu_icon menu_icon--focus menu_icon--accounts" ng-class="getIcon(menu)"></div>
               <div class="menu_name ng-binding">用户管理</div>
               <p class="menu_tag anime ng-binding ng-hide" ng-show="menuTag">用户管理</p>
             </div>
 
             <div
-              class="com-navMenu_menu anime ng-scope com-navMenu_menu--focus com-navMenu_menu--expand com-navMenu_menu--2"
-              ng-repeat="menu in menus" ng-class="getStatus(menu)" ng-click="navTo(menu)">
-              <div class="menu_icon menu_icon--focus menu_icon--accounts" ng-class="getIcon(menu)"></div>
+              class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand com-navMenu_menu--2"
+              :class="defaultMenu.booksManager ? 'com-navMenu_menu--focus' : ''" @click="navTo('books')">
+              <div class="menu_icon menu_icon--focus menu_icon--accounts"></div>
               <div class="menu_name ng-binding">账套管理</div>
               <p class="menu_tag anime ng-binding ng-hide" ng-show="menuTag">账套管理</p>
             </div>
 
             <div
               class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand com-navMenu_menu--3"
-              ng-repeat="menu in menus" ng-class="getStatus(menu)" ng-click="navTo(menu)">
+              :class="defaultMenu.dataManager ? 'com-navMenu_menu--focus' : ''" @click="navTo('data')">
               <div class="menu_icon menu_icon--focus menu_icon--accounts" ng-class="getIcon(menu)"></div>
               <div class="menu_name ng-binding">数据管理</div>
               <p class="menu_tag anime ng-binding ng-hide" ng-show="menuTag">数据管理</p>
@@ -68,7 +68,7 @@
 
             <div
               class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand com-navMenu_menu--4"
-              ng-repeat="menu in menus" ng-class="getStatus(menu)" ng-click="navTo(menu)">
+              :class="defaultMenu.contractManager ? 'com-navMenu_menu--focus' : ''" @click="navTo('contract')">
               <div class="menu_icon menu_icon--focus menu_icon--accounts" ng-class="getIcon(menu)"></div>
               <div class="menu_name ng-binding">合同管理</div>
               <p class="menu_tag anime ng-binding ng-hide" ng-show="menuTag">合同管理</p>
@@ -90,7 +90,7 @@
         </div>
       </div>
       <!-- 二级导航 -->
-      <navComponent :menuList="menuList"></navComponent>
+      <navComponent :menuList="menuList" @showAddAccountPop="showAddAccountPop"></navComponent>
     </div>
 
 
@@ -174,6 +174,84 @@
         <div class="site-popup_footer"></div>
       </div>
     </div>
+
+    <!-- 添加账套蒙层 -->
+    <div class="site-mask anime site-mask--shade" v-if="show.addAccountPop">
+      <div class="site-popup anime pop-container site-popup--expand"><p>添加账套</p>
+        <div class="btn-closePop" title="关闭" @click="hideAddAccountPop"></div>
+        <div class="messageBox">
+          <div class="message-title">企业名称</div>
+          <div class="message-input">
+            <input type="text" v-model="submitAddAccInfo.name" maxlength="30"
+                   class="ng-valid ng-valid-maxlength ng-touched ng-dirty ng-empty">
+            <div class="icon-required"></div>
+          </div>
+        </div>
+        <div class="messageBox">
+          <div class="message-title">联&nbsp;系&nbsp;人</div>
+          <div class="message-input"><input type="text" id="accAddContact" ng-change="emptyKeyWord()"
+                                            ng-model="submitAddAccInfo.contact" maxlength="20"
+                                            ng-keydown="keyDown($event, 'submitAddAcc')"
+                                            ng-click="selectAllSize('accAddContact')"
+                                            class="ng-valid ng-valid-maxlength ng-dirty ng-touched ng-empty"></div>
+        </div>
+        <div class="messageBox">
+          <div class="message-title">联系电话</div>
+          <div class="message-input"><input type="text" id="accAddPhone" ng-change="emptyKeyWord()"
+                                            ng-model="submitAddAccInfo.phone" maxlength="11"
+                                            ng-keydown="keyDown($event, 'submitAddAcc')"
+                                            ng-click="selectAllSize('accAddPhone')"
+                                            class="ng-valid ng-valid-maxlength ng-dirty ng-touched ng-empty"></div>
+        </div>
+        <div class="messageBox ng-hide" ng-show="showAccInfo()">
+          <div class="message-title">所属客户</div>
+          <div class="message-input"><select ng-model="submitAddAccInfo.ac" ng-change="emptyKeyWord()"
+                                             ng-options="one.name for one in optionInfo.adminList"
+                                             class="ng-pristine ng-untouched ng-valid ng-empty">
+            <option value="?" selected="selected"></option>
+          </select>
+            <div class="icon-required"></div>
+          </div>
+        </div>
+        <div class="messageBox">
+          <div class="message-title">纳税类型</div>
+          <div class="message-input"><select ng-model="submitAddAccInfo.taxpayerType" ng-change="changeTaxpayerType()"
+                                             ng-options="tax for tax in optionInfo.addTax"
+                                             class="ng-pristine ng-valid ng-not-empty ng-touched">
+            <option label="一般纳税人" value="string:一般纳税人">一般纳税人</option>
+            <option label="小规模纳税人" value="string:小规模纳税人" selected="selected">小规模纳税人</option>
+            <option label="个人独资企业或有限合伙" value="string:个人独资企业或有限合伙">个人独资企业或有限合伙</option>
+          </select></div>
+        </div>
+        <div class="messageBox">
+          <div class="message-title">纳税周期</div>
+          <div class="message-input"> <!-- ngRepeat: r in optionInfo.taxPeriod -->
+            <div class="popSelectBox ng-binding ng-scope" ng-repeat="r in optionInfo.taxPeriod"
+                 @click="selectRoleType('r')">
+              <div :class="submitAddAccInfo.taxPeriod == 'r'
+                    ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
+              季报
+            </div>
+            <div class="popSelectBox ng-binding ng-scope" @click="selectRoleType('l')">
+              <div :class="submitAddAccInfo.taxPeriod == 'l'
+                    ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
+              月报
+            </div><!-- end ngRepeat: r in optionInfo.taxPeriod --> </div>
+        </div>
+        <div class="messageBox submitBox">
+          <div class="message-title">
+            <div class="btn-cancel" @click="hideAddAccountPop">取消</div>
+          </div>
+          <div class="message-input">
+            <div class="btn-submit anime" ng-click="submitAddAcc()">确定</div>
+            <div class="size-hint ng-binding ng-hide" ng-show="show.hint"></div>
+          </div>
+        </div>
+        <div class="batchGuide" v-if="show.canBatchImport">
+          <div @click="showBatchPop">批量导入账套</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -225,6 +303,30 @@
         menuList: [],
         // 错误消息
         errMsg: '',
+        // 选择
+        defaultMenu: {
+          userManager: false,
+          booksManager: true,
+          dataManager: false,
+          contractManager: false
+        },
+        booksSecondMenu: [
+          {index: 1, value: '账套列表', isSelect: true},
+        ],
+        // 添加账套对象
+        submitAddAccInfo: {
+          name: '',         // 名字
+          contact: '',      // 联系人
+          phone: '',        // 电话
+          ac: '',           // 所属客户
+          taxpayerType: '', // 纳税类型
+          taxPeriod: 'r',    // 纳税周期
+        },
+        //
+        show: {
+          addAccountPop: false,
+          canBatchImport: false,    //是否批量导入
+        }
       }
     },
     methods: {
@@ -274,6 +376,12 @@
             }
             api.updatePwd(params).then(res => {
               console.log(JSON.stringify(res.body))
+              if (res.body.result == 0) {
+                this.hint.password = ''
+                this.close()
+              } else {
+                this.hint.password = res.body.msg
+              }
             })
           }
         } else {
@@ -294,6 +402,7 @@
           api.updateInfo(params).then(res => {
             console.log(JSON.stringify(res.body))
             if (res.body.result == 0) {
+              this.close()
               utils.dbSet("userInfo", JSON.stringify(res.body.data))
               this.this.copyUserConfig()
             } else {
@@ -353,12 +462,76 @@
       setErrMsg(message) {
         if (utils.isExist(message)) {
           this.errMsg = message
+          setInterval(function () {
+            this.errMsg = ''
+          }, 2000)
         }
+      },
+      navTo(menuName) {
+        if (utils.isExist(menuName)) {
+          switch (menuName) {
+            case 'user':
+              this.defaultMenu.userManager = true
+              this.defaultMenu.booksManager = false
+              this.defaultMenu.dataManager = false
+              this.defaultMenu.contractManager = false
+              break;
+            case 'books':
+              this.defaultMenuConfig()
+              break;
+            case 'data':
+              this.defaultMenu.userManager = false
+              this.defaultMenu.booksManager = false
+              this.defaultMenu.dataManager = true
+              this.defaultMenu.contractManager = false
+              break;
+            case 'contract':
+              this.defaultMenu.userManager = false
+              this.defaultMenu.booksManager = false
+              this.defaultMenu.dataManager = false
+              this.defaultMenu.contractManager = true
+              break;
+            default:
+              this.defaultMenuConfig()
+          }
+        } else {
+          this.defaultMenuConfig()
+        }
+      },
+      defaultMenuConfig() {
+        this.defaultMenu.userManager = false
+        this.defaultMenu.booksManager = true
+        this.defaultMenu.dataManager = false
+        this.defaultMenu.contractManager = false
+        this.menuList = this.booksSecondMenu
+      },
+      // 批量导入账套
+      showBatchPop() {
+        console.log("批量导入账套")
+      },
+      showAddAccountPop() {
+        console.log("显示添加账套组件")
+        this.show.addAccountPop = true
+      },
+      hideAddAccountPop() {
+        console.log("隐藏添加账套组件")
+        this.show.addAccountPop = false
+        this.submitAddAccInfo.name = ''
+        this.submitAddAccInfo.phone = ''
+        this.submitAddAccInfo.ac = ''
+        this.submitAddAccInfo.contact = ''
+        this.submitAddAccInfo.taxPeriod = 'r'
+        this.submitAddAccInfo.taxpayerType = ''
+      },
+      selectRoleType(value) {
+        console.log("纳税周期选择", value)
+        this.submitAddAccInfo.taxPeriod = value
       }
     },
     components: {},
     mounted() {
       this.copyUserConfig()
+      this.defaultMenuConfig()
     }
   }
 </script>
