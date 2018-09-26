@@ -231,6 +231,8 @@
       // 退出
       logout() {
         console.log("退出")
+        localStorage.removeItem("userInfo")
+        this.$router.push("/login")
       },
       // 用户信息tabqiehuan
       switchPage(title) {

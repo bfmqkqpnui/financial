@@ -256,3 +256,10 @@
   position: relative;
   top: -120px;
 }
+.loginBox [class*=login-] .body-box .applyFrame .applyBtnBox .applyHint, .loginBox [class*=login-] .body-box .applyFrame .applyBtnBox .registerHint, .loginBox [class*=login-] .body-box .applyFrame .registerBtnBox .applyHint, .loginBox [class*=login-] .body-box .applyFrame .registerBtnBox .registerHint, .loginBox [class*=login-] .body-box .registerFrame .applyBtnBox .applyHint, .loginBox [class*=login-] .body-box .registerFrame .applyBtnBox .registerHint, .loginBox [class*=login-] .body-box .registerFrame .registerBtnBox .applyHint, .loginBox [class*=login-] .body-box .registerFrame .registerBtnBox .registerHint{
+  color: #ff8a52;
+  position: absolute;
+  left: 0;
+  top: -16px;
+  font-size: 12px;
+}
