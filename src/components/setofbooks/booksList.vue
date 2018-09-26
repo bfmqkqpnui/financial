@@ -204,6 +204,7 @@
           dataIsNull: false,
           // 账套列表
           tableList: [],
+          accountsId: '1'
         }
       }
     },
@@ -213,7 +214,12 @@
     methods: {
       enterAccount() {
         console.log("选择账套")
-        this.$router.push({path: '/home/voucher', params: {accountId: 1}})
+        this.$router.push(
+          {
+            name: 'voucher',
+            params: {id: 1}
+          }
+          )
       },
       // 添加账套
       showAddAccPop() {

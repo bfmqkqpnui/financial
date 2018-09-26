@@ -1176,8 +1176,8 @@
 
     },
     created() {
-      console.log("创建组建开始",this.$route.params.accountId)
-      this.accountId = this.$route.params.accountId
+      console.log("创建组建开始",this.$route.params.id)
+      this.accountId = this.$route.params.id
       if (utils.isExist(this.accountId)) {
         this.$emit('sel', {index:2})
       } else {

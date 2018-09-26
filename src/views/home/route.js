@@ -6,6 +6,7 @@ export default [{
     /**账套列表*/
     {
       path: 'accounts',
+      name: 'accounts',
       meta: {
         title: '账套列表',
         notLoading: true,
@@ -16,6 +17,7 @@ export default [{
     /**凭证列表*/
     {
       path: 'voucher',
+      name: 'voucher',
       meta: {
         title: '凭证列表',
         notLoading: true,
