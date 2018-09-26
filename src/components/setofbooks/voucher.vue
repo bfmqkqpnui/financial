@@ -1158,11 +1158,14 @@
 </template>
 
 <script>
+  import utils from '../../utils'
   //Js部分尽量采用ES6语法，webpack babel插件会转义兼容
   export default {
     //组件私有数据（必须是function，而且要return对象类型）
     data() {
-      return {}
+      return {
+        accountId: '',
+      }
     },
     //计算属性
     computed: {},
@@ -1173,8 +1176,13 @@
 
     },
     created() {
-      console.log("创建组建开始")
-      this.$emit('sel', {index:2})
+      console.log("创建组建开始",this.$route.params.accountId)
+      this.accountId = this.$route.params.accountId
+      if (utils.isExist(this.accountId)) {
+        this.$emit('sel', {index:2})
+      } else {
+        // this.$router.push({path: '/login'})
+      }
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
     components: {}

@@ -213,6 +213,7 @@
     methods: {
       enterAccount() {
         console.log("选择账套")
+        this.$router.push({path: '/home/voucher', params: {accountId: 1}})
       },
       // 添加账套
       showAddAccPop() {
@@ -348,6 +349,7 @@
     flex: 1;
     position: relative;
   }
+
   .accTabBody {
     cursor: pointer;
   }

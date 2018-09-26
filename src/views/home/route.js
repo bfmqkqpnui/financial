@@ -1,11 +1,11 @@
 export default [{
   path: '/home',
   component: r => require.ensure([], () => r(require('./home')), 'home'),
-  redirect: '/home/booksManager',
+  redirect: '/home/accounts',
   children: [
     /**账套列表*/
     {
-      path: 'booksManager',
+      path: 'accounts',
       meta: {
         title: '账套列表',
         notLoading: true,
