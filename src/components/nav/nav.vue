@@ -3,7 +3,7 @@
     <!-- 二级目录 -->
     <div class="topnav">
       <ul class="">
-        <li v-for="(item,idx) in menuList" @click="selMenu(item)" v-text="item.value" :key="item.index"
+        <li v-for="(item,idx) in secondMenuList" @click="selMenu(item)" v-text="item.value" :key="item.index"
             :class="item.isSelect?'focus':''"></li>
       </ul>
     </div>
@@ -14,9 +14,8 @@
           <div class="display_icon icon-40"></div>
           <div class="display_tag ng-binding">2018-08期</div>
         </div>
-        <div class="com-issue_container anime com-issue_container--hidden"
-             ng-class="{'com-issue_container--hidden': !show}">
-          <div click-test="" listen="clicktest" onmouselost="hidePicker()" class="ng-isolate-scope" lzyvnzwx="">
+        <div class="com-issue_container anime com-issue_container--hidden">
+          <div class="ng-isolate-scope">
             <div class="year">
               <div class="year_btn--last ng-hide" ng-show="isLastYearValid()" ng-click="lastYear()"></div>
               <div class="year_tag ng-binding">2018</div>
@@ -130,6 +129,7 @@
 </template>
 
 <script>
+  import utils from '../../utils'
   //Js部分尽量采用ES6语法，webpack babel插件会转义兼容
   export default {
     props: {
@@ -141,17 +141,19 @@
     //组件私有数据（必须是function，而且要return对象类型）
     data() {
       return {
-        booksSecondMenu: [
-          {index: 1, value: '账套列表', isSelect: true},
-          {index: 2, value: '凭证列表', isSelect: false},
-          {index: 3, value: '会计账簿', isSelect: false},
-          {index: 4, value: '财务报表', isSelect: false},
-          {index: 5, value: '账套设置', isSelect: false},
-          {index: 6, value: '凭证打印', isSelect: false},
-          {index: 7, value: '历史数据', isSelect: false},
-          {index: 8, value: '自动配置', isSelect: false},
+        accountsSecondMenu: [
+          {index: 1, value: '账套列表', isSelect: false, type: "accounts"},
+          {index: 2, value: '凭证列表', isSelect: true, type: "accounts"},
+          {index: 3, value: '会计账簿', isSelect: false, type: "accounts"},
+          {index: 4, value: '财务报表', isSelect: false, type: "accounts"},
+          {index: 5, value: '账套设置', isSelect: false, type: "accounts"},
+          {index: 6, value: '凭证打印', isSelect: false, type: "accounts"},
+          {index: 7, value: '历史数据', isSelect: false, type: "accounts"},
+          {index: 8, value: '自动配置', isSelect: false, type: "accounts"},
         ],
+        accountsDefaultSecondMenu: [{index: 1, value: '账套列表', isSelect: true, type: "accounts"}],
         isBooksList: true,  // 是否账套
+        secondMenuList: [], // 二级目录
       }
     },
     //计算属性
@@ -159,20 +161,66 @@
     //函数集，自己封装，便于开发使用
     methods: {
       selMenu(opt) {
-        console.log("<<",opt.index)
-        if (this.menuList.length > 1) {
-          this.menuList.forEach(function (el, idx) {
-            if (el.index == opt.index) {
-              el.isSelect = true
-            } else {
-              el.isSelect = false
-            }
-          })
-        }
-        if (opt.index > 1) {
-          this.isBooksList = false
+        console.log("<<", opt.index)
+        if (utils.isExist(opt.type) && opt.type == "accounts") { // 账套单独逻辑
+          if (opt.index > 1) {
+            this.isBooksList = false
+            this.secondMenuList = this.accountsSecondMenu
+          } else {
+            this.isBooksList = true
+            this.secondMenuList = this.accountsDefaultSecondMenu
+          }
+          if (this.secondMenuList.length > 1) {
+            this.secondMenuList.forEach(function (el, idx) {
+              if (el.index == opt.index) {
+                el.isSelect = true
+              } else {
+                el.isSelect = false
+              }
+            })
+          }
+          switch (opt.index) {
+            case 1:
+              // utils.dbRemove("accountId")
+              this.$router.push("/home/accounts")
+              break;
+            case 2:
+              // utils.dbSet("accountId",)
+              this.$router.push("/home/voucher")
+              break;
+            case 3:
+              this.$router.push("/home")
+              break;
+            case 4:
+              this.$router.push("/home")
+              break;
+            case 5:
+              this.$router.push("/home")
+              break;
+            case 6:
+              this.$router.push("/home")
+              break;
+            case 7:
+              this.$router.push("/home")
+              break;
+            case 8:
+              this.$router.push("/home")
+              break;
+            case 9:
+              this.$router.push("/home")
+              break;
+            case 10:
+              this.$router.push("/home")
+              break;
+            case 11:
+              this.$router.push("/home")
+              break;
+            case 12:
+              this.$router.push("/home")
+              break;
+          }
         } else {
-          this.isBooksList = true
+          // 其他逻辑
         }
       },
       // 添加账套
@@ -184,6 +232,11 @@
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
 
+    },
+    created() {
+      if(this.menuList.length > 0){
+        this.secondMenuList = this.menuList
+      }
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
     components: {}
@@ -212,13 +265,13 @@
     cursor: pointer;
   }
 
+  .topnav ul li:hover {
+    background-color: rgba(95, 187, 252, .2);
+  }
+
   .topnav ul li.focus {
     background-color: #5fbbfc;
     color: #fff;
-  }
-
-  .topnav ul li:hover {
-    background-color: rgba(95, 187, 252, .2);
   }
 
   .topnav span {
@@ -234,9 +287,10 @@
   .topnav .body {
   }
 
-  .module-content.booksList{
+  .module-content.booksList {
     top: 50px;
   }
+
   [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
     display: none !important;
   }

@@ -214,12 +214,8 @@
     methods: {
       enterAccount() {
         console.log("选择账套")
-        this.$router.push(
-          {
-            name: 'voucher',
-            params: {id: 1}
-          }
-          )
+        localStorage.setItem("account",2)
+        this.$router.push({name: 'voucher'})
       },
       // 添加账套
       showAddAccPop() {
@@ -229,6 +225,9 @@
     },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
+
+    },
+    created() {
       this.$emit('sel', {index: 1})
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）

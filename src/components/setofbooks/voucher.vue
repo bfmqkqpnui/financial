@@ -1176,10 +1176,10 @@
 
     },
     created() {
-      console.log("创建组建开始",this.$route.params.id)
-      this.accountId = this.$route.params.id
+      this.accountId = utils.dbGet("account")
+      console.log("创建组建开始",this.accountId)
       if (utils.isExist(this.accountId)) {
-        this.$emit('sel', {index:2})
+        this.$emit('sel', {index:2, type: 'accounts'})
       } else {
         // this.$router.push({path: '/login'})
       }

@@ -128,7 +128,6 @@
       return {
         canSwitch: false,
         remarkComponentFlag: false,
-
       }
     },
     //计算属性
