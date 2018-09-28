@@ -90,7 +90,7 @@
         </div>
       </div>
       <!-- 二级导航 -->
-      <navComponent :menuList="menuList" @showAddAccountPop="showAddAccountPop"></navComponent>
+      <navComponent :menuType="menuType" @showAddAccountPop="showAddAccountPop"></navComponent>
     </div>
 
 
@@ -299,8 +299,8 @@
           password: '',
           token: ''
         },
-        // 二级菜单集合
-        menuList: [],
+        // 默认一级菜单目录类型
+        menuType: "",
         // 错误消息
         errMsg: '',
         // 选择
@@ -471,39 +471,66 @@
         if (utils.isExist(menuName)) {
           switch (menuName) {
             case 'user':
-              this.defaultMenu.userManager = true
-              this.defaultMenu.booksManager = false
-              this.defaultMenu.dataManager = false
-              this.defaultMenu.contractManager = false
+              this.defaultUsersMenuConfig()
               break;
             case 'books':
-              this.defaultMenuConfig()
+              this.defaultBooksMenuConfig()
               break;
             case 'data':
-              this.defaultMenu.userManager = false
-              this.defaultMenu.booksManager = false
-              this.defaultMenu.dataManager = true
-              this.defaultMenu.contractManager = false
+              this.defaultDatasMenuConfig()
               break;
             case 'contract':
-              this.defaultMenu.userManager = false
-              this.defaultMenu.booksManager = false
-              this.defaultMenu.dataManager = false
-              this.defaultMenu.contractManager = true
+              this.defaultContractsMenuConfig()
               break;
             default:
-              this.defaultMenuConfig()
+              this.defaultBooksMenuConfig()
           }
         } else {
-          this.defaultMenuConfig()
+          this.defaultBooksMenuConfig()
         }
       },
-      defaultMenuConfig() {
+      // 账套管理
+      defaultBooksMenuConfig() {
         this.defaultMenu.userManager = false
         this.defaultMenu.booksManager = true
         this.defaultMenu.dataManager = false
         this.defaultMenu.contractManager = false
         this.menuList = this.booksSecondMenu
+        let params = {}
+        params.Type = 'accounts'
+        this.menuType = params
+        this.$router.push({path: '/home'})
+      },
+      // 用户管理
+      defaultUsersMenuConfig() {
+        this.defaultMenu.userManager = true
+        this.defaultMenu.booksManager = false
+        this.defaultMenu.dataManager = false
+        this.defaultMenu.contractManager = false
+        let params = {}
+        params.Type = 'user'
+        this.menuType = params
+        this.$router.push({path: '/home/user'})
+      },
+      // 数据管理
+      defaultDatasMenuConfig() {
+        this.defaultMenu.userManager = false
+        this.defaultMenu.booksManager = false
+        this.defaultMenu.dataManager = true
+        this.defaultMenu.contractManager = false
+        let params = {}
+        params.Type = 'data'
+        this.menuType = params
+      },
+      // 合同管理
+      defaultContractsMenuConfig() {
+        this.defaultMenu.userManager = false
+        this.defaultMenu.booksManager = false
+        this.defaultMenu.dataManager = false
+        this.defaultMenu.contractManager = true
+        let params = {}
+        params.Type = 'contract'
+        this.menuType = params
       },
       // 批量导入账套
       showBatchPop() {
@@ -531,7 +558,7 @@
     components: {},
     mounted() {
       this.copyUserConfig()
-      this.defaultMenuConfig()
+      this.defaultBooksMenuConfig()
     }
   }
 </script>

@@ -228,7 +228,7 @@
 
     },
     created() {
-      this.$emit('sel', {index: 1})
+      this.$emit('sel', {index: 1,type: 'accounts'})
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
     components: {}

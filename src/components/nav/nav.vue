@@ -133,9 +133,8 @@
   //Js部分尽量采用ES6语法，webpack babel插件会转义兼容
   export default {
     props: {
-      menuList: {
-        type: Array,
-        default: []
+      menuType: {
+        type: Object,
       }
     },
     //组件私有数据（必须是function，而且要return对象类型）
@@ -151,9 +150,13 @@
           {index: 7, value: '历史数据', isSelect: false, type: "accounts"},
           {index: 8, value: '自动配置', isSelect: false, type: "accounts"},
         ],
+        userSecondMenu: [],
+        dataSecondMenu: [],
+        contractSecondMenu: [],
         accountsDefaultSecondMenu: [{index: 1, value: '账套列表', isSelect: true, type: "accounts"}],
         isBooksList: true,  // 是否账套
         secondMenuList: [], // 二级目录
+        secondMenu: '' //
       }
     },
     //计算属性
@@ -161,7 +164,7 @@
     //函数集，自己封装，便于开发使用
     methods: {
       selMenu(opt) {
-        console.log("<<", opt.index)
+        console.log("<<", opt.index, opt.type)
         if (utils.isExist(opt.type) && opt.type == "accounts") { // 账套单独逻辑
           if (opt.index > 1) {
             this.isBooksList = false
@@ -182,11 +185,11 @@
           switch (opt.index) {
             case 1:
               // utils.dbRemove("accountId")
-              this.$router.push("/home/accounts")
+              this.$router.push({name: 'accounts'})
               break;
             case 2:
               // utils.dbSet("accountId",)
-              this.$router.push("/home/voucher")
+              this.$router.push({name: 'voucher'})
               break;
             case 3:
               this.$router.push("/home")
@@ -221,6 +224,15 @@
           }
         } else {
           // 其他逻辑
+          if (utils.isExist(opt.type)){
+            if (opt.type == "user") {
+              this.secondMenuList = this.userSecondMenu
+            } else if (opt.type == "data") {
+              this.secondMenuList = this.dataSecondMenu
+            } else if (opt.type == "contract") {
+              this.secondMenuList = this.contractSecondMenu
+            }
+          }
         }
       },
       // 添加账套
@@ -234,9 +246,8 @@
 
     },
     created() {
-      if(this.menuList.length > 0){
-        this.secondMenuList = this.menuList
-      }
+      // this.secondMenu = this.menuType
+      // this.selMenu(this.secondMenu)
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
     components: {}

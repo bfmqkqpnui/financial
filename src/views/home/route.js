@@ -16,7 +16,7 @@ export default [{
     },
     /**凭证列表*/
     {
-      path: 'voucher',
+      path: 'accounts/voucher',
       name: 'voucher',
       meta: {
         title: '凭证列表',
