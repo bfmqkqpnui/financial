@@ -1,0 +1,528 @@
+[
+  {
+    "subjectId": "1001",
+    "subjectName": "库存现金",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1002",
+    "subjectName": "银行存款",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1004",
+    "subjectName": "备用金",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1012",
+    "subjectName": "其他货币资金",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [
+      {
+        "subjectId": "1012001",
+        "subjectName": "银行汇票",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1012002",
+        "subjectName": "银行本票",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1012003",
+        "subjectName": "信用卡",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1012004",
+        "subjectName": "信用证保证金",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1012005",
+        "subjectName": "外阜存款",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      }
+    ],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1101",
+    "subjectName": "短期投资",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [
+      {
+        "subjectId": "1101001",
+        "subjectName": "股票",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1101002",
+        "subjectName": "债券",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1101003",
+        "subjectName": "基金",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      }
+    ],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1121",
+    "subjectName": "应收票据",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1122",
+    "subjectName": "应收账款",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1123",
+    "subjectName": "预付账款",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1131",
+    "subjectName": "应收股利",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1132",
+    "subjectName": "应收利息",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1221",
+    "subjectName": "其他应收款",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1401",
+    "subjectName": "材料采购",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1402",
+    "subjectName": "在途物资",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1403",
+    "subjectName": "原材料",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1404",
+    "subjectName": "材料成本差异",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1405",
+    "subjectName": "库存商品",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1407",
+    "subjectName": "商品进销差价",
+    "direction": "2",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1408",
+    "subjectName": "委托加工物资",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1411",
+    "subjectName": "周转材料",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [
+      {
+        "subjectId": "1411001",
+        "subjectName": "在库",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1411002",
+        "subjectName": "在用",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1411003",
+        "subjectName": "摊销",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      }
+    ],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1412",
+    "subjectName": "包装物",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1413",
+    "subjectName": "低值易耗品",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1421",
+    "subjectName": "消耗性生物资产",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1501",
+    "subjectName": "长期债券投资",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [
+      {
+        "subjectId": "1501001",
+        "subjectName": "面值",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1501002",
+        "subjectName": "溢折价",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1501003",
+        "subjectName": "应计利息",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      }
+    ],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1511",
+    "subjectName": "长期股权投资",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1601",
+    "subjectName": "固定资产",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1602",
+    "subjectName": "累计折旧",
+    "direction": "2",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1604",
+    "subjectName": "在建工程",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1605",
+    "subjectName": "工程物资",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [
+      {
+        "subjectId": "1605001",
+        "subjectName": "专用材料",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1605002",
+        "subjectName": "专用设备",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1605003",
+        "subjectName": "工器具",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      }
+    ],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1606",
+    "subjectName": "固定资产清理",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [],
+    "assistTypes": "",
+    "isOpen": true
+  },
+  {
+    "subjectId": "1621",
+    "subjectName": "生产性生物资产",
+    "direction": "1",
+    "currency": "CNY",
+    "active": false,
+    "isSelect": false,
+    "children": [
+      {
+        "subjectId": "1621001",
+        "subjectName": "未成熟生产性生物资产",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      },
+      {
+        "subjectId": "1621002",
+        "subjectName": "成熟生产性生物资产",
+        "direction": "1",
+        "currency": "CNY",
+        "active": false,
+        "isSelect": false,
+        "children": [],
+        "assistTypes": ""
+      }
+    ],
+    "assistTypes": "",
+    "isOpen": true
+  }
+]

@@ -9,4 +9,20 @@ export default {
   updateInfo: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/admin/update', params)
   },
+  // 查询账套设置-科目设置
+  querySubprojects: url => {
+    return Vue.http.get(url)
+  },
+  // 查询账套
+  queryAccounts: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/queryByAdminId', params)
+  },
+  // 查询单个账套信息
+  queryAccountById: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/queryById', params)
+  },
+  // 查询企业密钥
+  querySecretKey: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/getSecretKey', params)
+  }
 }

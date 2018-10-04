@@ -24,6 +24,17 @@ export default [{
         needLogin: true
       },
       component: r => require.ensure([], () => r(require('../../components/setofbooks/voucher.vue')), 'voucher')
+    },
+    /**账套设置*/
+    {
+      path: 'accounts/settings',
+      name: 'bookSettings',
+      meta: {
+        title: '账套设置',
+        notLoading: true,
+        needLogin: true
+      },
+      component: r => require.ensure([], () => r(require('../../components/setofbooks/bookSettings.vue')), 'bookSettings')
     }
   ]
 }

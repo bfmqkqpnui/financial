@@ -19,9 +19,9 @@ Vue.http.options.xhr = { withCredentials: true }
 Vue.http.options.credentials = true;
 Vue.http.interceptors.push((request, next) => {
   next((response) => {
-    console.log("拦截结果：" + response.body.result)
-    // 优化如果token失效重新跳转到登录页面登录
-    if (response.body.result === 2) {
+    console.log("拦截结果：" + JSON.stringify(response.body))
+    // 优化如果token失效重新跳转到登录页面登录  || typeof response.body.result == "undefined"
+    if (response.body.result == 2) {
       localStorage.removeItem('userInfo')
       next('/login')
     } else {

@@ -20,6 +20,9 @@ const install = function (Vue) {
   Vue.component('pagination', resolve => {
     require(['./pagination/paginationFull.vue'], resolve)
   });
+  Vue.component('booksSetting', resolve => {
+    require(['./setofbooks/bookSettings.vue'], resolve)
+  });
 }
 
 

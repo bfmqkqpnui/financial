@@ -157,7 +157,7 @@
       </div>
     </div>
 
-    <!-- 蒙层信息 -->
+    <!-- 错误蒙层信息 -->
     <div class="site-mask anime ng-isolate-scope" v-if="errMsg">
       <div class="site-popup anime popup-message flex--column site-popup--expand" ng-class="{'site-popup--expand': on}">
         <div class="site-popup_head">
@@ -182,59 +182,44 @@
         <div class="messageBox">
           <div class="message-title">企业名称</div>
           <div class="message-input">
-            <input type="text" v-model="submitAddAccInfo.name" maxlength="30"
+            <input type="text" v-model="submitAddAccInfo.companyName" maxlength="30"
                    class="ng-valid ng-valid-maxlength ng-touched ng-dirty ng-empty">
             <div class="icon-required"></div>
           </div>
         </div>
         <div class="messageBox">
           <div class="message-title">联&nbsp;系&nbsp;人</div>
-          <div class="message-input"><input type="text" id="accAddContact" ng-change="emptyKeyWord()"
-                                            ng-model="submitAddAccInfo.contact" maxlength="20"
-                                            ng-keydown="keyDown($event, 'submitAddAcc')"
-                                            ng-click="selectAllSize('accAddContact')"
-                                            class="ng-valid ng-valid-maxlength ng-dirty ng-touched ng-empty"></div>
+          <div class="message-input">
+            <input type="text" v-model="submitAddAccInfo.corporateContact" maxlength="20"
+                   class="ng-valid ng-valid-maxlength ng-dirty ng-touched ng-empty"></div>
         </div>
         <div class="messageBox">
           <div class="message-title">联系电话</div>
-          <div class="message-input"><input type="text" id="accAddPhone" ng-change="emptyKeyWord()"
-                                            ng-model="submitAddAccInfo.phone" maxlength="11"
-                                            ng-keydown="keyDown($event, 'submitAddAcc')"
-                                            ng-click="selectAllSize('accAddPhone')"
-                                            class="ng-valid ng-valid-maxlength ng-dirty ng-touched ng-empty"></div>
-        </div>
-        <div class="messageBox ng-hide" ng-show="showAccInfo()">
-          <div class="message-title">所属客户</div>
-          <div class="message-input"><select ng-model="submitAddAccInfo.ac" ng-change="emptyKeyWord()"
-                                             ng-options="one.name for one in optionInfo.adminList"
-                                             class="ng-pristine ng-untouched ng-valid ng-empty">
-            <option value="?" selected="selected"></option>
-          </select>
-            <div class="icon-required"></div>
-          </div>
+          <div class="message-input">
+            <input type="text" id="accAddPhone" v-model="submitAddAccInfo.contact" maxlength="11"
+                   class="ng-valid ng-valid-maxlength ng-dirty ng-touched ng-empty"></div>
         </div>
         <div class="messageBox">
           <div class="message-title">纳税类型</div>
-          <div class="message-input"><select ng-model="submitAddAccInfo.taxpayerType" ng-change="changeTaxpayerType()"
-                                             ng-options="tax for tax in optionInfo.addTax"
-                                             class="ng-pristine ng-valid ng-not-empty ng-touched">
-            <option label="一般纳税人" value="string:一般纳税人">一般纳税人</option>
-            <option label="小规模纳税人" value="string:小规模纳税人" selected="selected">小规模纳税人</option>
-            <option label="个人独资企业或有限合伙" value="string:个人独资企业或有限合伙">个人独资企业或有限合伙</option>
-          </select></div>
+          <div class="message-input">
+            <select v-model="submitAddAccInfo.taxTypes"
+                    class="ng-pristine ng-valid ng-not-empty ng-touched">
+              <option :label="item.value" v-for="item in accountOptions" v-text="item.value" :value="item.key"></option>
+            </select>
+          </div>
         </div>
         <div class="messageBox">
           <div class="message-title">纳税周期</div>
           <div class="message-input"> <!-- ngRepeat: r in optionInfo.taxPeriod -->
             <div class="popSelectBox ng-binding ng-scope" ng-repeat="r in optionInfo.taxPeriod"
-                 @click="selectRoleType('r')">
-              <div :class="submitAddAccInfo.taxPeriod == 'r'
-                    ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
+                 @click="selectRoleType('2')">
+              <div
+                :class="submitAddAccInfo.taxPaymentPeriod == '2' ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
               季报
             </div>
-            <div class="popSelectBox ng-binding ng-scope" @click="selectRoleType('l')">
-              <div :class="submitAddAccInfo.taxPeriod == 'l'
-                    ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
+            <div class="popSelectBox ng-binding ng-scope" @click="selectRoleType('1')">
+              <div
+                :class="submitAddAccInfo.taxPaymentPeriod == '1' ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
               月报
             </div><!-- end ngRepeat: r in optionInfo.taxPeriod --> </div>
         </div>
@@ -243,13 +228,24 @@
             <div class="btn-cancel" @click="hideAddAccountPop">取消</div>
           </div>
           <div class="message-input">
-            <div class="btn-submit anime" ng-click="submitAddAcc()">确定</div>
-            <div class="size-hint ng-binding ng-hide" ng-show="show.hint"></div>
+            <div class="btn-submit anime" @click="addAccount()">确定</div>
+            <div class="size-hint ng-binding" v-text="show.hint"></div>
           </div>
         </div>
         <div class="batchGuide" v-if="show.canBatchImport">
           <div @click="showBatchPop">批量导入账套</div>
         </div>
+      </div>
+    </div>
+
+    <!-- 账套添加成功蒙层 -->
+    <div class="site-mask anime site-mask--shade" v-if="show.successMaskAccount">
+      <div class="site-popup anime pop-container site-popup--expand" ng-class="{'site-popup--expand': show.nextOperatePop}">
+        <p>添加成功</p> <div class="btn-closePop" title="关闭" @click="closeAddAccPop()"></div>
+        <br>
+        <!--<div class="btn-go-import anime" ng-click="nextOperate('import')"> 导入报表 </div>-->
+        <div class="btn-go-account anime" ng-click="nextOperate('account')"> 去做账 </div>
+        <div class="btn-go-on anime" ng-click="nextOperate('on')"> 继续添加 </div>
       </div>
     </div>
   </div>
@@ -315,17 +311,25 @@
         ],
         // 添加账套对象
         submitAddAccInfo: {
-          name: '',         // 名字
-          contact: '',      // 联系人
-          phone: '',        // 电话
-          ac: '',           // 所属客户
-          taxpayerType: '', // 纳税类型
-          taxPeriod: 'r',    // 纳税周期
+          adminId: '',
+          token: '',
+          companyName: '',         // 企业名字
+          corporateContact: '',    // 联系人
+          contact: '',        // 联系电话
+          taxTypes: '2', // 纳税类型
+          taxPaymentPeriod: '2',    // 纳税周期
         },
+        accountOptions: [
+          {key: '1', value: '小规模纳税人'},
+          {key: '2', value: '一般纳税人'},
+          {key: '3', value: '个人独资企业或有限合伙'},
+        ],
         //
         show: {
-          addAccountPop: false,
+          addAccountPop: false,     // 是否显示添加账套
           canBatchImport: false,    //是否批量导入
+          hint: '',                 // 添加账套错误信息
+          successMaskAccount: false,  // 添加账套成功后蒙层是否展示
         }
       }
     },
@@ -439,6 +443,8 @@
           this.user.email = User.email
           this.user.id = User.id
           this.user.token = User.token
+          this.submitAddAccInfo.adminId = User.id
+          this.submitAddAccInfo.token = User.token
         }
       },
       checkEmail() {
@@ -543,16 +549,34 @@
       hideAddAccountPop() {
         console.log("隐藏添加账套组件")
         this.show.addAccountPop = false
-        this.submitAddAccInfo.name = ''
-        this.submitAddAccInfo.phone = ''
-        this.submitAddAccInfo.ac = ''
+        this.submitAddAccInfo.companyName = ''
         this.submitAddAccInfo.contact = ''
-        this.submitAddAccInfo.taxPeriod = 'r'
-        this.submitAddAccInfo.taxpayerType = ''
+        this.submitAddAccInfo.corporateContact = ''
+        this.submitAddAccInfo.taxPaymentPeriod = '2'
+        this.submitAddAccInfo.taxTypes = '2'
+
+        this.show.successMaskAccount = false
       },
       selectRoleType(value) {
         console.log("纳税周期选择", value)
-        this.submitAddAccInfo.taxPeriod = value
+        this.submitAddAccInfo.taxPaymentPeriod = value
+      },
+      // 添加账套
+      addAccount() {
+        console.log("添加账套:", this.submitAddAccInfo)
+        if (utils.isExist(this.submitAddAccInfo.companyName)) {
+          this.show.hint = ''
+          api.createAccount(this.submitAddAccInfo).then(res => {
+            console.log("添加结果》", res.body)
+            if (res.body.result == 0) {
+              this.show.successMaskAccount = true
+            } else {
+              this.setErrMsg(res.body.msg)
+            }
+          })
+        } else {
+          this.show.hint = '请填写账套企业名称.'
+        }
       }
     },
     components: {},

@@ -9,7 +9,7 @@
     </div>
     <!-- title -->
     <div class="module-title ng-scope" v-if="!isBooksList">
-      <div class="com-issue ng-isolate-scope" ui-issue="" i-link-system="true" i-show-title="true">
+      <div class="com-issue ng-isolate-scope" v-if="iShowTitle">
         <div class="com-issue_display" ng-show="iShowTitle === 'true'" ng-click="showPicker()">
           <div class="display_icon icon-40"></div>
           <div class="display_tag ng-binding">2018-08期</div>
@@ -156,7 +156,8 @@
         accountsDefaultSecondMenu: [{index: 1, value: '账套列表', isSelect: true, type: "accounts"}],
         isBooksList: true,  // 是否账套
         secondMenuList: [], // 二级目录
-        secondMenu: '' //
+        secondMenu: '', //
+        iShowTitle: false,
       }
     },
     //计算属性
@@ -198,7 +199,7 @@
               this.$router.push("/home")
               break;
             case 5:
-              this.$router.push("/home")
+              this.$router.push({name: 'bookSettings'})
               break;
             case 6:
               this.$router.push("/home")
