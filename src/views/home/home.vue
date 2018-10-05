@@ -90,7 +90,7 @@
         </div>
       </div>
       <!-- 二级导航 -->
-      <navComponent :menuType="menuType" @showAddAccountPop="showAddAccountPop"></navComponent>
+      <navComponent :menuType="menuType" @showAddAccountPop="showAddAccountPop" @success=""></navComponent>
     </div>
 
 
@@ -240,14 +240,37 @@
 
     <!-- 账套添加成功蒙层 -->
     <div class="site-mask anime site-mask--shade" v-if="show.successMaskAccount">
-      <div class="site-popup anime pop-container site-popup--expand" ng-class="{'site-popup--expand': show.nextOperatePop}">
-        <p>添加成功</p> <div class="btn-closePop" title="关闭" @click="closeAddAccPop()"></div>
+      <div class="site-popup anime pop-container site-popup--expand"
+           ng-class="{'site-popup--expand': show.nextOperatePop}">
+        <p>添加成功</p>
+        <div class="btn-closePop" title="关闭" @click="closeAddAccPop()"></div>
         <br>
         <!--<div class="btn-go-import anime" ng-click="nextOperate('import')"> 导入报表 </div>-->
-        <div class="btn-go-account anime" ng-click="nextOperate('account')"> 去做账 </div>
-        <div class="btn-go-on anime" ng-click="nextOperate('on')"> 继续添加 </div>
+        <div class="btn-go-account anime" ng-click="nextOperate('account')"> 去做账</div>
+        <div class="btn-go-on anime" ng-click="nextOperate('on')"> 继续添加</div>
       </div>
     </div>
+
+    <!-- 操作成功 -->
+    <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="isSuccess">
+      <div class="site-popup anime popup-message flex--column site-popup--expand">
+        <div class="site-popup_head">
+          <div class="site-popup_title">小君提醒您：</div>
+          <div class="site-popup_close g-icon-close" @click="hide"></div>
+        </div>
+        <div class="site-popup_body">
+          <div class="site-popup_type">
+            <div class="typeIcon g-icon-done"></div>
+            <p class="typeTitle typeTitle--done">操作成功</p>
+          </div>
+          <div class="site-popup_message">
+            <p v-hide="msgList" class="ng-binding" v-text="successMsg"></p>
+          </div>
+        </div>
+        <div class="site-popup_footer"></div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -299,6 +322,10 @@
         menuType: "",
         // 错误消息
         errMsg: '',
+        // 操作成功
+        isSuccess: false,
+        // 成功消息
+        successMsg: '',
         // 选择
         defaultMenu: {
           userManager: false,
@@ -468,8 +495,9 @@
       setErrMsg(message) {
         if (utils.isExist(message)) {
           this.errMsg = message
+          let that = this
           setInterval(function () {
-            this.errMsg = ''
+            that.errMsg = ''
           }, 2000)
         }
       },
@@ -576,6 +604,15 @@
           })
         } else {
           this.show.hint = '请填写账套企业名称.'
+        }
+      },
+      success(message){
+        if (utils.isExist(message)) {
+          this.successMsg = message
+          let that = this
+          setInterval(function () {
+            that.successMsg = ''
+          }, 2000)
         }
       }
     },

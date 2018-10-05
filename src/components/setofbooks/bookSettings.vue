@@ -14,8 +14,7 @@
                 <span :class="setTitleClass"></span>
               </ul>
             </div>
-            <div class="setBtnMenu btnReportBox"
-                 ng-show="setMenu.type == 'subject' &amp;&amp; account.selectIssue == account.currentIssue">
+            <div class="setBtnMenu btnReportBox" v-if="setMenu.type == 'subject'">
               <div class="page-searchBox">
                 <input type="text" placeholder="搜索科目" ng-model="filter.search"
                        class="ng-pristine ng-untouched ng-valid ng-empty">
@@ -23,8 +22,7 @@
                 <div class="icon-close icon-30 ng-hide" ng-click="clearSearch()" ng-show="filter.search"></div>
               </div>
             </div>
-            <div class="setBtnMenu btnReportBox ng-hide"
-                 ng-show="setMenu.type == 'assets' &amp;&amp; account.selectIssue == account.currentIssue">
+            <div class="setBtnMenu btnReportBox" v-if="setMenu.type == 'assets'">
               <div class="btn-template" ng-click="dwldFaTpl()">下载模板</div>
               <div class="btn-fileAssets" ng-show="isMyAccount"> 导入固定资产
                 <input type="file" id="fileSingle" name="file[]"
@@ -35,44 +33,34 @@
               <div class="btn-reconciliationAssets" ng-click="checkEquilibrium(true)">对账</div>
               <div class="icon-download" ng-click="dwldData()" title="下载固定资产清单"></div>
             </div>
-            <div class="setBtnMenu btnReportBox ng-hide" ng-show="setMenu.type == 'report'">
-              <div class="btn-switchCurrency-off ng-binding ng-hide"
-                   ng-hide="currency.amount.type == '' || checkChange() || reportMenu.type.type != 'report'"
-                   ng-click="amountPop(true)"></div>
-              <div class="btn-switchCurrency-off ng-binding ng-hide"
-                   ng-hide="(tableData.assistInitBalance.itemCurrencies.length === 0 &amp;&amp;
-                            tableData.assistInitBalance.itemQuantities.length === 0) ||
-                            checkChange() ||
-                            reportMenu.type.type != 'assistInitBalance'" ng-click="assistCurrencyAmountPop(true)"></div>
-              <div class="btn-check" ng-click="switchNullData()"
-                   ng-show="reportMenu.type.type === 'report' || reportMenu.type.type === 'assistInitBalance'">
-                <div ng-class="showNullData ? 'icon-isShowNullNum-on' : 'icon-isShowNullNum-off'"
-                     class="icon-isShowNullNum-off"></div>
+            <div class="setBtnMenu btnReportBox" v-if="setMenu.type == 'report'">
+              <div class="btn-switchCurrency-off ng-binding" ng-click="amountPop(true)"></div>
+              <div class="btn-switchCurrency-off ng-binding" ng-click="assistCurrencyAmountPop(true)"></div>
+              <div class="btn-check" ng-click="switchNullData()">
+                <div class="icon-isShowNullNum-off"></div>
                 隐藏空值
               </div>
-              <div class="btn-fileReport" ng-click="fileReportPop(true)"
-                   ng-show="isMyAccount &amp;&amp; isInitIssue &amp;&amp; (reportMenu.type.type === 'cash' || reportMenu.type.type === 'report')">
+              <div class="btn-fileReport" ng-click="fileReportPop(true)">
                 导入报表
               </div>
-              <div class="btn-cancelReport ng-hide" ng-show="checkChange()" ng-click="cancelEdit()">取消</div>
-              <div class="btn-saveReport ng-hide" ng-show="checkChange()" ng-click="save()">保存修改</div>
+              <div class="btn-cancelReport" ng-show="checkChange()" ng-click="cancelEdit()">取消</div>
+              <div class="btn-saveReport" ng-show="checkChange()" ng-click="save()">保存修改</div>
             </div>
-            <div class="setBtnMenu btnReportBox selectModuleBtn ng-hide"
-                 ng-show="reportMenu.type.type == 'asset' &amp;&amp; setMenu.type == 'report'"><select
-              click-auth="" ng-options="type.name for type in adjustAsset.list" ng-model="adjustAsset.type"
+            <div class="setBtnMenu btnReportBox selectModuleBtn" v-if="setMenu.type == 'report'">
+              <select ng-options="type.name for type in adjustAsset.list" ng-model="adjustAsset.type"
               ng-change="changeAdjustAsset(true)" class="ng-pristine ng-untouched ng-valid ng-not-empty">
               <option label="默认模式" value="object:2025" selected="selected">默认模式</option>
               <option label="一级科目模式 Ⅰ" value="object:2026">一级科目模式 Ⅰ</option>
               <option label="一级科目模式 Ⅱ" value="object:2027">一级科目模式 Ⅱ</option>
               <option label="明细科目模式" value="object:2028">明细科目模式</option>
             </select>
-              <div class="icon-help ng-hide" data-toggle="tooltip" title="查看帮助文档"
+              <div class="icon-help" data-toggle="tooltip" title="查看帮助文档"
                    ng-show="reportMenu.type.type == 'asset'" ng-click="checkHelpPdf()">?
               </div>
             </div>
-            <div class="setBtnMenu btnReportBox ng-hide" ng-show="setMenu.type == 'info'">
-              <div class="btn-cancelReport ng-hide" ng-show="checkChange()" ng-click="cancelEdit()"> 取消</div>
-              <div click-auth="" class="btn-saveReport ng-hide" ng-show="checkChange()" ng-click="save()"> 保存修改</div>
+            <div class="setBtnMenu btnReportBox" v-if="setMenu.type == 'info'">
+              <div class="btn-cancelReport" @click="cancelEdit"> 取消</div>
+              <div class="btn-saveReport" @click="save"> 保存修改</div>
             </div>
           </div>
 
@@ -147,8 +135,7 @@
                           <!-- 科目子节点 -->
                           <div v-show="!data.active">
                             <div class="tableBox ng-scope" v-for="item in data.children" :key="item.subjectId">
-                              <div class="tableBody" @click.stop="highlightRow(item)" ng-class="(data.isSelect? 'highlight' : '') + ' ' +
-                getParentSubject(data.active, data.children)">
+                              <div class="tableBody" @click.stop="highlightRow(item)" :class="item.isSelect? 'highlight' : ''">
                                 <div class="tableTd span-25"
                                      ng-style="{'padding-left': ((data.subject.length * 5) - 20) + 'px'}"
                                      style="padding-left: 15px;">
@@ -177,29 +164,26 @@
                                   </div>
                                 </div>
                                 <div class="tableTd span-55 ng-binding" v-text="item.subjectName"></div>
-                                <div class="span-10 tableTd ng-binding -sizeColor-red" style="text-align:center"
-                                     ng-class="data.direction == 1 ? '-sizeColor-red' : '-sizeColor-green'"
+                                <div class="span-10 tableTd ng-binding" style="text-align:center"
+                                     :class="item.direction == 1 ? '-sizeColor-red' : '-sizeColor-green'"
                                      v-text="item.direction == 1?'借':'贷'">
                                 </div>
                                 <div class="tableTd span-10 ng-binding" v-text="item.currency"></div>
-                                <span class="icon-delete ng-hide"
-                                      ng-click="deleteSubject(data);$event.stopPropagation();"
-                                      ng-show="isMyAccount &amp;&amp; !data.system"></span></div>
+                                <span class="icon-delete ng-hide" ></span></div>
 
                               <div v-if="!item.active">
-                                <div class="tableBox ng-scope">
-                                  <div class="tableBody" @click.stop="highlightRow(item)"
-                                       ng-class="(data.subject === highlight.row ? 'highlight' : '') + ' ' +
-                getParentSubject(data.active, data.children)">
+                                <div class="tableBox ng-scope" v-for="itemC in item.children" :key="itemC.subjectId">
+                                  <div class="tableBody" @click.stop="highlightRow(itemC)"
+                                       :class="itemC.isSelect ? 'highlight' : ''">
                                     <div class="tableTd span-25"
                                          ng-style="{'padding-left': ((data.subject.length * 5) - 20) + 'px'}"
                                          style="padding-left: 25px;">
                                       <div class="borderLeft"
                                            ng-style="{'width': (((data.subject.length * 5) - 25) + 'px')}"
                                            style="width: 20px;"></div>
-                                      <div class="subjectText ng-binding">221100401</div>
+                                      <div class="subjectText ng-binding" v-text="itemC.subjectId"></div>
                                       <div class="icon-assist ng-hide" ng-show="data.assistTypes.length"></div>
-                                      <span ng-show="showInfo(data.children.length)" data-toggle="tooltip" title="折叠/展开"
+                                      <span v-if="item.children.length > 0" data-toggle="tooltip" title="折叠/展开"
                                             :class="item.active ? 'icon-arrows-0-hover' : 'icon-arrows-90-hover'"
                                             @click="flexChildrenSubject(item)"
                                             class="ng-hide icon-arrows-90-hover"></span>
@@ -223,11 +207,12 @@
                                         </div>
                                       </div>
                                     </div>
-                                    <div class="tableTd span-55 ng-binding">公司</div>
-                                    <div class="span-10 tableTd ng-binding -sizeColor-green" style="text-align:center"
-                                         ng-class="data.direction == 1 ? '-sizeColor-red' : '-sizeColor-green'"> 贷
+                                    <div class="tableTd span-55 ng-binding" v-text="itemC.subjectName"></div>
+                                    <div class="span-10 tableTd ng-binding" style="text-align:center"
+                                         :class="itemC.direction == 1 ? '-sizeColor-red' : '-sizeColor-green'"
+                                          v-text="itemC.direction  == 1 ? '借' : '贷'">
                                     </div>
-                                    <div class="tableTd span-10 ng-binding"> CNY</div>
+                                    <div class="tableTd span-10 ng-binding" v-text="itemC.currency"></div>
                                     <span class="icon-delete ng-hide"
                                           ng-click="deleteSubject(data);$event.stopPropagation();"
                                           ng-show="isMyAccount &amp;&amp; !data.system"></span>
@@ -243,7 +228,6 @@
                 </div>
               </div>
             </div>
-
 
             <!-- 辅助核算 -->
             <div v-if="setMenu.type == 'assist'">
@@ -676,32 +660,26 @@
               </div>
             </div>
 
-
             <!-- 账套信息 -->
             <div style="height: 100%;">
-              <div class="ps-theme-default ps-active-y" id="accountInfo" v-if="setMenu.type == 'info'" style="overflow-y: auto">
+              <div class="ps-theme-default ps-active-y" id="accountInfo" v-if="setMenu.type == 'info'"
+                   style="overflow-y: auto">
                 <div class="basic column">
                   <div class="title"><span class="sideLine"></span> 基本信息</div>
                   <div class="content clear">
                     <div class="leftBox">
                       <div class="accountName">
-                        <label for="accountName " class="inputLabel">账套信息</label>
+                        <label class="inputLabel">账套信息</label>
                         <div class="input-normal">
-                          <input type="text" id="accountName" ng-model="companyInfo.info.name"
-                                                         ng-class="{'disabled': !isMyAccount ||
-                                user.type === 'acAdmin' ||
-                                user.type === 'acMgr' ||
-                                user.type === 'acCommon'}" ng-disabled="!isMyAccount ||
-                                user.type === 'acAdmin' ||
-                                user.type === 'acMgr' ||
-                                user.type === 'acCommon'" class="ng-pristine ng-untouched ng-valid ng-empty">
+                          <input type="text" id="accountName" v-model="accountInfo.companyName"
+                                 class="ng-pristine ng-untouched ng-valid ng-empty">
                         </div>
                       </div>
                       <div class="secretKey">
                         <label class="inputLabel" style="height:30px">企业密钥</label>
                         <div class="secretKey-warp">
                           <div class="input-normal">
-                            <div id="secretKey" class="ng-binding"></div>
+                            <div id="secretKey" class="ng-binding" v-text="accountInfo.secretKey"></div>
                           </div>
                           <div class="getSecretKey btn" @click="querySecret">获取</div>
                         </div>
@@ -709,45 +687,20 @@
                     </div>
                     <div class="rightBox">
                       <div class="taxTypeBox selectBox"><label class="inputLabel">纳税类型</label>
-                        <div class="item ng-binding ng-scope" ng-repeat="taxType in companyInfo.type.list"><span
-                          class="icon-select icon-selected" ng-click="selectCoType(taxType, 'type')"
-                          ng-class="{'icon-selected': taxType.type === companyInfo.type.init.type}"></span> 小规模纳税人
-                        </div><!-- end ngRepeat: taxType in companyInfo.type.list -->
-                        <div class="item ng-binding ng-scope" ng-repeat="taxType in companyInfo.type.list"><span
-                          class="icon-select" ng-click="selectCoType(taxType, 'type')"
-                          ng-class="{'icon-selected': taxType.type === companyInfo.type.init.type}"></span> 一般纳税人
-                        </div><!-- end ngRepeat: taxType in companyInfo.type.list -->
-                        <div class="item ng-binding ng-scope" ng-repeat="taxType in companyInfo.type.list"><span
-                          class="icon-select" ng-click="selectCoType(taxType, 'type')"
-                          ng-class="{'icon-selected': taxType.type === companyInfo.type.init.type}"></span> 个人独资企业或有限合伙
-                        </div><!-- end ngRepeat: taxType in companyInfo.type.list --> </div>
-                      <div class="taxPeriod selectBox"><label class="inputLabel">纳税周期</label>
-                        <!-- ngRepeat: taxperiod in companyInfo.period.list -->
-                        <div class="item ng-binding ng-scope" ng-repeat="taxperiod in companyInfo.period.list"><span
-                          class="icon-select icon-selected" ng-click="selectCoType(taxperiod, 'period')"
-                          ng-class="{'icon-selected': taxperiod.type === companyInfo.period.init.type}"></span> 月报
-                        </div><!-- end ngRepeat: taxperiod in companyInfo.period.list -->
-                        <div class="item ng-binding ng-scope" ng-repeat="taxperiod in companyInfo.period.list"><span
-                          class="icon-select" ng-click="selectCoType(taxperiod, 'period')"
-                          ng-class="{'icon-selected': taxperiod.type === companyInfo.period.init.type}"></span> 季报
-                        </div><!-- end ngRepeat: taxperiod in companyInfo.period.list --> </div>
-                      <div class="automaticType selectBox ng-hide" ng-show="isShareCenter">
-                        <label class="inputLabel">工业特殊行业</label>
-                        <div class="item">
-                          <span class="icon-select icon-selected ng-hide"
-                                ng-click="selectCoType(false, 'isSpecialIndustry')"
-                                ng-show="companyInfo.isSpecialIndustry.type"></span> <span
-                          class="icon-select" ng-click="selectCoType(true, 'isSpecialIndustry')"
-                          ng-show="!companyInfo.isSpecialIndustry.type"></span></div>
+                        <div class="item ng-binding ng-scope" v-for="taxType in accountOptions" :key="taxType.key"><span
+                          class="icon-select" @click="selectCoType(taxType.key, 'taxType')"
+                          :class="{'icon-selected': taxType.key === accountInfo.taxTypes}"></span> {{taxType.value}}
+                        </div>
                       </div>
-                      <div class="automaticType selectBox ng-hide" ng-show="isShareCenter">
-                        <label class="inputLabel">自动做账</label>
-                        <div class="item ng-binding">
-                          <span class="icon-select icon-selected ng-hide"
-                                ng-click="selectCoType('', 'automaticType')"
-                                ng-show="companyInfo.automaticType.type === '自动做账'"></span>
-                          <span class="icon-select" ng-click="selectCoType('自动做账', 'automaticType')"
-                                ng-show="!companyInfo.automaticType.type"></span> （启用后该账套会自动做账和自动报税）
+                      <div class="taxPeriod selectBox">
+                        <label class="inputLabel">纳税周期</label>
+                        <div class="item ng-binding ng-scope">
+                          <span class="icon-select" @click="selectCoType(1, 'taxPaymentPeriod')"
+                                :class="{'icon-selected': accountInfo.taxPaymentPeriod === 1}"></span> 月报
+                        </div>
+                        <div class="item ng-binding ng-scope">
+                          <span class="icon-select" @click="selectCoType(2, 'taxPaymentPeriod')"
+                                :class="{'icon-selected': accountInfo.taxPaymentPeriod === 2}"></span> 季报
                         </div>
                       </div>
                     </div>
@@ -762,24 +715,14 @@
                       <div class="leftBox"><span class="icon-person"></span>
                         <label class="inputLabel">企业联系人</label>
                         <div class="input-normal" style="margin-bottom:0">
-                          <input type="text"
-                                 ng-model="companyInfo.info.contact"
-                                 ng-class="{'disabled': !isMyAccount &amp;&amp;
-                               user.type !== 'acMgr' &amp;&amp;
-                               user.type !== 'acCommon'}" ng-disabled="!isMyAccount &amp;&amp;
-                                 user.type !== 'acMgr' &amp;&amp;
-                                 user.type !== 'acCommon'" class="ng-pristine ng-untouched ng-valid ng-empty"></div>
+                          <input type="text" v-model="accountInfo.corporateContact" class="ng-pristine ng-untouched ng-valid ng-empty">
+                        </div>
                       </div>
                       <div class="rightBox"><span class="icon-phone"></span>
                         <label class="inputLabel">联系方式</label>
                         <div class="input-normal" style="margin-bottom:0">
-                          <input type="text"
-                                 ng-model="companyInfo.info.phone"
-                                 ng-class="{'disabled': !isMyAccount &amp;&amp;
-                               user.type !== 'acMgr' &amp;&amp;
-                               user.type !== 'acCommon'}" ng-disabled="!isMyAccount &amp;&amp;
-                                 user.type !== 'acMgr' &amp;&amp;
-                                 user.type !== 'acCommon'" class="ng-pristine ng-untouched ng-valid ng-empty"></div>
+                          <input type="text" v-model="accountInfo.contact" class="ng-pristine ng-untouched ng-valid ng-empty">
+                        </div>
                       </div>
                     </div>
                     <div class="communicate clear ng-hide" ng-show="user.type === 'acAdmin' ||
@@ -833,6 +776,7 @@
                     </div>
                   </div>
                 </div>
+                <!-- 税务信息 -->
                 <div class="tax column">
                   <div class="title"><span class="sideLine"></span> 税务信息</div>
                   <div class="content clear">
@@ -840,37 +784,29 @@
                       <div class="taxNumber">
                         <label for="taxNumber" class="inputLabel">税号</label>
                         <div class="input-normal">
-                          <input type="text" id="taxNumber"
-                                 ng-model="companyInfo.info.taxInfo.taxNumber"
-                                 ng-class="{'disabled': !isMyAccount}"
-                                 ng-disabled="!isMyAccount"
-                                 class="ng-pristine ng-untouched ng-valid ng-empty"></div>
+                          <input type="text" id="taxNumber" v-model="accountInfo.taxNumber"
+                                 class="ng-pristine ng-untouched ng-valid ng-empty">
+                        </div>
                       </div>
                       <div class="taxBureau">
                         <label for="taxBureau" class="inputLabel">税管所</label>
                         <div class="input-normal">
-                          <input type="text" id="taxBureau"
-                                 ng-model="companyInfo.info.taxInfo.taxBureau"
-                                 ng-class="{'disabled': !isMyAccount}"
-                                 ng-disabled="!isMyAccount"
-                                 class="ng-pristine ng-untouched ng-valid ng-empty"></div>
+                          <input type="text" id="taxBureau" v-model="accountInfo.taxAdministrationOffice"
+                                class="ng-pristine ng-untouched ng-valid ng-empty">
+                        </div>
                       </div>
                       <div class="taxAdmin">
                         <label for="taxAdmin" class="inputLabel">专员号</label>
                         <div class="input-normal">
                           <input type="text" id="taxAdmin"
-                                 ng-model="companyInfo.info.taxInfo.taxAdmin"
-                                 ng-class="{'disabled': !isMyAccount}"
-                                 ng-disabled="!isMyAccount"
+                                 v-model="accountInfo.taxOfficeNumber"
                                  class="ng-pristine ng-untouched ng-valid ng-empty"></div>
                       </div>
                       <div class="taxAdminPhone">
                         <label for="taxAdminPhone" class="inputLabel">联系方式</label>
                         <div class="input-normal">
                           <input type="text" id="taxAdminPhone"
-                                 ng-model="companyInfo.info.taxInfo.taxAdminPhone"
-                                 ng-class="{'disabled': !isMyAccount}"
-                                 ng-disabled="!isMyAccount"
+                                 v-model="accountInfo.taxOfficeContact"
                                  class="ng-pristine ng-untouched ng-valid ng-empty"></div>
                       </div>
                       <div class="certificateExpired-warp">
@@ -878,100 +814,92 @@
                         <div class="input-normal">
                           <div class=""></div>
                           <input type="text" class="certificateExpired ng-pristine ng-untouched ng-valid ng-empty"
-                                 ng-model="companyInfo.info.taxInfo.certificateExpired"
-                                 ng-class="{'disabled': !isMyAccount}" ng-disabled="!isMyAccount"
-                                 placeholder="格式：XXXX-XX-XX"></div>
+                                 v-model="accountInfo.expiryDateOfTaxCertificate"
+                                 placeholder="格式：XXXX-XX-XX">
+                        </div>
                       </div>
                     </div>
                     <div class="rightBox">
                       <div class="taxPrinter selectBox"><label class="inputLabel">税控机</label>
-                        <!-- ngRepeat: taxPrinter in companyInfo.taxPrinter.list -->
-                        <div class="item ng-binding ng-scope" ng-repeat="taxPrinter in companyInfo.taxPrinter.list"
-                             ng-click="selectCoType(taxPrinter, 'taxPrinter')">
+                        <div class="item ng-binding ng-scope" @click="selectCoType(1, 'hasTaxPrinter')">
                           <span class="icon-select"
-                                ng-class="{'icon-selected': taxPrinter.type === companyInfo.info.taxInfo.taxPrinter}"></span>
+                                :class="{'icon-selected': accountInfo.hasTaxPrinter === 1}"></span>
                           有
                         </div><!-- end ngRepeat: taxPrinter in companyInfo.taxPrinter.list -->
-                        <div class="item ng-binding ng-scope" ng-repeat="taxPrinter in companyInfo.taxPrinter.list"
-                             ng-click="selectCoType(taxPrinter, 'taxPrinter')">
+                        <div class="item ng-binding ng-scope" @click="selectCoType(2, 'hasTaxPrinter')">
                           <span class="icon-select"
-                                ng-class="{'icon-selected': taxPrinter.type === companyInfo.info.taxInfo.taxPrinter}"></span>
+                                :class="{'icon-selected': accountInfo.hasTaxPrinter === 2}"></span>
                           无
-                        </div><!-- end ngRepeat: taxPrinter in companyInfo.taxPrinter.list --> </div>
-                      <div class="incomeTax selectBox"><label class="inputLabel">所得税申报</label>
-                        <!-- ngRepeat: incomeTax in companyInfo.incomeTax.list -->
+                        </div>
+                      </div>
+                      <div class="incomeTax selectBox">
+                        <label class="inputLabel">所得税申报</label>
                         <div class="item ng-binding ng-scope" ng-repeat="incomeTax in companyInfo.incomeTax.list"
-                             ng-click="selectCoType(incomeTax, 'incomeTaxReturn')">
+                             @click="selectCoType(1, 'declarationOfIncome')">
                           <span class="icon-select"
-                                ng-class="{'icon-selected': incomeTax.title === companyInfo.info.taxInfo.incomeTaxReturn}"></span>
+                                :class="{'icon-selected': accountInfo.declarationOfIncome === 1}"></span>
                           国税
-                        </div><!-- end ngRepeat: incomeTax in companyInfo.incomeTax.list -->
+                        </div>
                         <div class="item ng-binding ng-scope" ng-repeat="incomeTax in companyInfo.incomeTax.list"
-                             ng-click="selectCoType(incomeTax, 'incomeTaxReturn')">
+                             @click="selectCoType(2, 'declarationOfIncome')">
                           <span class="icon-select"
-                                ng-class="{'icon-selected': incomeTax.title === companyInfo.info.taxInfo.incomeTaxReturn}"></span>
+                                :class="{'icon-selected': accountInfo.declarationOfIncome === 2}"></span>
                           地税
-                        </div><!-- end ngRepeat: incomeTax in companyInfo.incomeTax.list --> </div>
-                      <div class="incomeTax selectBox"><label class="inputLabel">所得税类型</label>
-                        <!-- ngRepeat: type in companyInfo.taxType.list -->
-                        <div class="item ng-binding ng-scope" ng-repeat="type in companyInfo.taxType.list"
-                             ng-click="selectCoType(type, 'taxType')">
+                        </div>
+                      </div>
+                      <div class="incomeTax selectBox">
+                        <label class="inputLabel">所得税类型</label>
+                        <div class="item ng-binding ng-scope" @click="selectCoType(1, 'incomeTaxType')">
                           <span class="icon-select"
-                                ng-class="{'icon-selected': type.title === companyInfo.info.taxInfo.incomeTaxType}"></span>
+                                :class="{'icon-selected': accountInfo.incomeTaxType === 1}"></span>
                           查账征收
-                        </div><!-- end ngRepeat: type in companyInfo.taxType.list -->
-                        <div class="item ng-binding ng-scope" ng-repeat="type in companyInfo.taxType.list"
-                             ng-click="selectCoType(type, 'taxType')">
+                        </div>
+                        <div class="item ng-binding ng-scope" @click="selectCoType(2, 'incomeTaxType')">
                           <span class="icon-select"
-                                ng-class="{'icon-selected': type.title === companyInfo.info.taxInfo.incomeTaxType}"></span>
+                                :class="{'icon-selected': accountInfo.incomeTaxType === 2}"></span>
                           核定征收
-                        </div><!-- end ngRepeat: type in companyInfo.taxType.list --> </div>
+                        </div><!-- end ngRepeat: type in companyInfo.taxType.list -->
+                      </div>
                       <div class="incomeTax selectBox"><label class="inputLabel">核定征收率</label>
                         <div class="input-normal">
-                          <input type="number" id="taxRate"
-                                 ng-model="companyInfo.info.taxInfo.incomeTaxRate"
-                                 ng-class="{'disabled': !isMyAccount || companyInfo.info.taxInfo.incomeTaxType === '查账征收'}"
-                                 ng-disabled="!isMyAccount || companyInfo.info.taxInfo.incomeTaxType === '查账征收'"
-                                 class="ng-pristine ng-untouched ng-valid ng-empty"></div>
+                          <input type="number" id="taxRate" v-model="accountInfo.taxAssessmentRate"
+                                 class="ng-pristine ng-untouched ng-valid ng-empty">
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                <!-- 企业经营信息 -->
                 <div class="companyManage column">
                   <div class="title"><span class="sideLine"></span> 企业经营信息</div>
                   <div class="content clear">
                     <div class="leftBox">
                       <div class="companyName"><label for="companyName" class="inputLabel">公司名称</label>
                         <div class="input-normal">
-                          <input type="text" id="companyName" ng-model="companyInfo.info.name"
-                                 ng-class="{'disabled': !isMyAccount}"
-                                 ng-disabled="!isMyAccount"
+                          <input type="text" id="companyName" v-model="accountInfo.companyName"
                                  class="ng-pristine ng-untouched ng-valid ng-empty"></div>
                       </div>
                       <div class="industry"><label for="industry" class="inputLabel">所属行业</label>
                         <div class="input-normal">
-                          <input type="text" id="industry" ng-model="companyInfo.info.industry"
-                                 ng-class="{'disabled': !isMyAccount}"
-                                 ng-disabled="!isMyAccount"
+                          <input type="text" id="industry" v-model="accountInfo.industryInvolved"
                                  class="ng-pristine ng-untouched ng-valid ng-empty"></div>
                       </div>
                       <div class="address"><label for="address" class="inputLabel">注册地址</label>
                         <div class="input-normal">
-                          <input type="text" id="address" ng-model="companyInfo.info.address"
-                                 ng-class="{'disabled': !isMyAccount}"
-                                 ng-disabled="!isMyAccount"
+                          <input type="text" id="address" v-model="accountInfo.registeredAddress"
                                  class="ng-pristine ng-untouched ng-valid ng-empty"></div>
                       </div>
                     </div>
                     <div class="rightBox">
                       <div class="range"><label class="inputLabel">经营范围</label> <textarea
-                        ng-model="companyInfo.info.businessScope" ng-class="{'disabled': !isMyAccount}"
-                        ng-disabled="!isMyAccount" class="ng-pristine ng-untouched ng-valid ng-empty"></textarea></div>
+                        v-model="accountInfo.businessScope" class="ng-pristine ng-untouched ng-valid ng-empty"></textarea></div>
                     </div>
                   </div>
                 </div>
                 <div class="bank column">
-                  <div class="title"><span class="sideLine"></span> 银行信息</div>
+                  <div class="title">
+                    <span class="sideLine"></span> 银行信息</div>
                   <div class="content">
                     <div class="infoBox-bankHead">
                       <div class="bankTd-add" data-toggle="tooltip" title="添加银行" ng-click="addBank()">
@@ -980,7 +908,8 @@
                       <div class="bankTd-type">账户类型</div>
                       <div class="bankTd-bank">开户银行</div>
                       <div class="bankTd-num">银行账号</div>
-                    </div> <!-- ngRepeat: bank in companyInfo.info.banks --> </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="adjunct column">
                   <div class="title"><span class="sideLine"></span> 企业附件</div>
@@ -1038,6 +967,12 @@
         accountId: utils.dbGet("account"),
         token: utils.dbGet("userInfo").token,
         adminId: utils.dbGet("userInfo").id,
+        accountInfo: {},
+        accountOptions: [
+          {key: 1, value: '一般纳税人'},
+          {key: 2, value: '小规模纳税人'},
+          {key: 3, value: '个人独资企业或有限合伙'},
+        ],
       }
     },
     methods: {
@@ -1111,26 +1046,26 @@
         }
       },
       // 顶部导航tab
-      selectType(opt){
+      selectType(opt) {
         console.log("顶部导航tab", opt)
         if (utils.isExist(opt)) {
           this.setMenu.type = opt.type
-          if(opt.index == 1){
+          if (opt.index == 1) {
             this.subjectClassify({index: 1})
-          }else if(opt.index == 2){
+          } else if (opt.index == 2) {
 
-          }else if(opt.index == 3){
+          } else if (opt.index == 3) {
 
-          }else if(opt.index == 4){
+          } else if (opt.index == 4) {
 
-          }else if(opt.index == 5){
+          } else if (opt.index == 5) {
 
-          }else if(opt.index == 6){
+          } else if (opt.index == 6) {
             this.queryAccountInfo()
           }
         }
       },
-      changeActive(opt){
+      changeActive(opt) {
         if (utils.isExist(opt)) {
           this.setTitleClass = 'li-' + Number(opt.index - 1)
         }
@@ -1141,22 +1076,86 @@
         }
       },
       // 根据账套编号查询账套信息
-      queryAccountInfo(){
-        console.log("根据账套编号查询账套信息",this.accountId, this.token)
+      queryAccountInfo() {
+        console.log("根据账套编号查询账套信息", this.accountId, this.token)
         if (utils.isExist(this.accountId) && utils.isExist(this.token)) {
-          api.queryAccountById({id: this.accountId,token: this.token}).then(res => {
-            console.log("账套信息>>>",res.body)
+          api.queryAccountById({id: this.accountId, token: this.token}).then(res => {
+            console.log("账套信息>>>", res.body)
+            if (res.body.result == 0) {
+              this.accountInfo = res.body.data
+            }
           })
         }
       },
       // 查询账套企业密钥
       querySecret() {
-        console.log("查询账套企业密钥",this.accountId)
-        if (utils.isExist(this.accountId) && utils.isExist(this.token)) {
-          api.querySecretKey({accountSetId: this.accountId,token: this.token}).then(res => {
-            console.log("企业密钥>>>",res.body)
+        console.log("查询账套企业密钥", this.accountId)
+        if (utils.isExist(this.accountId) && utils.isExist(this.token) && !utils.isExist(this.accountInfo.secretKey)) {
+          api.querySecretKey({accountSetId: this.accountId, token: this.token}).then(res => {
+            console.log("企业密钥>>>", res.body)
           })
         }
+      },
+      // 账套信息 复选框
+      selectCoType(value, type){
+        console.log("复选框选择》", value, type, this.accountInfo)
+        switch (type){
+          case 'hasTaxPrinter': // 程控机
+            if (this.accountInfo.hasTaxPrinter == Number(value)) {
+              this.accountInfo.hasTaxPrinter = ""
+            } else {
+              this.accountInfo.hasTaxPrinter = Number(value)
+            }
+            break;
+          case 'taxType': // 纳税类型
+            if (this.accountInfo.taxTypes == Number(value)) {
+              this.accountInfo.taxTypes = ""
+            } else {
+              this.accountInfo.taxTypes = Number(value)
+            }
+            break;
+          case 'taxPaymentPeriod': // 纳税周期
+            if (this.accountInfo.taxPaymentPeriod == Number(value)) {
+              this.accountInfo.taxPaymentPeriod = ""
+            } else {
+              this.accountInfo.taxPaymentPeriod = Number(value)
+            }
+            break;
+          case 'declarationOfIncome': // 所得税申报
+            if (this.accountInfo.declarationOfIncome == Number(value)) {
+              this.accountInfo.declarationOfIncome = ""
+            } else {
+              this.accountInfo.declarationOfIncome = Number(value)
+            }
+            break;
+          case 'incomeTaxType': // 所得税类型
+            if (this.accountInfo.incomeTaxType == Number(value)) {
+              this.accountInfo.incomeTaxType = ""
+            } else {
+              this.accountInfo.incomeTaxType = Number(value)
+            }
+            break;
+        }
+      },
+      // 账套信息 保存修改
+      save() {
+        console.log("账套信息 保存修改")
+        let params = this.accountInfo
+        params.id = this.accountId
+        params.token = this.token
+        api.updateAccount(params).then(res => {
+          console.log("账套信息保存》",res.body)
+          if (res.body.result == 0) {
+            this.$emit('success',res.body.msg)
+            this.accountInfo = res.body.data
+          } else {
+            this.$emit('error',res.body.msg)
+          }
+        })
+      },
+      // 账套信息 取消修改
+      cancelEdit() {
+        this.queryAccountInfo()
       }
     },
     created() {
@@ -1273,7 +1272,45 @@
   .settingBox .setHeadMenu ul li.li-5:hover ~ .hover_bar, .settingBox .setHeadMenu ul li ~ .hover_bar.li-5 {
     left: 375px;
   }
-
+  .settingBox .btnReportBox>[class*=btn-], .settingBox .btnReportBox>div.btn-check, .settingBox .btnReportBox>div.btn-check:hover, .settingBox .reportTable-left>[class*=btn-] {
+    height: 30px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+    position: relative;
+    margin-left: 10px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #5fbbfc;
+    color: #5fbbfc;
+    padding: 0 20px;
+  }
+  .settingBox .btnReportBox>div.btn-check, .settingBox .btnReportBox>div.btn-check:hover {
+    padding: 0 20px 0 40px;
+    color: #38aafc;
+  }
+  .settingBox .icon-addAssets, .settingBox .icon-cancelReport, .settingBox .icon-fileAssets, .settingBox .icon-reconciliationAssets, .settingBox .icon-saveReport, .settingBox [class*=icon-isShowNullNum-] {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+    left: 15px;
+    background: red;
+  }
+  .settingBox .icon-isShowNullNum-off {
+    background: url(./i/unselected.png) no-repeat 50%;
+  }
+  .settingBox .setBtnMenu .icon-download {
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    float: right;
+    background: url(./i/download.png) no-repeat 50%;
+    margin-left: 10px;
+  }
   /**page-content*/
   .settingBox .page-content {
     overflow: visible;
@@ -1566,34 +1603,37 @@
     background: rgba(0, 0, 0, 0.4);
   }
 
-
   /**账套信息*/
-  #accountInfo{
+  #accountInfo {
     width: 100%;
     height: 100%;
     position: relative;
   }
+
   #accountInfo .column {
     width: 100%;
     position: relative;
-    border: 1px solid rgba(182,192,210,.5);
+    border: 1px solid rgba(182, 192, 210, .5);
     margin-bottom: 20px;
     line-height: 30px;
     border-radius: 3px;
   }
+
   #accountInfo .column .title {
     width: 100%;
     font-size: 14px;
     line-height: 40px;
-    border-bottom: 1px solid rgba(182,192,210,.5);
+    border-bottom: 1px solid rgba(182, 192, 210, .5);
     position: relative;
     text-indent: 20px;
     letter-spacing: .9px;
     color: #2a333b;
   }
+
   #accountInfo span {
     display: inline-block;
   }
+
   #accountInfo .column .title .sideLine {
     width: 10px;
     height: 100%;
@@ -1601,9 +1641,11 @@
     position: absolute;
     left: 0;
   }
+
   #accountInfo .column .content {
     width: 100%;
   }
+
   #accountInfo .column .content .leftBox, #accountInfo .column .content .rightBox {
     float: left;
     width: 50%;
@@ -1611,14 +1653,17 @@
     position: relative;
     padding: 20px;
   }
+
   #accountInfo .column .content .leftBox {
-    border-right: 1px solid rgba(182,192,210,.5);
+    border-right: 1px solid rgba(182, 192, 210, .5);
   }
+
   #accountInfo .inputLabel {
     text-align: right;
     display: inline-block;
     width: 90px;
   }
+
   #accountInfo .input-normal {
     width: 300px;
     height: 30px;
@@ -1626,6 +1671,7 @@
     margin-left: 10px;
     margin-bottom: 20px;
   }
+
   input[type="number"], input[type="password"], input[type="text"], select {
     width: 100%;
     height: 100%;
@@ -1636,16 +1682,19 @@
     background: rgb(235, 240, 245);
     border-radius: 4px;
   }
+
   #accountInfo .secretKey {
     position: relative;
     height: 50px;
   }
+
   #accountInfo .secretKey label {
     height: 30px;
     top: 0;
     left: 0;
     position: absolute;
   }
+
   #accountInfo .basic .secretKey-warp {
     width: 300px;
     display: inline-block;
@@ -1653,10 +1702,12 @@
     height: 50px;
     left: 105px;
   }
+
   #accountInfo .secretKey-warp .input-normal {
     width: 220px;
     margin-left: 0;
   }
+
   #secretKey {
     border: 0;
     background: #ebf0f5;
@@ -1665,11 +1716,13 @@
     width: 100%;
     height: 100%;
   }
+
   #accountInfo .btn {
     cursor: pointer;
-    border: 1px solid rgba(182,192,210,.5);
+    border: 1px solid rgba(182, 192, 210, .5);
     text-align: center;
   }
+
   #accountInfo .getSecretKey {
     position: absolute;
     right: 0;
@@ -1681,6 +1734,7 @@
     color: #5fbbfc;
     border: 1px solid #5fbbfc;
   }
+
   #accountInfo .clear:after {
     content: "";
     height: 0;
@@ -1688,21 +1742,25 @@
     display: block;
     clear: both;
   }
+
   #accountInfo .selectBox {
     margin-bottom: 20px;
     white-space: nowrap;
   }
+
   #accountInfo .inputLabel {
     text-align: right;
     display: inline-block;
     width: 90px;
   }
+
   #accountInfo .selectBox .item {
     display: initial;
     text-indent: 25px;
     position: relative;
     margin-left: 30px;
   }
+
   #accountInfo .icon-select {
     display: inline-block;
     width: 25px;
@@ -1715,48 +1773,58 @@
     transform: translateY(-50%);
     cursor: pointer;
   }
+
   #accountInfo .icon-selected {
     background: url(./i/selected.png) no-repeat 50%;
   }
+
   #accountInfo .column .content .leftBox {
-    border-right: 1px solid rgba(182,192,210,.5);
+    border-right: 1px solid rgba(182, 192, 210, .5);
   }
+
   #accountInfo .connect .communicate .leftBox, #accountInfo .connect .company .leftBox {
     border-right: 0;
   }
+
   #accountInfo .connect .inputLabel, #accountInfo .tax .rightBox .inputLabel {
     text-align: right;
     display: inline-block;
     width: 75px;
   }
+
   #accountInfo .icon-person {
     float: left;
     width: 30px;
     height: 30px;
     background: url(./i/person.png) no-repeat 50%;
   }
+
   #accountInfo .icon-phone {
     float: left;
     width: 30px;
     height: 30px;
     background: url(./i/accountInfoPhone.png) no-repeat 50%;
   }
+
   #accountInfo .connect .inputLabel, #accountInfo .tax .rightBox .inputLabel {
     text-align: right;
     display: inline-block;
     width: 75px;
   }
+
   #accountInfo .companyManage .range {
     position: relative;
   }
+
   #accountInfo .companyManage .range label {
     position: absolute;
     top: 0;
   }
+
   .companyManage .range textarea {
     width: 380px;
     height: 130px;
-    border: 1px solid rgba(182,192,210,.5);
+    border: 1px solid rgba(182, 192, 210, .5);
     background: #ebf0f5;
     border-radius: 4px;
     position: absolute;
@@ -1764,44 +1832,56 @@
     border: 1px solid #5fbbfc;
     padding: 8px;
   }
+
   #accountInfo .column .content {
     width: 100%;
   }
+
   .settingBox .infoBox-leftBottom [class*=basicInfo-], .settingBox .infoBox-leftBottom [class*=companyInfo-], .settingBox .infoNameBox-bottom, .settingBox .infoNameBox-top, .settingBox [class*=infoBox-] {
     width: 100%;
   }
+
   .settingBox .infoBox-bankBody, .settingBox .infoBox-bankHead {
     height: 50px;
     border-bottom: 1px solid #ebf0f5;
   }
+
   .settingBox .infoBox-bankHead {
     background: #fff;
   }
-  .settingBox .infoBox-bankBody>div, .settingBox .infoBox-bankHead>div, .settingBox .infoBox-left, .settingBox .infoBox-right, .settingBox .left-infoNameBox, .settingBox .right-infoOtherBox {
+
+  .settingBox .infoBox-bankBody > div, .settingBox .infoBox-bankHead > div, .settingBox .infoBox-left, .settingBox .infoBox-right, .settingBox .left-infoNameBox, .settingBox .right-infoOtherBox {
     height: 100%;
   }
-  .settingBox .infoBox-bankBody>div, .settingBox .infoBox-bankHead>div {
+
+  .settingBox .infoBox-bankBody > div, .settingBox .infoBox-bankHead > div {
     float: left;
     line-height: 50px;
     text-align: center;
   }
-  .settingBox .infoBox-bankHead>div {
+
+  .settingBox .infoBox-bankHead > div {
     font-weight: 700;
   }
+
   .settingBox .infoBox-bankBody [class*=bankTd-], .settingBox .infoBox-bankHead [class*=bankTd-] {
     width: 30%;
     position: relative;
-    border-right: 1px solid rgba(182,192,210,.5);
+    border-right: 1px solid rgba(182, 192, 210, .5);
   }
+
   .settingBox .infoBox-bankHead [class*=bankTd-] {
     border-left: 1px solid #ebf0f5;
   }
+
   .settingBox .infoBox-bankBody .bankTd-index, .settingBox .infoBox-bankHead .bankTd-add {
     width: 10%;
   }
+
   .settingBox .infoBox-bankHead .bankTd-add {
     cursor: pointer;
   }
+
   .settingBox .bankTd-add .icon-addBankInfo {
     width: 25px;
     height: 25px;
@@ -1812,6 +1892,7 @@
     background: url(./i/icon-gather-25.png) -125px -100px no-repeat;
     opacity: .5;
   }
+
   .settingBox .icon-assEnclosure {
     background: url(./i/icon-gather-25.png) -125px -100px no-repeat;
     opacity: .5;
@@ -1820,23 +1901,28 @@
     margin-top: -12px;
     margin-left: -12px;
   }
+
   #accountInfo .icon-addBankInfo, #accountInfo .icon-assEnclosure {
     background: url(./i/add.png) no-repeat 50%;
   }
+
   #accountInfo .adjunct [class*=enclosureBox] {
     padding: 10px;
     height: 150px;
     float: left;
     cursor: pointer;
   }
+
   .settingBox .enclosureBox-add .enclosure-containBox {
-    background: rgba(102,178,255,.1);
+    background: rgba(102, 178, 255, .1);
   }
+
   #accountInfo .adjunct .enclosure-containBox {
     height: 100px;
     border: 3px solid #f5f7fa;
     position: relative;
   }
+
   .settingBox input#fileAmounts, .settingBox input#fileBalance, .settingBox input#fileCash, .settingBox input#fileCurrencies, .settingBox input#fileEnclosure, .settingBox input#fileSingle {
     width: 100%;
     height: 100%;
@@ -1847,6 +1933,7 @@
     opacity: 0;
     z-index: 3;
   }
+
   .settingBox .icon-assEnclosure, .settingBox .icon-deleteEnclosure {
     width: 25px;
     height: 25px;

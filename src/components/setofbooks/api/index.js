@@ -24,5 +24,9 @@ export default {
   // 查询企业密钥
   querySecretKey: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/getSecretKey', params)
-  }
+  },
+  // 更新账套信息
+  updateAccount: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/update', params)
+  },
 }
