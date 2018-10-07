@@ -48,12 +48,12 @@
             </div>
             <div class="setBtnMenu btnReportBox selectModuleBtn" v-if="setMenu.type == 'report'">
               <select ng-options="type.name for type in adjustAsset.list" ng-model="adjustAsset.type"
-              ng-change="changeAdjustAsset(true)" class="ng-pristine ng-untouched ng-valid ng-not-empty">
-              <option label="默认模式" value="object:2025" selected="selected">默认模式</option>
-              <option label="一级科目模式 Ⅰ" value="object:2026">一级科目模式 Ⅰ</option>
-              <option label="一级科目模式 Ⅱ" value="object:2027">一级科目模式 Ⅱ</option>
-              <option label="明细科目模式" value="object:2028">明细科目模式</option>
-            </select>
+                      ng-change="changeAdjustAsset(true)" class="ng-pristine ng-untouched ng-valid ng-not-empty">
+                <option label="默认模式" value="object:2025" selected="selected">默认模式</option>
+                <option label="一级科目模式 Ⅰ" value="object:2026">一级科目模式 Ⅰ</option>
+                <option label="一级科目模式 Ⅱ" value="object:2027">一级科目模式 Ⅱ</option>
+                <option label="明细科目模式" value="object:2028">明细科目模式</option>
+              </select>
               <div class="icon-help" data-toggle="tooltip" title="查看帮助文档"
                    ng-show="reportMenu.type.type == 'asset'" ng-click="checkHelpPdf()">?
               </div>
@@ -71,12 +71,12 @@
                 <div class="content-abs tableData-subject">
                   <!-- 表格右侧tab -->
                   <div class="navSubjectMenuBox">
-                    <div class="navSubjectMenuMask ng-hide" ng-hide="setMenu.type == 'subject'"></div>
+                    <div class="navSubjectMenuMask ng-hide"></div>
                     <!-- ngRepeat: menu in navMenu.list -->
-                    <div ng-repeat="menu in navMenu.list"
-                         :class="item.isSelected? 'menuOn' : ''"
-                         @click="subjectClassify(item)" class="ng-binding ng-scope" v-for="item in navMenu"
-                         :key="item.index" v-text="item.name"> 资产
+                    <div :class="item.isSelected? 'menuOn' : ''"
+                         @click="subjectClassify(item, 'subject')" class="ng-binding ng-scope"
+                         v-for="item in navMenuSubject"
+                         :key="item.index" v-text="item.name">
                     </div>
                   </div>
                   <div class="content-rel setSubjectListBox" style="overflow-y: auto">
@@ -99,17 +99,16 @@
                       </div>
 
                       <!-- 表格主体 -->
-                      <div class="content-rel ps-theme-default ps-active-y">
+                      <div class="content-rel ps-theme-default ps-active-y" v-if="subjects.length > 0">
                         <div class="tableBox ng-scope" v-for="data in subjects" :key="data.subjectId">
                           <div class="tableBody" @click.stop="highlightRow(data)"
-                               :class="data.isSelect ? 'highlight' : ''">
+                               :class="data.select ? 'highlight' : ''">
                             <div class="tableTd span-25" style="font-weight:700">
                               <div class="subjectText ng-binding" v-text="data.subjectId"></div>
-                              <div class="icon-assist" v-if="data.assistTypes.length"></div>
-                              <span v-if="data.children.length > 0" data-toggle="tooltip" title="折叠/展开"
+                              <span v-if="data.children && data.children.length > 0" data-toggle="tooltip" title="折叠/展开"
                                     :class="data.active ? 'icon-arrows-0-hover' : 'icon-arrows-90-hover'"
                                     @click.stop="flexChildrenSubject(data)"></span>
-                              <div class="btn-operateBox">
+                              <div class="btn-operateBox" v-if="operationFlag">
                                 <div class="btn-operate" ng-mouseenter="operateOnEnter($event)">
                                   <div class="operateBox bottom">
                                     <div class="edit operate" ng-click="showSubjectPop(data, 'edit', $event)"> 科目编辑
@@ -135,19 +134,17 @@
                           <!-- 科目子节点 -->
                           <div v-show="!data.active">
                             <div class="tableBox ng-scope" v-for="item in data.children" :key="item.subjectId">
-                              <div class="tableBody" @click.stop="highlightRow(item)" :class="item.isSelect? 'highlight' : ''">
+                              <div class="tableBody" @click.stop="highlightRow(item)"
+                                   :class="item.select? 'highlight' : ''">
                                 <div class="tableTd span-25"
-                                     ng-style="{'padding-left': ((data.subject.length * 5) - 20) + 'px'}"
                                      style="padding-left: 15px;">
                                   <div class="borderLeft"
-                                       ng-style="{'width': (((data.subject.length * 5) - 25) + 'px')}"
                                        style="width: 10px;"></div>
                                   <div class="subjectText ng-binding" v-text="item.subjectId"></div>
-                                  <div class="icon-assist" ng-show="data.assistTypes.length"></div>
-                                  <span v-if="item.children.length > 0" data-toggle="tooltip" title="折叠/展开"
+                                  <span v-if="item.children && item.children.length > 0" data-toggle="tooltip" title="折叠/展开"
                                         :class="data.active ? 'icon-arrows-0-hover' : 'icon-arrows-90-hover'"
                                         @click.stop="flexChildrenSubject(data)"></span>
-                                  <div class="btn-operateBox">
+                                  <div class="btn-operateBox" v-if="operationFlag">
                                     <div class="btn-operate" ng-mouseenter="operateOnEnter($event)">
                                       <div class="operateBox bottom">
                                         <div class="edit operate" ng-click="showSubjectPop(data, 'edit', $event)"> 科目编辑
@@ -169,27 +166,24 @@
                                      v-text="item.direction == 1?'借':'贷'">
                                 </div>
                                 <div class="tableTd span-10 ng-binding" v-text="item.currency"></div>
-                                <span class="icon-delete ng-hide" ></span></div>
+                                <span class="icon-delete ng-hide"></span></div>
 
                               <div v-if="!item.active">
                                 <div class="tableBox ng-scope" v-for="itemC in item.children" :key="itemC.subjectId">
                                   <div class="tableBody" @click.stop="highlightRow(itemC)"
                                        :class="itemC.isSelect ? 'highlight' : ''">
                                     <div class="tableTd span-25"
-                                         ng-style="{'padding-left': ((data.subject.length * 5) - 20) + 'px'}"
                                          style="padding-left: 25px;">
                                       <div class="borderLeft"
-                                           ng-style="{'width': (((data.subject.length * 5) - 25) + 'px')}"
                                            style="width: 20px;"></div>
                                       <div class="subjectText ng-binding" v-text="itemC.subjectId"></div>
-                                      <div class="icon-assist ng-hide" ng-show="data.assistTypes.length"></div>
-                                      <span v-if="item.children.length > 0" data-toggle="tooltip" title="折叠/展开"
+                                      <span v-if="item.children && item.children.length > 0" data-toggle="tooltip" title="折叠/展开"
                                             :class="item.active ? 'icon-arrows-0-hover' : 'icon-arrows-90-hover'"
                                             @click="flexChildrenSubject(item)"
                                             class="ng-hide icon-arrows-90-hover"></span>
-                                      <div class="btn-operateBox" ng-show="isMyAccount">
+                                      <div class="btn-operateBox" v-if="operationFlag">
                                         <div class="btn-operate" ng-mouseenter="operateOnEnter($event)">
-                                          <div class="operateBox bottom">
+                                          <div class="operateBox bottom" >
                                             <div class="edit operate" ng-click="showSubjectPop(data, 'edit', $event)">
                                               科目编辑
                                             </div>
@@ -210,7 +204,7 @@
                                     <div class="tableTd span-55 ng-binding" v-text="itemC.subjectName"></div>
                                     <div class="span-10 tableTd ng-binding" style="text-align:center"
                                          :class="itemC.direction == 1 ? '-sizeColor-red' : '-sizeColor-green'"
-                                          v-text="itemC.direction  == 1 ? '借' : '贷'">
+                                         v-text="itemC.direction  == 1 ? '借' : '贷'">
                                     </div>
                                     <div class="tableTd span-10 ng-binding" v-text="itemC.currency"></div>
                                     <span class="icon-delete ng-hide"
@@ -233,7 +227,7 @@
             <div v-if="setMenu.type == 'assist'">
               <div class="content-abs tableData-assist">
                 <div class="navSubjectMenuBox">
-                  <div class="navSubjectMenuMask" ng-hide="setMenu.type !== 'subject'"></div>
+                  <div class="navSubjectMenuMask ng-hide"></div>
                   <!-- ngRepeat: menu in assistMenu.list -->
                   <div ng-repeat="menu in assistMenu.list" ng-class="menu.type == assistMenu.cur.type ? 'menuOn' : ''"
                        ng-click="selectAssistType(menu)" class="ng-binding ng-scope menuOn"> 客户
@@ -269,13 +263,57 @@
                       </table>
                     </div>
                     <div class="content-rel" id="assistTableBox">
-                      <div id="scrollBar-assist" ng-class="{'fullScrollBar': isFullBox()}" class="fullScrollBar">
-                        <table>
-                          <tbody> <!-- ngRepeat: data in tableData.assist[assistMenu.cur.type] --> </tbody>
-                        </table>
-                      </div>
-                      <table ng-show="isMyAccount" ng-class="{'createAssist': isFullBox()}" class="createAssist">
-                        <tbody> <!-- ngIf: setMenu.type == 'assist' --> </tbody>
+                      <table class="createAssist">
+                        <tbody> <!-- ngIf: setMenu.type.type == 'assist' -->
+                        <tr ng-if="setMenu.type.type == 'assist'" class="ng-scope">
+                          <td class="span-10 createBox" style="padding:0">
+                            <div class="icon-create"></div>
+                          </td>
+                          <td class="span-20" style="padding:0">
+                            <label for="vxnkguao-0-0">
+                              <span class="ng-binding"></span>
+                              <div ng-click="oprClick($index, data, 'create-code', $event)">
+                                <input type="text"
+                                       ng-keydown="oprKeyDown($event, 'create')"
+                                       id="vxnkguao-0-0"
+                                       ng-focus="oprOnFocus(newAssist, tableData.assist[assistMenu.cur.type].length - 1, 0, 'create', $event)"
+                                       maxlength="12"
+                                       ng-model="newAssist.code"
+                                       placeholder="请输入编码"
+                                       style="z-index:1"
+                                       ng-disabled="!isMyAccount"
+                                       select-default=""
+                                       class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                              </div>
+                            </label></td>
+                          <td class="span-50 span-70" ng-class="{'span-70':assistMenu.cur.type !== 'inventory'}">
+                            <label for="vxnkguao-0-1">
+                              <span class="ng-binding"></span>
+                              <div ng-click="oprClick($index, data, 'create-name', $event)">
+                                <input type="text"
+                                       id="vxnkguao-0-1"
+                                       ng-model="newAssist.name"
+                                       placeholder="请输入名称"
+                                       style="z-index:1"
+                                       maxlength="60"
+                                       class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                              </div>
+                            </label>
+                          </td>
+                          <td class="span-20 ng-hide" ng-show="assistMenu.cur.type === 'inventory'">
+                            <label for="vxnkguao-0-2">
+                              <span class="ng-binding"></span>
+                              <div ng-click="oprClick($index, data, 'create-unit', $event)">
+                                <input type="text"
+                                       id="vxnkguao-0-2"
+                                       ng-model="newAssist.unit"
+                                       placeholder="请输入单位"
+                                       style="z-index:1"
+                                       maxlength="10"
+                                       class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                              </div>
+                            </label></td>
+                        </tr><!-- end ngIf: setMenu.type.type == 'assist' --> </tbody>
                       </table>
                     </div>
                   </div>
@@ -715,13 +753,15 @@
                       <div class="leftBox"><span class="icon-person"></span>
                         <label class="inputLabel">企业联系人</label>
                         <div class="input-normal" style="margin-bottom:0">
-                          <input type="text" v-model="accountInfo.corporateContact" class="ng-pristine ng-untouched ng-valid ng-empty">
+                          <input type="text" v-model="accountInfo.corporateContact"
+                                 class="ng-pristine ng-untouched ng-valid ng-empty">
                         </div>
                       </div>
                       <div class="rightBox"><span class="icon-phone"></span>
                         <label class="inputLabel">联系方式</label>
                         <div class="input-normal" style="margin-bottom:0">
-                          <input type="text" v-model="accountInfo.contact" class="ng-pristine ng-untouched ng-valid ng-empty">
+                          <input type="text" v-model="accountInfo.contact"
+                                 class="ng-pristine ng-untouched ng-valid ng-empty">
                         </div>
                       </div>
                     </div>
@@ -792,7 +832,7 @@
                         <label for="taxBureau" class="inputLabel">税管所</label>
                         <div class="input-normal">
                           <input type="text" id="taxBureau" v-model="accountInfo.taxAdministrationOffice"
-                                class="ng-pristine ng-untouched ng-valid ng-empty">
+                                 class="ng-pristine ng-untouched ng-valid ng-empty">
                         </div>
                       </div>
                       <div class="taxAdmin">
@@ -893,21 +933,46 @@
                     </div>
                     <div class="rightBox">
                       <div class="range"><label class="inputLabel">经营范围</label> <textarea
-                        v-model="accountInfo.businessScope" class="ng-pristine ng-untouched ng-valid ng-empty"></textarea></div>
+                        v-model="accountInfo.businessScope"
+                        class="ng-pristine ng-untouched ng-valid ng-empty"></textarea></div>
                     </div>
                   </div>
                 </div>
                 <div class="bank column">
                   <div class="title">
-                    <span class="sideLine"></span> 银行信息</div>
+                    <span class="sideLine"></span> 银行信息
+                  </div>
                   <div class="content">
                     <div class="infoBox-bankHead">
-                      <div class="bankTd-add" data-toggle="tooltip" title="添加银行" ng-click="addBank()">
+                      <div class="bankTd-add" data-toggle="tooltip" title="添加银行" @click="addBank">
                         <div class="icon-addBankInfo"></div>
                       </div>
                       <div class="bankTd-type">账户类型</div>
                       <div class="bankTd-bank">开户银行</div>
                       <div class="bankTd-num">银行账号</div>
+                    </div>
+                    <div class="infoBox-bankBody ng-scope" v-for="(bank,index) in accountInfo.accountSetBankList"
+                         :key="index">
+                      <div class="bankTd-index ng-binding" v-text="index+1"></div>
+                      <div class="bankTd-type">
+                        <select class="form-control ng-pristine ng-valid ng-not-empty ng-touched"
+                                v-model="bank.accountType">
+                          <option label="基本账户" value="1">基本账户</option>
+                          <option label="社保账户" value="2">社保账户</option>
+                          <option label="一般账户" value="3">一般账户</option>
+                        </select>
+                      </div>
+                      <div class="bankTd-bank">
+                        <!--<label class="ng-binding tdLabel-on tdLabel"></label>-->
+                        <input class="tdInput ng-pristine ng-untouched ng-valid ng-empty align" type="text"
+                               v-model="bank.depositBank" ng-keypress="keyPress($event, ('#bn-' + $index))">
+                      </div>
+                      <div class="bankTd-num">
+                        <!--<label class="ng-binding tdLabel-on tdLabel"></label>-->
+                        <input class="tdInput ng-pristine ng-untouched ng-valid ng-empty align" type="text"
+                               v-model="bank.bankAccount">
+                      </div>
+                      <div class="icon-removeBank" data-toggle="tooltip" title="删除银行" @click="removeBank(index)"></div>
                     </div>
                   </div>
                 </div>
@@ -916,16 +981,23 @@
                   <div class="content clear">
                     <div class="enclosureBox-add span-20">
                       <div class="enclosure-containBox" data-toggle="tooltip" title="添加附件">
-                        <input type="file"
-                               id="fileEnclosure"
-                               name="file[]"
-                               onchange="angular.element(this).scope().onFileEnclosure()"
-                               ng-class="{'disabled': !isMyAccount}"
-                               ng-disabled="!isMyAccount"
-                               select-default="">
+                        <input type="file" id="fileEnclosure" name="file[]" @change="fileUpload" ref="inputer">
                         <div class="icon-assEnclosure"></div>
                       </div>
-                    </div> <!-- ngRepeat: a in companyInfo.info.attachments --> </div>
+                    </div>
+                    <!-- 附件 -->
+                    <div class="enclosureBox span-20 ng-scope" v-for="(a,index) in accountInfo.enterpriseAnnexList"
+                         :key="index" data-toggle="tooltip">
+                      <div class="enclosure-containBox">
+                        <div class="content-rel enclosure-J">
+                          <img :src="a.fileUrl">
+                          <div class="icon-deleteEnclosure" data-toggle="tooltip" title="删除"
+                               @click="deleteFile(a)"></div>
+                        </div>
+                      </div>
+                      <div class="enclosure-sizeBox overflowHiddenEllipsis ng-binding" v-text="a.fileName"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -944,14 +1016,31 @@
     name: "bookSettings",
     data() {
       return {
+        operationFlag: false,
         subjects: [],
         setTitleClass: '',
-        navMenu: [
+        navMenuSubject: [
           {"index": 1, "type": "assets", "name": "资产", isSelected: true},
           {"index": 2, "type": "liabilities", "name": "负债", isSelected: false},
           {"index": 3, "type": "rightsAndInterests", "name": "权益", isSelected: false},
           {"index": 4, "type": "cost", "name": "成本", isSelected: false},
           {"index": 5, "type": "profitAndLoss", "name": "损益", isSelected: false}
+        ],
+        navMenuAssist: [
+          {"index": 1, "type": "assets", "name": "客户", isSelected: true},
+          {"index": 2, "type": "liabilities", "name": "供应商", isSelected: false},
+          {"index": 3, "type": "rightsAndInterests", "name": "部门", isSelected: false},
+          {"index": 4, "type": "cost", "name": "员工", isSelected: false},
+          {"index": 5, "type": "profitAndLoss", "name": "存货", isSelected: false},
+          {"index": 6, "type": "cost", "name": "项目", isSelected: false}
+        ],
+        // 报表tab按钮
+        reportMenu: [
+          {index: 1, type: 'income', name: '辅助核算余额表', isSelected: false},
+          {index: 2, type: 'income', name: '辅助核算余额表', isSelected: false},
+          {index: 3, type: 'income', name: '辅助核算余额表', isSelected: false},
+          {index: 4, type: 'income', name: '辅助核算余额表', isSelected: false},
+          {index: 5, type: 'income', name: '辅助核算余额表', isSelected: false},
         ],
         setMenu: {
           type: 'subject',
@@ -987,8 +1076,14 @@
       },
       // 查询科目设置-资产
       queryAssets() {
-        let url = "../../../static/repository/subject.json"
-        return url;
+        /*let url = "../../../static/repository/subject.json"
+        return url;*/
+        let params = {
+          accountSetId: '',
+          courseType: '',
+          token: ''
+        }
+        return params;
       },
       // 查询科目设置-负债
       queryLiabilities() {
@@ -1014,36 +1109,86 @@
       queryNavMenuData(url) {
         console.log(url, "<<<<")
         if (utils.isExist(url)) {
-          api.querySubprojects(url).then(res => {
+          /*api.querySubprojects(url).then(res => {
             console.log(res.body, "<<<>>>")
             this.subjects = res.body
+          })*/
+          api.queryAccountSet(url).then(res => {
+            console.log(res.body)
+            if (res.body.result == 0) {
+              this.subjects = res.body.data
+            }
           })
         }
       },
       // 右侧导航选中事件
-      subjectClassify(opt) {
-        console.log("右侧导航选中事件", opt)
-        if (utils.isExist(opt)) {
-          this.navMenu.forEach(function (el) {
-            if (opt.index == el.index) {
-              el.isSelected = true
-            } else {
-              el.isSelected = false
+      subjectClassify(opt, type) {
+        console.log("右侧导航选中事件", opt, type)
+        switch (type) {
+          case 'subject':
+            if (utils.isExist(opt)) {
+              this.navMenuSubject.forEach(function (el) {
+                if (opt.index == el.index) {
+                  el.isSelected = true
+                } else {
+                  el.isSelected = false
+                }
+              })
+              this.subjects = []
+              let params = {
+                accountSetId: this.accountId,
+                token: this.token
+              }
+              if (opt.index == 1) { // 资产
+                // this.queryNavMenuData(this.queryAssets())
+                params.courseType = '1';
+              } else if (opt.index == 2) { // 负债
+                // this.queryNavMenuData(this.queryLiabilities())
+                params.courseType = '2';
+              } else if (opt.index == 3) { // 权益
+                params.courseType = '3';
+              } else if (opt.index == 4) { // 成本
+                params.courseType = '4';
+              } else if (opt.index == 5) { // 损益
+                params.courseType = '5';
+              }
+              this.queryNavMenuData(params)
             }
-          })
-          this.subjects = []
-          if (opt.index == 1) {
-            this.queryNavMenuData(this.queryAssets())
-          } else if (opt.index == 2) {
-            this.queryNavMenuData(this.queryLiabilities())
-          } else if (opt.index == 3) {
-
-          } else if (opt.index == 4) {
-
-          } else if (opt.index == 5) {
-
-          }
+            break;
+          case 'assist':
+            if (utils.isExist(opt)) {
+              this.navMenuAssist.forEach(function (el) {
+                if (opt.index == el.index) {
+                  el.isSelected = true
+                } else {
+                  el.isSelected = false
+                }
+              })
+              this.subjects = []
+              let params = {
+                accountSetId: this.accountId,
+                token: this.token
+              }
+              if (opt.index == 1) { // 客户
+                // this.queryNavMenuData(this.queryAssets())
+                params.courseType = '1';
+              } else if (opt.index == 2) { // 供应商
+                // this.queryNavMenuData(this.queryLiabilities())
+                params.courseType = '2';
+              } else if (opt.index == 3) { // 部门
+                params.courseType = '3';
+              } else if (opt.index == 4) { // 员工
+                params.courseType = '4';
+              } else if (opt.index == 5) { // 存货
+                params.courseType = '5';
+              } else if (opt.index == 6) { // 项目
+                params.courseType = '5';
+              }
+              // this.queryNavMenuData(params)
+            }
+            break;
         }
+
       },
       // 顶部导航tab
       selectType(opt) {
@@ -1051,7 +1196,7 @@
         if (utils.isExist(opt)) {
           this.setMenu.type = opt.type
           if (opt.index == 1) {
-            this.subjectClassify({index: 1})
+            this.subjectClassify({index: 1}, 'subject')
           } else if (opt.index == 2) {
 
           } else if (opt.index == 3) {
@@ -1097,9 +1242,9 @@
         }
       },
       // 账套信息 复选框
-      selectCoType(value, type){
+      selectCoType(value, type) {
         console.log("复选框选择》", value, type, this.accountInfo)
-        switch (type){
+        switch (type) {
           case 'hasTaxPrinter': // 程控机
             if (this.accountInfo.hasTaxPrinter == Number(value)) {
               this.accountInfo.hasTaxPrinter = ""
@@ -1144,22 +1289,65 @@
         params.id = this.accountId
         params.token = this.token
         api.updateAccount(params).then(res => {
-          console.log("账套信息保存》",res.body)
+          console.log("账套信息保存》", res.body)
           if (res.body.result == 0) {
-            this.$emit('success',res.body.msg)
+            this.$emit('success', res.body.msg)
             this.accountInfo = res.body.data
           } else {
-            this.$emit('error',res.body.msg)
+            this.$emit('error', res.body.msg)
           }
         })
       },
       // 账套信息 取消修改
       cancelEdit() {
         this.queryAccountInfo()
-      }
+      },
+      addBank() {
+        console.log("添加銀行信息", this.accountInfo.accountSetBankList)
+        this.accountInfo.accountSetBankList.push({
+          index: this.banks.length,
+          depositBank: '',
+          bankAccount: '',
+          accountType: 1
+        })
+      },
+      removeBank(index) {
+        this.accountInfo.accountSetBankList.splice(index, 1)
+      },
+      // 上传企业附件
+      fileUpload() {
+        let inputDOM = this.$refs.inputer;
+        // 通过DOM取文件数据
+        this.file = inputDOM.files[0];
+        console.log("inputDOM.files[0]:" + inputDOM.files[0]);
+        var formdata = new window.FormData();
+        formdata.append('file', inputDOM.files[0]);
+        formdata.append('accountSetId', this.accountId);
+        api.upload(formdata).then(res => {
+          console.log("上传结果：", res.body)
+          if (res.body.result == 0) {
+            this.accountInfo.enterpriseAnnexList.push(res.body.data)
+          }
+        })
+      },
+      deleteFile(opt) {
+        if (utils.isExist(opt)) {
+          api.delFile({id: opt.id, token: this.token, accountSetId: this.accountId}).then(res => {
+            console.log("删除文件结果：", res.body)
+            if (res.body.result == 0) {
+              const that = this
+              this.accountInfo.enterpriseAnnexList.forEach(function (el, idx) {
+                if (res.body.data.id == el.id) {
+                  that.accountInfo.enterpriseAnnexList.splice(idx, 1)
+                }
+              })
+            }
+          })
+        }
+      },
     },
     created() {
-      this.subjectClassify({index: 1})
+      this.subjectClassify({index: 1}, 'subject')
     }
   }
 </script>
@@ -1272,7 +1460,8 @@
   .settingBox .setHeadMenu ul li.li-5:hover ~ .hover_bar, .settingBox .setHeadMenu ul li ~ .hover_bar.li-5 {
     left: 375px;
   }
-  .settingBox .btnReportBox>[class*=btn-], .settingBox .btnReportBox>div.btn-check, .settingBox .btnReportBox>div.btn-check:hover, .settingBox .reportTable-left>[class*=btn-] {
+
+  .settingBox .btnReportBox > [class*=btn-], .settingBox .btnReportBox > div.btn-check, .settingBox .btnReportBox > div.btn-check:hover, .settingBox .reportTable-left > [class*=btn-] {
     height: 30px;
     line-height: 28px;
     text-align: center;
@@ -1287,10 +1476,12 @@
     color: #5fbbfc;
     padding: 0 20px;
   }
-  .settingBox .btnReportBox>div.btn-check, .settingBox .btnReportBox>div.btn-check:hover {
+
+  .settingBox .btnReportBox > div.btn-check, .settingBox .btnReportBox > div.btn-check:hover {
     padding: 0 20px 0 40px;
     color: #38aafc;
   }
+
   .settingBox .icon-addAssets, .settingBox .icon-cancelReport, .settingBox .icon-fileAssets, .settingBox .icon-reconciliationAssets, .settingBox .icon-saveReport, .settingBox [class*=icon-isShowNullNum-] {
     width: 24px;
     height: 24px;
@@ -1300,9 +1491,11 @@
     left: 15px;
     background: red;
   }
+
   .settingBox .icon-isShowNullNum-off {
     background: url(./i/unselected.png) no-repeat 50%;
   }
+
   .settingBox .setBtnMenu .icon-download {
     height: 30px;
     width: 30px;
@@ -1311,6 +1504,7 @@
     background: url(./i/download.png) no-repeat 50%;
     margin-left: 10px;
   }
+
   /**page-content*/
   .settingBox .page-content {
     overflow: visible;
@@ -1327,14 +1521,14 @@
   }
 
   /**右側tab菜單*/
-  .settingBox .navSubjectMenuBox {
+  /*.settingBox .navSubjectMenuBox {
     width: 30px;
     color: #5fbbfc;
     text-align: center;
     position: absolute;
     top: 40px;
     right: 0;
-  }
+  }*/
 
   .settingBox .navSubjectMenuBox > div {
     padding: 10px 4px;
@@ -1917,6 +2111,11 @@
     background: rgba(102, 178, 255, .1);
   }
 
+  .settingBox .enclosureBox-add:hover .enclosure-containBox {
+    background: rgba(102, 178, 255, .2);
+    overflow: hidden;
+  }
+
   #accountInfo .adjunct .enclosure-containBox {
     height: 100px;
     border: 3px solid #f5f7fa;
@@ -1940,4 +2139,308 @@
     position: absolute;
   }
 
+  .settingBox .infoBox-bankBody {
+    background: #fff;
+    position: relative;
+  }
+
+  #accountInfo .bank select {
+    width: auto;
+    height: auto;
+    border: 0;
+    background: #fff;
+    border-radius: 0;
+    text-indent: 0;
+  }
+
+  .settingBox input.tdInput, .settingBox label.tdLabel {
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 96%;
+    height: 85%;
+    padding: 0 5px;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  .settingBox label.tdLabel {
+    background: #e6f2ff;
+    border: 1px solid #90c7ff;
+  }
+
+  .settingBox label.tdLabel {
+    cursor: default;
+    z-index: 2;
+    line-height: 26px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .settingBox .bankTd-bank label.tdLabel {
+    line-height: 41px;
+  }
+
+  #accountInfo .bank label {
+    text-align: center;
+  }
+
+  .settingBox .infoBox-bankBody .icon-removeBank {
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    background: url(./i/remove.png) 0 -25px no-repeat;
+    background-size: 25px;
+    position: absolute;
+    z-index: 5;
+    right: 15px;
+    top: 12px;
+    cursor: pointer;
+    display: none;
+  }
+
+  .settingBox .infoBox-bankBody:hover .icon-removeBank {
+    display: inline-block;
+  }
+
+  .settingBox input.tdInput:focus {
+    opacity: 1;
+    z-index: 3;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    background: #fff;
+  }
+
+  .settingBox input:focus, .settingBox select:focus, .settingBox textarea:focus {
+    outline: none;
+  }
+
+  input.align {
+    text-align: center;
+  }
+
+  input.align:focus {
+    text-align: left;
+  }
+
+  .settingBox .icon-deleteEnclosure {
+    border-radius: 3px;
+    background: url(./i/icon-gather-25.png) -175px -50px no-repeat hsla(0, 0%, 100%, .7);
+    top: 10px;
+    right: 10px;
+    opacity: 0;
+  }
+
+  .settingBox .enclosure-containBox img {
+    width: 99%;
+    height: 99%;
+  }
+
+  .settingBox .enclosureBox:hover .icon-deleteEnclosure {
+    opacity: .5;
+  }
+
+  .settingBox .enclosureBox:hover .icon-deleteEnclosure:hover {
+    opacity: 1;
+  }
+
+  /**辅助核算*/
+  .settingBox .navSubjectMenuBox {
+    width: 30px;
+    color: #5fbbfc;
+    text-align: center;
+    position: absolute;
+    top: 40px;
+    right: 0;
+  }
+
+  .settingBox .navSubjectMenuBox > div {
+    padding: 10px 4px;
+    background: #fff;
+    border-bottom: 1px solid #5fbbfc;
+    border-right: 1px solid #5fbbfc;
+    cursor: pointer;
+  }
+
+  .settingBox .navSubjectMenuBox > div.navSubjectMenuMask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    background: hsla(0, 0%, 100%, .5);
+    border: 1px solid hsla(0, 0%, 100%, .5);
+    cursor: default;
+  }
+
+  .settingBox .navSubjectMenuBox > div:nth-child(2) {
+    border-top: 1px solid #5fbbfc;
+    border-radius: 0 5px 0 0;
+  }
+
+  .settingBox .assistBox {
+    overflow: hidden;
+    border-radius: 3px;
+    background: #fff;
+    padding: 40px 0 0;
+  }
+
+  .assistBox .content-rel {
+    border-left: 0 solid rgba(182, 192, 210, .5);
+  }
+
+  .settingBox [class*=tableData-] table {
+    width: 100%;
+    background: #fff;
+  }
+
+  .settingBox [class*=tableData-] table tr {
+    border-bottom: 1px solid rgba(182, 192, 210, .5);
+  }
+
+  .settingBox [class*=tableData-] table th {
+    height: 40px;
+    background: #5fbbfc;
+    color: #fff;
+    font-weight: 400;
+  }
+
+  .settingBox [class*=tableData-] table td, .settingBox [class*=tableData-] table th {
+    border-right: 1px solid rgba(182, 192, 210, .5);
+    position: relative;
+    padding: 0 4px;
+  }
+
+  .settingBox [class*=tableData-] table tr th:last-child {
+    border-right: 1px solid #5fbbfc;
+  }
+
+  .settingBox .tableData-assist .assistBox .content-rel .content-rel {
+    border: 1px solid rgba(182, 192, 210, .5);
+  }
+
+  #assistTableBox {
+    padding-bottom: 31px;
+  }
+
+  #assistTableBox, .fullScrollBar {
+    position: relative;
+    height: 100%;
+  }
+
+  .settingBox [class*=tableData-] table tbody tr {
+    height: 30px;
+  }
+
+  .tableData-assist table td {
+    position: relative;
+    height: 30px;
+  }
+
+  .assistBox .createBox, .assistBox .selectBox {
+    position: relative;
+  }
+
+  .settingBox .tableData-assist table td:first-child {
+    border-left: 0;
+  }
+
+  .settingBox [class*=tableData-] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .settingBox .tableData-assist {
+    padding-right: 30px;
+  }
+  .assistBox .icon-create {
+    background: url(./i/add.png) 50% no-repeat;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
+  .tableData-assist table label {
+    display: inline-block;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    line-height: 30px;
+  }
+  .tableData-assist table label span {
+    position: absolute;
+    left: 0;
+    text-indent: 4px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tableData-assist table label>div {
+    height: 100%;
+    width: 100%;
+    padding: 2px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 2px;
+  }
+  .tableData-assist input {
+    background-color: #e8efff;
+    border: 1px solid #66b2ff;
+  }
+  .tableData-assist table label input {
+    position: relative;
+    z-index: -1;
+    top: -4px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .tableData-assist table label input:focus {
+    z-index: 1;
+  }
+
+  /**初始报表*/
+  .settingBox [class*=tableData-] .reportTableFixed, .settingBox [class*=tableData-] .tableFixed {
+    position: absolute;
+    top: -40px;
+    left: 0;
+  }
+  .settingBox [class*=tableData-] .reportTableFixed {
+    width: 100%;
+    height: 40px;
+    top: -40px;
+    padding: 7px 20px;
+    border-radius: 4px 4px 0 0;
+    border-left: 1px solid #38aafc;
+    border-top: 1px solid #38aafc;
+    border-right: 1px solid #38aafc;
+    color: rgba(42,51,59,.6);
+  }
+  .settingBox .reportTableFixed [class*=reportTable-], .settingBox .reportTableFixed [class*=reportTable-]>div {
+    height: 100%;
+  }
+  .settingBox .reportTableFixed .reportTable-left, .settingBox .reportTableFixed [class*=reportTable-]>div {
+    float: left;
+  }
+  .settingBox .reportTableFixed .reportTable-left {
+    position: relative;
+  }
+  .settingBox .reportTableFixed .reportTable-right {
+    float: right;
+  }
+  .settingBox .reportTableFixed .reportTable-left .viewInfoSize {
+    width: 180px;
+  }
+  .settingBox .reportTableFixed .reportTable-right>div {
+    margin-left: 30px;
+    cursor: pointer;
+  }
 </style>

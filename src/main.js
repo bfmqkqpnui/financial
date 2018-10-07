@@ -19,11 +19,11 @@ Vue.http.options.xhr = { withCredentials: true }
 Vue.http.options.credentials = true;
 Vue.http.interceptors.push((request, next) => {
   next((response) => {
-    console.log("拦截结果：" , JSON.stringify(response.body),response.body.result == 2, location)
+    // console.log("拦截结果：" , JSON.stringify(response.body),response.body.result == 2, location)
     // 优化如果token失效重新跳转到登录页面登录  || typeof response.body.result == "undefined"
     if (response.body.result == 2) {
       localStorage.removeItem('userInfo')
-      console.log(">>>" + location.origin)
+      // console.log(">>>" + location.origin)
       location.href = location.origin + "/login"
     } else {
       return response

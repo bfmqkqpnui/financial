@@ -29,4 +29,16 @@ export default {
   updateAccount: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/update', params)
   },
+  // 上传文件
+  upload: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/enterpriseannex/insert', params,{headers: { 'Content-Type': 'multipart/form-data'}})
+  },
+  // 删除文件
+  delFile: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/enterpriseannex/delete', params)
+  },
+  // 查询科目设置
+  queryAccountSet: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/course/queryByAccountSetId', params)
+  }
 }

@@ -124,7 +124,7 @@
       </div>
     </div>
     <!-- 路由 -->
-    <router-view @sel="selMenu" @accPop="addPop"></router-view>
+    <router-view @sel="selMenu" @accPop="addPop" @error="error" @success="success"></router-view>
   </div>
 </template>
 
@@ -240,6 +240,14 @@
       addPop() {
         console.log("addPop触发")
         this.$emit("showAddAccountPop")
+      },
+      error(msg){
+        console.log("操作失敗")
+        this.$emit("err", msg)
+      },
+      success(msg){
+        console.log("操作成功")
+        this.$emit("success", msg)
       }
     },
     //生命周期钩子：组件实例渲染完成时调用

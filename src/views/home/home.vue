@@ -90,7 +90,7 @@
         </div>
       </div>
       <!-- 二级导航 -->
-      <navComponent :menuType="menuType" @showAddAccountPop="showAddAccountPop" @success=""></navComponent>
+      <navComponent :menuType="menuType" @showAddAccountPop="showAddAccountPop" @success="success" @err="setErrMsg"></navComponent>
     </div>
 
 
@@ -256,7 +256,7 @@
       <div class="site-popup anime popup-message flex--column site-popup--expand">
         <div class="site-popup_head">
           <div class="site-popup_title">小君提醒您：</div>
-          <div class="site-popup_close g-icon-close" @click="hide"></div>
+          <div class="site-popup_close g-icon-close" @click="hideShade"></div>
         </div>
         <div class="site-popup_body">
           <div class="site-popup_type">
@@ -264,7 +264,7 @@
             <p class="typeTitle typeTitle--done">操作成功</p>
           </div>
           <div class="site-popup_message">
-            <p v-hide="msgList" class="ng-binding" v-text="successMsg"></p>
+            <p class="ng-binding" v-text="successMsg"></p>
           </div>
         </div>
         <div class="site-popup_footer"></div>
@@ -608,12 +608,18 @@
       },
       success(message){
         if (utils.isExist(message)) {
+          this.isSuccess = true
           this.successMsg = message
           let that = this
           setInterval(function () {
             that.successMsg = ''
+            that.isSuccess = false
           }, 2000)
         }
+      },
+      hideShade(){
+        this.isSuccess = false
+        this.successMsg = ''
       }
     },
     components: {},
