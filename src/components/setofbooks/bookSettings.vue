@@ -232,43 +232,92 @@
                 <div class="navSubjectMenuBox">
                   <div class="navSubjectMenuMask ng-hide"></div>
                   <!-- ngRepeat: menu in assistMenu.list -->
-                  <div ng-repeat="menu in assistMenu.list" ng-class="menu.type == assistMenu.cur.type ? 'menuOn' : ''"
-                       ng-click="selectAssistType(menu)" class="ng-binding ng-scope menuOn"> 客户
-                  </div><!-- end ngRepeat: menu in assistMenu.list -->
-                  <div ng-repeat="menu in assistMenu.list" ng-class="menu.type == assistMenu.cur.type ? 'menuOn' : ''"
-                       ng-click="selectAssistType(menu)" class="ng-binding ng-scope"> 供应商
-                  </div><!-- end ngRepeat: menu in assistMenu.list -->
-                  <div ng-repeat="menu in assistMenu.list" ng-class="menu.type == assistMenu.cur.type ? 'menuOn' : ''"
-                       ng-click="selectAssistType(menu)" class="ng-binding ng-scope"> 部门
-                  </div><!-- end ngRepeat: menu in assistMenu.list -->
-                  <div ng-repeat="menu in assistMenu.list" ng-class="menu.type == assistMenu.cur.type ? 'menuOn' : ''"
-                       ng-click="selectAssistType(menu)" class="ng-binding ng-scope"> 员工
-                  </div><!-- end ngRepeat: menu in assistMenu.list -->
-                  <div ng-repeat="menu in assistMenu.list" ng-class="menu.type == assistMenu.cur.type ? 'menuOn' : ''"
-                       ng-click="selectAssistType(menu)" class="ng-binding ng-scope"> 存货
-                  </div><!-- end ngRepeat: menu in assistMenu.list -->
-                  <div ng-repeat="menu in assistMenu.list" ng-class="menu.type == assistMenu.cur.type ? 'menuOn' : ''"
-                       ng-click="selectAssistType(menu)" class="ng-binding ng-scope"> 项目
-                  </div><!-- end ngRepeat: menu in assistMenu.list --> </div>
+                  <div :class="menu.isSelected ? 'menuOn' : ''" v-for="menu in navMenuAssist" :key="menu.index"
+                       @click="subjectClassify(menu,'assist')" class="ng-binding ng-scope" v-text="menu.name">
+                  </div>
+                </div>
                 <!-- 辅助核算 -->
                 <div class="content-rel assistBox">
                   <div class="content-rel">
                     <div class="tableBox tableFixed">
                       <table>
                         <thead>
-                        <tr>
+                        <tr v-for="menu in navMenuAssist" :key="menu.index" v-if="menu.isSelected">
                           <th class="span-10">开启</th>
-                          <th class="span-20 ng-binding">客户编码</th>
-                          <th class="span-50 ng-binding span-70"
-                              ng-class="{'span-70':assistMenu.cur.type !== 'inventory'}">客户名称
-                          </th> <!-- ngIf: assistMenu.cur.type === 'inventory' --> </tr>
+                          <th class="span-20 ng-binding">{{menu.name}}编码</th>
+                          <th class="span-50 ng-binding" :class="{'span-70':menu.type != 'profitAndLoss'}">
+                            {{menu.name}}名称
+                          <th class="span-20 ng-scope" v-if="menu.type == 'profitAndLoss'">单位</th>
+                          </th>
+                        </tr>
                         </thead>
                       </table>
                     </div>
-                    <div class="content-rel" id="assistTableBox">
+                    <div class="content-rel" id="assistTableBox" style="overflow-y: auto">
+                      <div id="scrollBar-assist" ng-class="{'fullScrollBar': isFullBox()}"
+                           class="ps-container ps-theme-default ps-active-y"
+                           data-ps-id="3794f942-ecf2-5f23-5614-90323c8768be">
+                        <table>
+                          <tbody>
+                          <tr ng-repeat="data in tableData.assist[assistMenu.cur.type]"
+                              ng-if="$index !== tableData.assist[assistMenu.cur.type].length - 1" class="ng-scope">
+                            <td class="span-10 selectBox">
+                              <span ng-click="switchAssist(data)" class="icon25-select"
+                                    ng-class="{'icon25-selected': data.isOpen}"></span>
+                            </td>
+                            <td class="span-20"><label for="hkmzyfmr-0-0">
+                              <span class="ng-binding">123</span>
+                              <div ng-click="oprClick($index, data, 'edit-code', $event)">
+                                <input type="text" id="hkmzyfmr-0-0"
+                                       ng-focus="oprOnFocus(data, $index, 0, 'edit', $event)"
+                                       maxlength="12"
+                                       class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                              </div>
+                            </label>
+                            </td>
+                            <td class="span-50" ng-class="{'span-70':assistMenu.cur.type !== 'inventory'}">
+                              <label for="hkmzyfmr-0-1">
+                                <span class="ng-binding">123</span>
+                                <div ng-click="oprClick($index, data, 'edit-name', $event)">
+                                  <input type="text" id="hkmzyfmr-0-1"
+                                         ng-focus="oprOnFocus(data, $index, 1, 'edit', $event)"
+                                         ng-class="{'assistInput':assist.curInputRow == $index &amp;&amp; assist.curInputType == 'name'}"
+                                         maxlength="60" ng-model="cacheAssist.name"
+                                         class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                                </div>
+                              </label>
+                              <div class="icon25-delete ng-hide"
+                                   ng-show="isMyAccount &amp;&amp; assistMenu.cur.type !== 'inventory'"
+                                   ng-click="deleteAssist(data)"></div>
+                            </td>
+                            <td class="span-20" ng-show="assistMenu.cur.type === 'inventory'">
+                              <label for="hkmzyfmr-0-2">
+                                <span class="ng-binding"></span>
+                                <div ng-click="oprClick($index, data, 'edit-unit', $event)">
+                                  <input type="text" id="hkmzyfmr-0-2"
+                                         ng-focus="oprOnFocus(data, $index, 2, 'edit', $event)"
+                                         ng-class="{'assistInput':assist.curInputRow == $index &amp;&amp; assist.curInputType == 'unit'}"
+                                         maxlength="10"
+                                         ng-model="cacheAssist.unit"
+                                         class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                                </div>
+                                <div class="icon25-delete" ng-click="deleteAssist(data)"></div>
+                              </label>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -1px;">
+                          <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                        </div>
+                        <div class="ps-scrollbar-y-rail" style="top: 1px; height: 62px; right: 0px;">
+                          <div class="ps-scrollbar-y" tabindex="0" style="top: 1px; height: 61px;"></div>
+                        </div>
+                      </div>
+                      <!-- 可以输入的table -->
                       <table class="createAssist">
-                        <tbody> <!-- ngIf: setMenu.type.type == 'assist' -->
-                        <tr ng-if="setMenu.type.type == 'assist'" class="ng-scope">
+                        <tbody>
+                        <tr v-for="menu in navMenuAssist" :key="menu.index" v-if="menu.isSelected" class="ng-scope">
                           <td class="span-10 createBox" style="padding:0">
                             <div class="icon-create"></div>
                           </td>
@@ -276,34 +325,25 @@
                             <label for="vxnkguao-0-0">
                               <span class="ng-binding"></span>
                               <div ng-click="oprClick($index, data, 'create-code', $event)">
-                                <input type="text"
-                                       ng-keydown="oprKeyDown($event, 'create')"
-                                       id="vxnkguao-0-0"
-                                       ng-focus="oprOnFocus(newAssist, tableData.assist[assistMenu.cur.type].length - 1, 0, 'create', $event)"
-                                       maxlength="12"
+                                <input type="text" id="vxnkguao-0-0" maxlength="12"
                                        ng-model="newAssist.code"
-                                       placeholder="请输入编码"
-                                       style="z-index:1"
-                                       ng-disabled="!isMyAccount"
-                                       select-default=""
-                                       class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
-                              </div>
-                            </label></td>
-                          <td class="span-50 span-70" ng-class="{'span-70':assistMenu.cur.type !== 'inventory'}">
-                            <label for="vxnkguao-0-1">
-                              <span class="ng-binding"></span>
-                              <div ng-click="oprClick($index, data, 'create-name', $event)">
-                                <input type="text"
-                                       id="vxnkguao-0-1"
-                                       ng-model="newAssist.name"
-                                       placeholder="请输入名称"
-                                       style="z-index:1"
-                                       maxlength="60"
+                                       placeholder="请输入编码" style="z-index:1"
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
                             </label>
                           </td>
-                          <td class="span-20 ng-hide" ng-show="assistMenu.cur.type === 'inventory'">
+                          <td class="span-50" ng-class="{'span-70':menu.type != 'profitAndLoss'}">
+                            <label for="vxnkguao-0-1">
+                              <span class="ng-binding"></span>
+                              <div ng-click="oprClick($index, data, 'create-name', $event)">
+                                <input type="text" id="vxnkguao-0-1"
+                                       ng-model="newAssist.name"
+                                       placeholder="请输入名称" style="z-index:1" maxlength="60"
+                                       class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                              </div>
+                            </label>
+                          </td>
+                          <td class="span-20" v-if="menu.type == 'profitAndLoss'">
                             <label for="vxnkguao-0-2">
                               <span class="ng-binding"></span>
                               <div ng-click="oprClick($index, data, 'create-unit', $event)">
@@ -316,7 +356,8 @@
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
                             </label></td>
-                        </tr><!-- end ngIf: setMenu.type.type == 'assist' --> </tbody>
+                        </tr>
+                        </tbody>
                       </table>
                     </div>
                   </div>
@@ -328,29 +369,15 @@
             <div v-if="setMenu.type == 'report'">
               <div class="contentArea">
                 <div class="content-abs tableData-report">
-                  <div class="navSubjectMenuBox" ng-hide="reportMenu.type.type != 'report'">
-                    <div class="navSubjectMenuMask ng-hide" ng-show="reportMenu.type.type != 'report'"></div>
-                    <!-- ngRepeat: menu in navMenu.list -->
-                    <div ng-repeat="menu in navMenu.list"
-                         ng-class="menu.type == navMenu.reportType.type ? 'menuOn' : ''"
-                         ng-click="subjectClassify(menu, 'reportType')" class="ng-binding ng-scope menuOn"> 资产
-                    </div><!-- end ngRepeat: menu in navMenu.list -->
-                    <div ng-repeat="menu in navMenu.list"
-                         ng-class="menu.type == navMenu.reportType.type ? 'menuOn' : ''"
-                         ng-click="subjectClassify(menu, 'reportType')" class="ng-binding ng-scope"> 负债
-                    </div><!-- end ngRepeat: menu in navMenu.list -->
-                    <div ng-repeat="menu in navMenu.list"
-                         ng-class="menu.type == navMenu.reportType.type ? 'menuOn' : ''"
-                         ng-click="subjectClassify(menu, 'reportType')" class="ng-binding ng-scope"> 权益
-                    </div><!-- end ngRepeat: menu in navMenu.list -->
-                    <div ng-repeat="menu in navMenu.list"
-                         ng-class="menu.type == navMenu.reportType.type ? 'menuOn' : ''"
-                         ng-click="subjectClassify(menu, 'reportType')" class="ng-binding ng-scope"> 成本
-                    </div><!-- end ngRepeat: menu in navMenu.list -->
-                    <div ng-repeat="menu in navMenu.list"
-                         ng-class="menu.type == navMenu.reportType.type ? 'menuOn' : ''"
-                         ng-click="subjectClassify(menu, 'reportType')" class="ng-binding ng-scope"> 损益
-                    </div><!-- end ngRepeat: menu in navMenu.list --> </div>
+                  <!-- 表格右侧tab -->
+                  <div class="navSubjectMenuBox">
+                    <div class="navSubjectMenuMask ng-hide"></div>
+                    <div :class="item.isSelected? 'menuOn' : ''"
+                         @click="subjectClassify(item, 'subject')" class="ng-binding ng-scope"
+                         v-for="item in navMenuSubject"
+                         :key="item.index" v-text="item.name">
+                    </div>
+                  </div>
                   <div class="content-rel setSubjectListBox">
                     <div class="content-rel">
                       <div class="reportTableFixed">
@@ -1043,10 +1070,10 @@
         // 报表tab按钮
         reportMenu: [
           {index: 1, type: 'income', name: '辅助核算余额表', isSelected: false},
-          {index: 2, type: 'income', name: '辅助核算余额表', isSelected: false},
-          {index: 3, type: 'income', name: '辅助核算余额表', isSelected: false},
-          {index: 4, type: 'income', name: '辅助核算余额表', isSelected: false},
-          {index: 5, type: 'income', name: '辅助核算余额表', isSelected: false},
+          {index: 2, type: 'income', name: '资产负债表', isSelected: false},
+          {index: 3, type: 'income', name: '利润表', isSelected: false},
+          {index: 4, type: 'income', name: '现金流量表', isSelected: false},
+          {index: 5, type: 'income', name: '科目余额表', isSelected: true},
         ],
         setMenu: {
           type: 'subject',
@@ -1068,6 +1095,8 @@
           {key: 2, value: '小规模纳税人'},
           {key: 3, value: '个人独资企业或有限合伙'},
         ],
+        // 辅助核算table标题
+        assistTableTitle: {},
       }
     },
     methods: {
