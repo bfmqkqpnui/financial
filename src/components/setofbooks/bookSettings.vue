@@ -34,9 +34,10 @@
               <div class="icon-download" ng-click="dwldData()" title="下载固定资产清单"></div>
             </div>
             <div class="setBtnMenu btnReportBox" v-if="setMenu.type == 'report'">
-              <div class="btn-switchCurrency-off ng-binding" ng-click="amountPop(true)"></div>
-              <div class="btn-switchCurrency-off ng-binding" ng-click="assistCurrencyAmountPop(true)"></div>
-              <div class="btn-check" ng-click="switchNullData()">
+              <div class="btn-switchCurrency-off ng-binding" ng-click="amountPop(true)" v-if="isNullBtnFlag"></div>
+              <div class="btn-switchCurrency-off ng-binding" ng-click="assistCurrencyAmountPop(true)"
+                   v-if="isNullBtnFlag"></div>
+              <div class="btn-check" ng-click="switchNullData()" v-if="isNullBtnFlag">
                 <div class="icon-isShowNullNum-off"></div>
                 隐藏空值
               </div>
@@ -141,7 +142,8 @@
                                   <div class="borderLeft"
                                        style="width: 10px;"></div>
                                   <div class="subjectText ng-binding" v-text="item.subjectId"></div>
-                                  <span v-if="item.children && item.children.length > 0" data-toggle="tooltip" title="折叠/展开"
+                                  <span v-if="item.children && item.children.length > 0" data-toggle="tooltip"
+                                        title="折叠/展开"
                                         :class="data.active ? 'icon-arrows-0-hover' : 'icon-arrows-90-hover'"
                                         @click.stop="flexChildrenSubject(data)"></span>
                                   <div class="btn-operateBox" v-if="operationFlag">
@@ -177,13 +179,14 @@
                                       <div class="borderLeft"
                                            style="width: 20px;"></div>
                                       <div class="subjectText ng-binding" v-text="itemC.subjectId"></div>
-                                      <span v-if="item.children && item.children.length > 0" data-toggle="tooltip" title="折叠/展开"
+                                      <span v-if="item.children && item.children.length > 0" data-toggle="tooltip"
+                                            title="折叠/展开"
                                             :class="item.active ? 'icon-arrows-0-hover' : 'icon-arrows-90-hover'"
                                             @click="flexChildrenSubject(item)"
                                             class="ng-hide icon-arrows-90-hover"></span>
                                       <div class="btn-operateBox" v-if="operationFlag">
                                         <div class="btn-operate" ng-mouseenter="operateOnEnter($event)">
-                                          <div class="operateBox bottom" >
+                                          <div class="operateBox bottom">
                                             <div class="edit operate" ng-click="showSubjectPop(data, 'edit', $event)">
                                               科目编辑
                                             </div>
@@ -1016,9 +1019,11 @@
     name: "bookSettings",
     data() {
       return {
+        isNullBtnFlag: false,
         operationFlag: false,
         subjects: [],
         setTitleClass: '',
+        // 科目设置右侧tab导航
         navMenuSubject: [
           {"index": 1, "type": "assets", "name": "资产", isSelected: true},
           {"index": 2, "type": "liabilities", "name": "负债", isSelected: false},
@@ -1026,6 +1031,7 @@
           {"index": 4, "type": "cost", "name": "成本", isSelected: false},
           {"index": 5, "type": "profitAndLoss", "name": "损益", isSelected: false}
         ],
+        // 辅助核算右侧tab导航
         navMenuAssist: [
           {"index": 1, "type": "assets", "name": "客户", isSelected: true},
           {"index": 2, "type": "liabilities", "name": "供应商", isSelected: false},
@@ -1053,7 +1059,7 @@
             {index: 6, type: 'info', value: '账套信息', isSelected: true},
           ]
         },
-        accountId: utils.dbGet("account"),
+        accountId: utils.dbGet("account").id,
         token: utils.dbGet("userInfo").token,
         adminId: utils.dbGet("userInfo").id,
         accountInfo: {},
@@ -2357,6 +2363,7 @@
   .settingBox .tableData-assist {
     padding-right: 30px;
   }
+
   .assistBox .icon-create {
     background: url(./i/add.png) 50% no-repeat;
     position: absolute;
@@ -2365,6 +2372,7 @@
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
   }
+
   .tableData-assist table label {
     display: inline-block;
     top: 0;
@@ -2374,6 +2382,7 @@
     position: absolute;
     line-height: 30px;
   }
+
   .tableData-assist table label span {
     position: absolute;
     left: 0;
@@ -2383,7 +2392,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .tableData-assist table label>div {
+
+  .tableData-assist table label > div {
     height: 100%;
     width: 100%;
     padding: 2px;
@@ -2391,10 +2401,12 @@
     position: absolute;
     top: 2px;
   }
+
   .tableData-assist input {
     background-color: #e8efff;
     border: 1px solid #66b2ff;
   }
+
   .tableData-assist table label input {
     position: relative;
     z-index: -1;
@@ -2403,6 +2415,7 @@
     width: 100%;
     height: 100%;
   }
+
   .tableData-assist table label input:focus {
     z-index: 1;
   }
@@ -2413,6 +2426,7 @@
     top: -40px;
     left: 0;
   }
+
   .settingBox [class*=tableData-] .reportTableFixed {
     width: 100%;
     height: 40px;
@@ -2422,24 +2436,30 @@
     border-left: 1px solid #38aafc;
     border-top: 1px solid #38aafc;
     border-right: 1px solid #38aafc;
-    color: rgba(42,51,59,.6);
+    color: rgba(42, 51, 59, .6);
   }
-  .settingBox .reportTableFixed [class*=reportTable-], .settingBox .reportTableFixed [class*=reportTable-]>div {
+
+  .settingBox .reportTableFixed [class*=reportTable-], .settingBox .reportTableFixed [class*=reportTable-] > div {
     height: 100%;
   }
-  .settingBox .reportTableFixed .reportTable-left, .settingBox .reportTableFixed [class*=reportTable-]>div {
+
+  .settingBox .reportTableFixed .reportTable-left, .settingBox .reportTableFixed [class*=reportTable-] > div {
     float: left;
   }
+
   .settingBox .reportTableFixed .reportTable-left {
     position: relative;
   }
+
   .settingBox .reportTableFixed .reportTable-right {
     float: right;
   }
+
   .settingBox .reportTableFixed .reportTable-left .viewInfoSize {
     width: 180px;
   }
-  .settingBox .reportTableFixed .reportTable-right>div {
+
+  .settingBox .reportTableFixed .reportTable-right > div {
     margin-left: 30px;
     cursor: pointer;
   }

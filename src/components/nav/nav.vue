@@ -85,27 +85,27 @@
           </div>
         </div>
       </div>
-      <div class="com-cs ng-scope" ui-comp-status="">
-        <div class="brief"><p class="brief_name ng-binding">sdfsdf</p>
-          <p class="brief_type ng-binding">[小规模纳税人&amp;季报]</p></div>
-        <div class="state ng-binding">
-          <div class="button equilibrium ng-hide" ng-hide="equilibrium" ng-click="showEquilibrium()"></div>
-          做账中
+
+      <div class="com-cs ng-scope">
+        <div class="brief"><p class="brief_name ng-binding" v-text="accountInfo.companyName"></p>
+          <p class="brief_type ng-binding">{{accountInfo | accountInfoFilter}}</p></div>
+        <div class="state ng-binding" v-text="accountInfo.statusEnum">
         </div>
-        <div class="button switch ng-hide" ng-show="canSwitch" ng-click="switchState()">
+        <!--<div class="button switch ng-hide" ng-show="canSwitch" ng-click="switchState()">
           <div class="switch_icon"></div>
-          <p class="switch_tag ng-binding">做账中</p></div>
+          <p class="switch_tag ng-binding">做账中</p>
+        </div>-->
       </div>
       <div class="module-title_gap"></div>
-      <div class="com-memo anime ng-scope" ui-memo="">
+      <div class="com-memo anime ng-scope" v-if="isMemo">
         <div class="icon-noteBtn" ng-click="toggle($event)" title="备忘录"></div>
         <div class="pointer ng-binding ng-hide" ng-show="memos.length !== 0">0</div>
-        <div class="memoBox ng-isolate-scope ng-hide" ng-show="show" click-test="" listen="show" onmouselost="close()"
-             znotrbgq="">
+        <div class="memoBox ng-isolate-scope ng-hide">
           <div class="memo-title">备忘录</div>
           <div class="memo-containerBox">
-            <div class="container-top"><textarea placeholder="填写备忘" ng-model="text"
-                                                 class="ng-pristine ng-valid ng-empty ng-touched"></textarea></div>
+            <div class="container-top">
+              <textarea placeholder="填写备忘" ng-model="text" class="ng-pristine ng-valid ng-empty ng-touched"></textarea>
+            </div>
             <div class="container-bottom">
               <div class="memo-container-left ng-binding">2018-09</div>
               <div class="memo-container-right anime" title="提交备忘" ng-click="addMemo()"></div>
@@ -158,6 +158,8 @@
         secondMenuList: [], // 二级目录
         secondMenu: '', //
         iShowTitle: false,
+        isMemo: false,
+        accountInfo: {},
       }
     },
     //计算属性
@@ -183,13 +185,14 @@
               }
             })
           }
+          this.accountInfo = utils.dbGet("account")
           switch (opt.index) {
             case 1:
-              // utils.dbRemove("accountId")
+              utils.dbRemove("account")
+              this.accountInfo =
               this.$router.push({name: 'accounts'})
               break;
             case 2:
-              // utils.dbSet("accountId",)
               this.$router.push({name: 'voucher'})
               break;
             case 3:
@@ -225,7 +228,7 @@
           }
         } else {
           // 其他逻辑
-          if (utils.isExist(opt.type)){
+          if (utils.isExist(opt.type)) {
             if (opt.type == "user") {
               this.secondMenuList = this.userSecondMenu
             } else if (opt.type == "data") {
@@ -241,25 +244,36 @@
         console.log("addPop触发")
         this.$emit("showAddAccountPop")
       },
-      error(msg){
-        console.log("操作失敗")
+      error(msg) {
+        console.log("操作失敗", msg)
         this.$emit("err", msg)
       },
-      success(msg){
+      success(msg) {
         console.log("操作成功")
         this.$emit("success", msg)
       }
     },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
-
+      console.log("账套信息：",this.accountInfo)
     },
     created() {
       // this.secondMenu = this.menuType
       // this.selMenu(this.secondMenu)
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
-    components: {}
+    components: {},
+    filters: {
+      accountInfoFilter(opt) {
+        let content = ''
+        if (utils.isExist(opt)) {
+          let operType = opt.taxTypes == 1 ? '一般纳税人' : opt.taxTypes == 2 ? '小规模纳税人' : opt.taxTypes == 3 ? '个人独资企业或有限合伙' : ''
+          let reportType = opt.taxPaymentPeriod == 1 ? '月报' : opt.taxPaymentPeriod == 2 ? '季报' : ''
+          content = '[' + operType + '&' + reportType + ']'
+        }
+        return content
+      }
+    }
   }
 </script>
 

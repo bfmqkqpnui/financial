@@ -1176,7 +1176,7 @@
 
     },
     created() {
-      this.accountId = utils.dbGet("account")
+      this.accountId = utils.dbGet("account").id
       console.log("创建组建开始",this.accountId)
       if (utils.isExist(this.accountId)) {
         this.$emit('sel', {index:2, type: 'accounts'})

@@ -9,8 +9,4 @@ export default {
   updateInfo: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/admin/update', params)
   },
-  // 添加账套
-  createAccount: params => {
-    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/insert', params)
-  }
 }

@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/h5api': {
+      '/apiPath': {
         target: 'http://106.14.202.237:8080',
         changeOrigin: true,
         pathRewrite: {
-          '^/h5api': ''
+          '^/apiPath': ''
         }
       }
     },

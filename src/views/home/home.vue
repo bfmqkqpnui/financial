@@ -158,8 +158,8 @@
     </div>
 
     <!-- 错误蒙层信息 -->
-    <div class="site-mask anime ng-isolate-scope" v-if="errMsg">
-      <div class="site-popup anime popup-message flex--column site-popup--expand" ng-class="{'site-popup--expand': on}">
+    <div class="site-mask anime ng-isolate-scope" v-show="errMsg" style="opacity: 1">
+      <div class="site-popup anime popup-message flex--column site-popup--expand">
         <div class="site-popup_head">
           <div class="site-popup_title">财税通提醒您：</div>
           <div class="site-popup_close g-icon-close" ng-click="hide()"></div>
@@ -176,8 +176,8 @@
     </div>
 
     <!-- 添加账套蒙层 -->
-    <div class="site-mask anime site-mask--shade" v-if="show.addAccountPop">
-      <div class="site-popup anime pop-container site-popup--expand"><p>添加账套</p>
+    <!--<div class="site-mask anime site-mask&#45;&#45;shade" v-if="show.addAccountPop">
+      <div class="site-popup anime pop-container site-popup&#45;&#45;expand"><p>添加账套</p>
         <div class="btn-closePop" title="关闭" @click="hideAddAccountPop"></div>
         <div class="messageBox">
           <div class="message-title">企业名称</div>
@@ -210,7 +210,7 @@
         </div>
         <div class="messageBox">
           <div class="message-title">纳税周期</div>
-          <div class="message-input"> <!-- ngRepeat: r in optionInfo.taxPeriod -->
+          <div class="message-input"> &lt;!&ndash; ngRepeat: r in optionInfo.taxPeriod &ndash;&gt;
             <div class="popSelectBox ng-binding ng-scope" ng-repeat="r in optionInfo.taxPeriod"
                  @click="selectRoleType('2')">
               <div
@@ -221,7 +221,7 @@
               <div
                 :class="submitAddAccInfo.taxPaymentPeriod == '1' ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
               月报
-            </div><!-- end ngRepeat: r in optionInfo.taxPeriod --> </div>
+            </div></div>
         </div>
         <div class="messageBox submitBox">
           <div class="message-title">
@@ -236,20 +236,7 @@
           <div @click="showBatchPop">批量导入账套</div>
         </div>
       </div>
-    </div>
-
-    <!-- 账套添加成功蒙层 -->
-    <div class="site-mask anime site-mask--shade" v-if="show.successMaskAccount">
-      <div class="site-popup anime pop-container site-popup--expand"
-           ng-class="{'site-popup--expand': show.nextOperatePop}">
-        <p>添加成功</p>
-        <div class="btn-closePop" title="关闭" @click="closeAddAccPop()"></div>
-        <br>
-        <!--<div class="btn-go-import anime" ng-click="nextOperate('import')"> 导入报表 </div>-->
-        <div class="btn-go-account anime" ng-click="nextOperate('account')"> 去做账</div>
-        <div class="btn-go-on anime" ng-click="nextOperate('on')"> 继续添加</div>
-      </div>
-    </div>
+    </div>-->
 
     <!-- 操作成功 -->
     <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="isSuccess">
@@ -336,24 +323,8 @@
         booksSecondMenu: [
           {index: 1, value: '账套列表', isSelect: true},
         ],
-        // 添加账套对象
-        submitAddAccInfo: {
-          adminId: '',
-          token: '',
-          companyName: '',         // 企业名字
-          corporateContact: '',    // 联系人
-          contact: '',        // 联系电话
-          taxTypes: '2', // 纳税类型
-          taxPaymentPeriod: '2',    // 纳税周期
-        },
-        accountOptions: [
-          {key: '1', value: '小规模纳税人'},
-          {key: '2', value: '一般纳税人'},
-          {key: '3', value: '个人独资企业或有限合伙'},
-        ],
         //
         show: {
-          addAccountPop: false,     // 是否显示添加账套
           canBatchImport: false,    //是否批量导入
           hint: '',                 // 添加账套错误信息
           successMaskAccount: false,  // 添加账套成功后蒙层是否展示
@@ -470,8 +441,6 @@
           this.user.email = User.email
           this.user.id = User.id
           this.user.token = User.token
-          this.submitAddAccInfo.adminId = User.id
-          this.submitAddAccInfo.token = User.token
         }
       },
       checkEmail() {
@@ -493,6 +462,7 @@
         }
       },
       setErrMsg(message) {
+        console.log("呼叫home组件", message)
         if (utils.isExist(message)) {
           this.errMsg = message
           let that = this
@@ -585,33 +555,12 @@
 
         this.show.successMaskAccount = false
       },
-      selectRoleType(value) {
-        console.log("纳税周期选择", value)
-        this.submitAddAccInfo.taxPaymentPeriod = value
-      },
-      // 添加账套
-      addAccount() {
-        console.log("添加账套:", this.submitAddAccInfo)
-        if (utils.isExist(this.submitAddAccInfo.companyName)) {
-          this.show.hint = ''
-          api.createAccount(this.submitAddAccInfo).then(res => {
-            console.log("添加结果》", res.body)
-            if (res.body.result == 0) {
-              this.show.successMaskAccount = true
-            } else {
-              this.setErrMsg(res.body.msg)
-            }
-          })
-        } else {
-          this.show.hint = '请填写账套企业名称.'
-        }
-      },
       success(message){
         if (utils.isExist(message)) {
           this.isSuccess = true
           this.successMsg = message
           let that = this
-          setInterval(function () {
+          setTimeout(function () {
             that.successMsg = ''
             that.isSuccess = false
           }, 2000)

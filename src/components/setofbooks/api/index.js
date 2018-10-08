@@ -40,5 +40,9 @@ export default {
   // 查询科目设置
   queryAccountSet: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/course/queryByAccountSetId', params)
+  },
+  // 添加账套
+  createAccount: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/insert', params)
   }
 }
