@@ -253,50 +253,45 @@
                         </thead>
                       </table>
                     </div>
+
                     <div class="content-rel" id="assistTableBox" style="overflow-y: auto">
-                      <div id="scrollBar-assist" ng-class="{'fullScrollBar': isFullBox()}"
-                           class="ps-container ps-theme-default ps-active-y"
-                           data-ps-id="3794f942-ecf2-5f23-5614-90323c8768be">
+                      <div id="scrollBar-assist" class="ps-theme-default">
                         <table>
                           <tbody>
-                          <tr ng-repeat="data in tableData.assist[assistMenu.cur.type]"
-                              ng-if="$index !== tableData.assist[assistMenu.cur.type].length - 1" class="ng-scope">
+                          <tr v-for="(data,index) in assistTableData" class="ng-scope" :key="index">
                             <td class="span-10 selectBox">
                               <span ng-click="switchAssist(data)" class="icon25-select"
-                                    ng-class="{'icon25-selected': data.isOpen}"></span>
+                                    :class="{'icon25-selected': data.status == 1}"></span>
                             </td>
-                            <td class="span-20"><label for="hkmzyfmr-0-0">
-                              <span class="ng-binding">123</span>
-                              <div ng-click="oprClick($index, data, 'edit-code', $event)">
-                                <input type="text" id="hkmzyfmr-0-0"
-                                       ng-focus="oprOnFocus(data, $index, 0, 'edit', $event)"
-                                       maxlength="12"
-                                       class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
-                              </div>
-                            </label>
-                            </td>
-                            <td class="span-50" ng-class="{'span-70':assistMenu.cur.type !== 'inventory'}">
-                              <label for="hkmzyfmr-0-1">
-                                <span class="ng-binding">123</span>
-                                <div ng-click="oprClick($index, data, 'edit-name', $event)">
-                                  <input type="text" id="hkmzyfmr-0-1"
-                                         ng-focus="oprOnFocus(data, $index, 1, 'edit', $event)"
-                                         ng-class="{'assistInput':assist.curInputRow == $index &amp;&amp; assist.curInputType == 'name'}"
-                                         maxlength="60" ng-model="cacheAssist.name"
+                            <td class="span-20">
+                              <label>
+                                <span class="ng-binding" v-text="data.coding"></span>
+                                <!--<div ng-click="oprClick($index, data, 'edit-code', $event)">
+                                  <input type="text"
+                                         maxlength="12"
                                          class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
-                                </div>
+                                </div>-->
+                              </label>
+                            </td>
+                            <td class="span-50" :class="{'span-70':menu.type != 'profitAndLoss'}">
+                              <label>
+                                <span class="ng-binding" v-text="data.assistAccountingName"></span>
+                                <!--<div ng-click="oprClick($index, data, 'edit-name', $event)">
+                                  <input type="text"
+                                         ng-class="{'assistInput':assist.curInputRow == $index &amp;&amp; assist.curInputType == 'name'}"
+                                         maxlength="60"
+                                         class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                                </div>-->
                               </label>
                               <div class="icon25-delete ng-hide"
                                    ng-show="isMyAccount &amp;&amp; assistMenu.cur.type !== 'inventory'"
                                    ng-click="deleteAssist(data)"></div>
                             </td>
-                            <td class="span-20" ng-show="assistMenu.cur.type === 'inventory'">
-                              <label for="hkmzyfmr-0-2">
+                            <td class="span-20" v-if="menu.type == 'profitAndLoss'">
+                              <label>
                                 <span class="ng-binding"></span>
                                 <div ng-click="oprClick($index, data, 'edit-unit', $event)">
-                                  <input type="text" id="hkmzyfmr-0-2"
-                                         ng-focus="oprOnFocus(data, $index, 2, 'edit', $event)"
-                                         ng-class="{'assistInput':assist.curInputRow == $index &amp;&amp; assist.curInputType == 'unit'}"
+                                  <input type="text"
                                          maxlength="10"
                                          ng-model="cacheAssist.unit"
                                          class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
@@ -307,12 +302,12 @@
                           </tr>
                           </tbody>
                         </table>
-                        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -1px;">
+                        <!--<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -1px;">
                           <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
                         </div>
                         <div class="ps-scrollbar-y-rail" style="top: 1px; height: 62px; right: 0px;">
                           <div class="ps-scrollbar-y" tabindex="0" style="top: 1px; height: 61px;"></div>
-                        </div>
+                        </div>-->
                       </div>
                       <!-- 可以输入的table -->
                       <table class="createAssist">
@@ -324,20 +319,21 @@
                           <td class="span-20" style="padding:0">
                             <label for="vxnkguao-0-0">
                               <span class="ng-binding"></span>
-                              <div ng-click="oprClick($index, data, 'create-code', $event)">
+                              <div>
                                 <input type="text" id="vxnkguao-0-0" maxlength="12"
-                                       ng-model="newAssist.code"
+                                       v-model="newAssist.coding"
                                        placeholder="请输入编码" style="z-index:1"
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
                             </label>
                           </td>
-                          <td class="span-50" ng-class="{'span-70':menu.type != 'profitAndLoss'}">
-                            <label for="vxnkguao-0-1">
+                          <td class="span-50" :class="{'span-70':menu.type != 'profitAndLoss'}">
+                            <label>
                               <span class="ng-binding"></span>
                               <div ng-click="oprClick($index, data, 'create-name', $event)">
-                                <input type="text" id="vxnkguao-0-1"
-                                       ng-model="newAssist.name"
+                                <input type="text"
+                                       v-model="newAssist.assistAccountingName"
+                                       @keydown.enter="addAss"
                                        placeholder="请输入名称" style="z-index:1" maxlength="60"
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
@@ -349,13 +345,15 @@
                               <div ng-click="oprClick($index, data, 'create-unit', $event)">
                                 <input type="text"
                                        id="vxnkguao-0-2"
-                                       ng-model="newAssist.unit"
+                                       v-model="newAssist.unitStr"
+                                       @keydown.enter="addAss"
                                        placeholder="请输入单位"
                                        style="z-index:1"
                                        maxlength="10"
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
-                            </label></td>
+                            </label>
+                          </td>
                         </tr>
                         </tbody>
                       </table>
@@ -1097,6 +1095,14 @@
         ],
         // 辅助核算table标题
         assistTableTitle: {},
+        assistTableData: [],
+        newAssist: {
+          status: 1,
+          coding: '',
+          assistAccountingName: '',
+          assistAccountingType: '1',
+          unitStr: ''
+        }
       }
     },
     methods: {
@@ -1175,10 +1181,8 @@
                 token: this.token
               }
               if (opt.index == 1) { // 资产
-                // this.queryNavMenuData(this.queryAssets())
                 params.courseType = '1';
               } else if (opt.index == 2) { // 负债
-                // this.queryNavMenuData(this.queryLiabilities())
                 params.courseType = '2';
               } else if (opt.index == 3) { // 权益
                 params.courseType = '3';
@@ -1199,27 +1203,35 @@
                   el.isSelected = false
                 }
               })
-              this.subjects = []
+              this.assistTableData = []
+
               let params = {
                 accountSetId: this.accountId,
                 token: this.token
               }
+
               if (opt.index == 1) { // 客户
-                // this.queryNavMenuData(this.queryAssets())
-                params.courseType = '1';
+                this.newAssist.assistAccountingType = 1
+                params.assistAccountingType = 1
               } else if (opt.index == 2) { // 供应商
-                // this.queryNavMenuData(this.queryLiabilities())
-                params.courseType = '2';
+                this.newAssist.assistAccountingType = 2
+                params.assistAccountingType = 2
               } else if (opt.index == 3) { // 部门
-                params.courseType = '3';
+                this.newAssist.assistAccountingType = 3
+                params.assistAccountingType = 3
               } else if (opt.index == 4) { // 员工
-                params.courseType = '4';
+                this.newAssist.assistAccountingType = 4
+                params.assistAccountingType = 4
               } else if (opt.index == 5) { // 存货
-                params.courseType = '5';
+                this.newAssist.assistAccountingType = 5
+                params.assistAccountingType = 5
               } else if (opt.index == 6) { // 项目
-                params.courseType = '5';
+                this.newAssist.assistAccountingType = 6
+                params.assistAccountingType = 6
               }
-              // this.queryNavMenuData(params)
+              api.queryAllAssists(params).then(res => {
+                console.log("添加辅助核算结果：", res.body)
+              })
             }
             break;
         }
@@ -1233,7 +1245,7 @@
           if (opt.index == 1) {
             this.subjectClassify({index: 1}, 'subject')
           } else if (opt.index == 2) {
-
+            this.subjectClassify({index: 1}, 'assist')
           } else if (opt.index == 3) {
 
           } else if (opt.index == 4) {
@@ -1380,6 +1392,44 @@
           })
         }
       },
+      addAss() {
+        console.log("添加辅助核算", this.newAssist)
+        let params = this.newAssist
+        params.accountSetId = this.accountId
+        params.token = this.token
+        if (this.checkAssistIsNull(params)) {
+          api.addAssist(params).then(res => {
+            console.log("添加结果：", res.body)
+            if (res.body.result == 0) {
+              this.assistTableData.push(res.body.data)
+              console.log("满足条件，实现添加辅助，失去焦点")
+              document.getElementById("vxnkguao-0-0").blur()
+              document.getElementById("vxnkguao-0-1").blur()
+              if (this.newAssist.assistAccountingType == 5) {
+                document.getElementById("vxnkguao-0-2").blur()
+              }
+              this.newAssist.assistAccountingName = ''
+              this.newAssist.coding = ''
+              this.newAssist.unitStr = ''
+            }
+          })
+        }
+      },
+      checkAssistIsNull(opt) {
+        let flag = false
+        if (utils.isExist(opt)) {
+          if (utils.isExist(opt.coding)) {
+            if (utils.isExist(opt.assistAccountingName)) {
+              flag = true
+            } else {
+              console.log("名称不能为空")
+            }
+          } else {
+            console.log("编号不能为空")
+          }
+        }
+        return flag
+      }
     },
     created() {
       this.subjectClassify({index: 1}, 'subject')

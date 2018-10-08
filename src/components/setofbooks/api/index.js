@@ -31,7 +31,7 @@ export default {
   },
   // 上传文件
   upload: params => {
-    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/enterpriseannex/insert', params,{headers: { 'Content-Type': 'multipart/form-data'}})
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/enterpriseannex/insert', params, {headers: {'Content-Type': 'multipart/form-data'}})
   },
   // 删除文件
   delFile: params => {
@@ -44,5 +44,21 @@ export default {
   // 添加账套
   createAccount: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountset/insert', params)
-  }
+  },
+  // 添加辅助核算
+  addAssist: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/insert', params)
+  },
+  // 查询所有辅助核算
+  queryAllAssists: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/queryByAccountSetId', params)
+  },
+  // 更新辅助核算
+  updateAssists: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/queryByAccountSetId', params)
+  },
+  // 删除辅助核算
+  deleteAssists: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/queryByAccountSetId', params)
+  },
 }
