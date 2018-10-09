@@ -553,75 +553,97 @@
                         <tr> <!-- ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 序号 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-4"> 序号 <span ng-show="order.type == title.type" ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-4"> 序号
+                            <span ng-show="order.type == title.type" ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 资产名称 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-14"> 资产名称 <span ng-show="order.type == title.type"
-                                                                              ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-14"> 资产名称
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 入账时间 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-8"> 入账时间 <span ng-show="order.type == title.type"
-                                                                             ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-8"> 入账时间
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 原值 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-8"> 原值 <span ng-show="order.type == title.type" ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-8"> 原值
+                            <span ng-show="order.type == title.type" ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 预计残值 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-8"> 预计残值 <span ng-show="order.type == title.type"
-                                                                             ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-8"> 预计残值
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 总折旧周期(月) 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-10"> 总折旧周期(月) <span ng-show="order.type == title.type"
-                                                                                  ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-10"> 总折旧周期(月)
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 折旧周期(期初) 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-10"> 折旧周期(期初) <span ng-show="order.type == title.type"
-                                                                                  ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-10"> 折旧周期(期初)
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 累计折旧(期初) 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-10"> 累计折旧(期初) <span ng-show="order.type == title.type"
-                                                                                  ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-10"> 累计折旧(期初)
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 本月折旧 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-8"> 本月折旧 <span ng-show="order.type == title.type"
-                                                                             ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-8"> 本月折旧
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 净值(期末) 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-8"> 净值(期末) <span ng-show="order.type == title.type"
-                                                                               ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-8"> 净值(期末)
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] -->
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 状态 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
-                              class="ng-binding ng-scope span-12"> 状态 <span ng-show="order.type == title.type"
-                                                                            ng-class="((order.order + order.type) == title.type)
-                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span></th>
+                              class="ng-binding ng-scope span-12"> 状态
+                            <span ng-show="order.type == title.type"
+                                  ng-class="((order.order + order.type) == title.type)
+                              ? 'icon-orderBy-down' : 'icon-orderBy-up'" class="ng-hide icon-orderBy-up"></span>
+                          </th>
                           <!-- end ngRepeat: title in setMenu['assets'] --> </tr>
                         </thead>
                       </table>
                     </div>
                     <div class="content-rel" id="scrollBar-assets">
-                      <div ng-show="tableData['assets'].length == 0" style="text-align:center;margin-top:100px"><img
-                        src="data:image/png;base64,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">
-                        <p style="color:rgba(50,63,77,.5);margin-top:40px" class="ng-binding"> 未搜索到 2018-08 期的固定资产 </p>
+                      <div ng-show="tableData['assets'].length == 0" style="text-align:center;margin-top:100px">
+                        <img src="./i/notFound.png">
+                        <p style="color:rgba(50,63,77,.5);margin-top:40px" class="ng-binding"> 未搜索到固定资产 </p>
                       </div>
                       <table>
                         <tbody> <!-- ngRepeat: data in tableData['assets'] | orderBy: order.order + order.type -->
@@ -1000,12 +1022,12 @@
                     </div>
                     <!-- 附件 -->
                     <div class="enclosureBox span-20 ng-scope" v-for="(a,index) in accountInfo.enterpriseAnnexList"
-                         :key="index" data-toggle="tooltip">
+                         :key="index" data-toggle="tooltip" @click.stop="downloadFile(a)">
                       <div class="enclosure-containBox">
                         <div class="content-rel enclosure-J">
-                          <img :src="a.fileUrl">
+                          <img src="./i/upLoadDefault.png">
                           <div class="icon-deleteEnclosure" data-toggle="tooltip" title="删除"
-                               @click="deleteFile(a)"></div>
+                               @click.stop="deleteFile(a)"></div>
                         </div>
                       </div>
                       <div class="enclosure-sizeBox overflowHiddenEllipsis ng-binding" v-text="a.fileName"></div>
@@ -1341,6 +1363,11 @@
         let params = this.accountInfo
         params.id = this.accountId
         params.token = this.token
+        for (let i = params.accountSetBankList.length - 1; i >= 0; i--) {
+          if (!(utils.isExist(params.accountSetBankList[i].depositBank) && utils.isExist(params.accountSetBankList[i].bankAccount))) {
+            params.accountSetBankList.splice(i, 1)
+          }
+        }
         api.updateAccount(params).then(res => {
           console.log("账套信息保存》", res.body)
           if (res.body.result == 0) {
@@ -1358,7 +1385,7 @@
       addBank() {
         console.log("添加銀行信息", this.accountInfo.accountSetBankList)
         this.accountInfo.accountSetBankList.push({
-          index: this.banks.length,
+          index: this.accountInfo.accountSetBankList.length,
           depositBank: '',
           bankAccount: '',
           accountType: 1
@@ -1501,6 +1528,11 @@
             console.log("value<<<", el.status)
           }
         })
+      },
+      // 下载
+      downloadFile(opt) {
+        console.log("xiazai: ", opt.fileUrl)
+        window.open(opt.fileUrl);
       }
     },
     created() {
