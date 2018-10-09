@@ -55,10 +55,10 @@ export default {
   },
   // 更新辅助核算
   updateAssists: params => {
-    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/queryByAccountSetId', params)
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/update', params)
   },
   // 删除辅助核算
   deleteAssists: params => {
-    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/queryByAccountSetId', params)
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/delete', params)
   },
 }

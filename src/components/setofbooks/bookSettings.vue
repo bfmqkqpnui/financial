@@ -231,7 +231,6 @@
               <div class="content-abs tableData-assist">
                 <div class="navSubjectMenuBox">
                   <div class="navSubjectMenuMask ng-hide"></div>
-                  <!-- ngRepeat: menu in assistMenu.list -->
                   <div :class="menu.isSelected ? 'menuOn' : ''" v-for="menu in navMenuAssist" :key="menu.index"
                        @click="subjectClassify(menu,'assist')" class="ng-binding ng-scope" v-text="menu.name">
                   </div>
@@ -260,55 +259,49 @@
                           <tbody>
                           <tr v-for="(data,index) in assistTableData" class="ng-scope" :key="index">
                             <td class="span-10 selectBox">
-                              <span ng-click="switchAssist(data)" class="icon25-select"
+                              <span @click="switchAssist(data)" class="icon25-select"
                                     :class="{'icon25-selected': data.status == 1}"></span>
                             </td>
                             <td class="span-20">
                               <label>
                                 <span class="ng-binding" v-text="data.coding"></span>
-                                <!--<div ng-click="oprClick($index, data, 'edit-code', $event)">
-                                  <input type="text"
-                                         maxlength="12"
-                                         class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
-                                </div>-->
-                              </label>
-                            </td>
-                            <td class="span-50" :class="{'span-70':menu.type != 'profitAndLoss'}">
-                              <label>
-                                <span class="ng-binding" v-text="data.assistAccountingName"></span>
-                                <!--<div ng-click="oprClick($index, data, 'edit-name', $event)">
-                                  <input type="text"
-                                         ng-class="{'assistInput':assist.curInputRow == $index &amp;&amp; assist.curInputType == 'name'}"
-                                         maxlength="60"
-                                         class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
-                                </div>-->
-                              </label>
-                              <div class="icon25-delete ng-hide"
-                                   ng-show="isMyAccount &amp;&amp; assistMenu.cur.type !== 'inventory'"
-                                   ng-click="deleteAssist(data)"></div>
-                            </td>
-                            <td class="span-20" v-if="menu.type == 'profitAndLoss'">
-                              <label>
-                                <span class="ng-binding"></span>
-                                <div ng-click="oprClick($index, data, 'edit-unit', $event)">
-                                  <input type="text"
-                                         maxlength="10"
-                                         ng-model="cacheAssist.unit"
+                                <div @click="oprClick(data, index, 0)">
+                                  <input type="text" maxlength="12" :id="forId(index,0)"
+                                         v-model="cacheAssist.coding"
+                                         @keydown.enter="updateAss(index, 0)"
                                          class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                                 </div>
-                                <div class="icon25-delete" ng-click="deleteAssist(data)"></div>
+                              </label>
+                            </td>
+                            <td class="span-50" :class="{'span-70':data.assistAccountingType != '5'}">
+                              <label>
+                                <span class="ng-binding" v-text="data.assistAccountingName"></span>
+                                <div @click="oprClick(data, index, 1)">
+                                  <input type="text" maxlength="60" :id="forId(index,1)"
+                                         v-model="cacheAssist.assistAccountingName"
+                                         @keydown.enter="updateAss(index, 1)"
+                                         class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                                </div>
+                              </label>
+                              <div class="icon25-delete" @click.stop="deleteAssist(data)"></div>
+                            </td>
+                            <td class="span-20" v-if="data.assistAccountingType == '5'">
+                              <label>
+                                <span class="ng-binding" v-text="data.unitStr"></span>
+                                <div @click="oprClick(data, index, 2)">
+                                  <input type="text" :id="forId(index, 2)" maxlength="10"
+                                         v-model="cacheAssist.unitStr"
+                                         @keydown.enter="updateAss(index, 2)"
+                                         class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+                                </div>
+                                <div class="icon25-delete" @click.stop="deleteAssist(data)"></div>
                               </label>
                             </td>
                           </tr>
                           </tbody>
                         </table>
-                        <!--<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -1px;">
-                          <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                        </div>
-                        <div class="ps-scrollbar-y-rail" style="top: 1px; height: 62px; right: 0px;">
-                          <div class="ps-scrollbar-y" tabindex="0" style="top: 1px; height: 61px;"></div>
-                        </div>-->
                       </div>
+
                       <!-- 可以输入的table -->
                       <table class="createAssist">
                         <tbody>
@@ -317,12 +310,11 @@
                             <div class="icon-create"></div>
                           </td>
                           <td class="span-20" style="padding:0">
-                            <label for="vxnkguao-0-0">
+                            <label>
                               <span class="ng-binding"></span>
                               <div>
-                                <input type="text" id="vxnkguao-0-0" maxlength="12"
-                                       v-model="newAssist.coding"
-                                       placeholder="请输入编码" style="z-index:1"
+                                <input type="text" maxlength="12" v-model="newAssist.coding"
+                                       placeholder="请输入编码" style="z-index:1" id="vxnkguao-0-0"
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
                             </label>
@@ -331,25 +323,20 @@
                             <label>
                               <span class="ng-binding"></span>
                               <div ng-click="oprClick($index, data, 'create-name', $event)">
-                                <input type="text"
-                                       v-model="newAssist.assistAccountingName"
-                                       @keydown.enter="addAss"
+                                <input type="text" v-model="newAssist.assistAccountingName" @keydown.enter="addAss"
+                                       id="vxnkguao-0-1"
                                        placeholder="请输入名称" style="z-index:1" maxlength="60"
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
                             </label>
                           </td>
                           <td class="span-20" v-if="menu.type == 'profitAndLoss'">
-                            <label for="vxnkguao-0-2">
+                            <label>
                               <span class="ng-binding"></span>
                               <div ng-click="oprClick($index, data, 'create-unit', $event)">
-                                <input type="text"
+                                <input type="text" v-model="newAssist.unitStr" @keydown.enter="addAss"
                                        id="vxnkguao-0-2"
-                                       v-model="newAssist.unitStr"
-                                       @keydown.enter="addAss"
-                                       placeholder="请输入单位"
-                                       style="z-index:1"
-                                       maxlength="10"
+                                       placeholder="请输入单位" style="z-index:1" maxlength="10"
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
                             </label>
@@ -818,9 +805,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="communicate clear ng-hide" ng-show="user.type === 'fscAdmin' ||
-                    user.type === 'fscMgr' ||
-                    user.type === 'fscCommon'">
+                    <div class="communicate clear ng-hide">
                       <div class="leftBox"><span class="icon-person"></span>
                         <label class="inputLabel">财税顾问</label>
                         <div class="input-normal" style="margin-bottom:0">
@@ -1029,6 +1014,7 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -1101,6 +1087,14 @@
           coding: '',
           assistAccountingName: '',
           assistAccountingType: '1',
+          unitStr: ''
+        },
+        // 辅助核算缓存
+        cacheAssist: {
+          status: '',
+          coding: '',
+          assistAccountingName: '',
+          assistAccountingType: '',
           unitStr: ''
         }
       }
@@ -1231,6 +1225,11 @@
               }
               api.queryAllAssists(params).then(res => {
                 console.log("添加辅助核算结果：", res.body)
+                if (res.body.result == 0) {
+                  if (res.body.data != null) {
+                    this.assistTableData = res.body.data
+                  }
+                }
               })
             }
             break;
@@ -1415,20 +1414,86 @@
           })
         }
       },
+      updateAss(index, value) {
+        console.log("更新辅助核算", this.cacheAssist)
+        let params = this.cacheAssist
+        params.accountSetId = this.accountId
+        params.token = this.token
+
+        if (this.checkAssistIsNull(params)) {
+          api.updateAssists(params).then(res => {
+            console.log("更新辅助结果：", res.body)
+            if (res.body.result == 0) {
+              this.assistTableData.forEach(function(el){
+                if (res.body.data.id == el.id) {
+                  el.coding = res.body.data.coding
+                  el.assistAccountingName = res.body.data.assistAccountingName
+                }
+              })
+              document.getElementById("assist_" + index + "_" + value).blur()
+            }
+          })
+        }
+      },
       checkAssistIsNull(opt) {
         let flag = false
         if (utils.isExist(opt)) {
           if (utils.isExist(opt.coding)) {
-            if (utils.isExist(opt.assistAccountingName)) {
-              flag = true
+            if (utils.checkNumOrStr(opt.coding)) {
+              if (utils.isExist(opt.assistAccountingName)) {
+                flag = true
+              } else {
+                this.$emit('error', "名称不能为空")
+              }
             } else {
-              console.log("名称不能为空")
+              this.$emit('error', "编号只能为字母或者数字")
             }
           } else {
-            console.log("编号不能为空")
+            this.$emit('error', "编号不能为空")
           }
         }
         return flag
+      },
+      forId(index, value) {
+        return "assist_" + index + "_" + value
+      },
+      oprClick(opt, index, value) {
+        console.log("table td选中", opt, index, value)
+        this.cacheAssist = opt
+      },
+      deleteAssist(opt) {
+        console.log("删除该tab内的table一行记录", opt)
+        let params = {}
+        params.id = opt.id
+        params.accountSetId = this.accountId
+        params.token = this.token
+
+        api.deleteAssists(params).then(res => {
+          console.log("删除结果：", res.body, this.assistTableData)
+          if (res.body.result == 0) {
+            const that = this
+            this.assistTableData.forEach(function(el,index){
+              if (res.body.data.id == el.id) {
+                that.assistTableData.splice(index, 1)
+              }
+            })
+          }
+        })
+      },
+      switchAssist(opt) {
+        console.log("复选框取非", opt)
+        this.assistTableData.forEach(function (el) {
+          console.log("assistTableData> ", el)
+          if (opt.id == el.id) {
+            console.log("value>", el.status)
+            if (el.status == 1) {
+              el.status = 0
+            } else {
+              el.status = 1
+            }
+            console.log("value<<<", el.status)
+          }
+        })
       }
     },
     created() {
@@ -2541,5 +2606,41 @@
   .settingBox .reportTableFixed .reportTable-right > div {
     margin-left: 30px;
     cursor: pointer;
+  }
+
+  .assistBox [class*=icon25-] {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+  }
+
+  .assistBox .icon25-select {
+    background: url(./i/unselected.png) 50% no-repeat;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  .assistBox .icon25-selected {
+    background: url(./i/selected.png) 50% no-repeat;
+  }
+
+  .tableData-assist tbody tr .icon25-delete {
+    background: url(./i/del.png) 50% no-repeat;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: 5px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: none;
+    cursor: pointer;
+  }
+
+  #scrollBar-assist tbody tr:hover .icon25-delete {
+    display: inherit;
   }
 </style>

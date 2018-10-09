@@ -312,6 +312,17 @@ const checkEmail = (email) => {
   }
 }
 
+// 验证数字或者字母
+const checkNumOrStr = (value) => {
+  if (value == null || value == "") {
+    return false;
+  } else if (!/^[0-9a-zA-Z]+$/.test(value)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 /**
  * 获取url里 ? 的字段
  * @param    {[String]}                 name [key]
@@ -366,5 +377,6 @@ export default {
   urlRemoveToken,
   isExist,
   giveCardCountDown,
-  checkEmail
+  checkEmail,
+  checkNumOrStr
 }
