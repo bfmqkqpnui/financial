@@ -6,7 +6,7 @@
           <div class="page-title">
             <div class="accountsTitle-left">
               <div class="accountsTitle-size">账套列表</div>
-              <div class="btn-refreshList anime" title="刷新" ng-click="updateAccounts()"></div>
+              <div class="btn-refreshList anime" title="刷新" @click="queryAllAccounts"></div>
             </div>
             <div class="accountsTitle-right">
               <div class="com-button anime ng-isolate-scope com-button--hollow" @click="showAddAccPop">
@@ -206,6 +206,7 @@
         console.log("添加账套")
         // this.$emit("accPop")
         this.show.addAccountPop = true
+        this.show.successMaskAccount = false
       },
       // 关闭账套添加
       hideAddAccountPop() {

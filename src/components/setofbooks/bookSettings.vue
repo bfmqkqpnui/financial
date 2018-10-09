@@ -358,7 +358,7 @@
                   <div class="navSubjectMenuBox">
                     <div class="navSubjectMenuMask ng-hide"></div>
                     <div :class="item.isSelected? 'menuOn' : ''"
-                         @click="subjectClassify(item, 'subject')" class="ng-binding ng-scope"
+                         @click="subjectClassify(item, 'report')" class="ng-binding ng-scope"
                          v-for="item in navMenuSubject"
                          :key="item.index" v-text="item.name">
                     </div>
@@ -1144,10 +1144,6 @@
       queryNavMenuData(url) {
         console.log(url, "<<<<")
         if (utils.isExist(url)) {
-          /*api.querySubprojects(url).then(res => {
-            console.log(res.body, "<<<>>>")
-            this.subjects = res.body
-          })*/
           api.queryAccountSet(url).then(res => {
             console.log(res.body)
             if (res.body.result == 0) {
@@ -1175,15 +1171,15 @@
                 token: this.token
               }
               if (opt.index == 1) { // 资产
-                params.courseType = '1';
+                params.courseType = 1;
               } else if (opt.index == 2) { // 负债
-                params.courseType = '2';
+                params.courseType = 2;
               } else if (opt.index == 3) { // 权益
-                params.courseType = '3';
+                params.courseType = 3;
               } else if (opt.index == 4) { // 成本
-                params.courseType = '4';
+                params.courseType = 4;
               } else if (opt.index == 5) { // 损益
-                params.courseType = '5';
+                params.courseType = 5;
               }
               this.queryNavMenuData(params)
             }
@@ -1229,6 +1225,17 @@
                   if (res.body.data != null) {
                     this.assistTableData = res.body.data
                   }
+                }
+              })
+            }
+            break;
+          case 'report':
+            if (utils.isExist(opt)) {
+              this.navMenuSubject.forEach(function (el) {
+                if (opt.index == el.index) {
+                  el.isSelected = true
+                } else {
+                  el.isSelected = false
                 }
               })
             }
@@ -1424,7 +1431,7 @@
           api.updateAssists(params).then(res => {
             console.log("更新辅助结果：", res.body)
             if (res.body.result == 0) {
-              this.assistTableData.forEach(function(el){
+              this.assistTableData.forEach(function (el) {
                 if (res.body.data.id == el.id) {
                   el.coding = res.body.data.coding
                   el.assistAccountingName = res.body.data.assistAccountingName
@@ -1472,7 +1479,7 @@
           console.log("删除结果：", res.body, this.assistTableData)
           if (res.body.result == 0) {
             const that = this
-            this.assistTableData.forEach(function(el,index){
+            this.assistTableData.forEach(function (el, index) {
               if (res.body.data.id == el.id) {
                 that.assistTableData.splice(index, 1)
               }

@@ -175,74 +175,11 @@
       </div>
     </div>
 
-    <!-- 添加账套蒙层 -->
-    <!--<div class="site-mask anime site-mask&#45;&#45;shade" v-if="show.addAccountPop">
-      <div class="site-popup anime pop-container site-popup&#45;&#45;expand"><p>添加账套</p>
-        <div class="btn-closePop" title="关闭" @click="hideAddAccountPop"></div>
-        <div class="messageBox">
-          <div class="message-title">企业名称</div>
-          <div class="message-input">
-            <input type="text" v-model="submitAddAccInfo.companyName" maxlength="30"
-                   class="ng-valid ng-valid-maxlength ng-touched ng-dirty ng-empty">
-            <div class="icon-required"></div>
-          </div>
-        </div>
-        <div class="messageBox">
-          <div class="message-title">联&nbsp;系&nbsp;人</div>
-          <div class="message-input">
-            <input type="text" v-model="submitAddAccInfo.corporateContact" maxlength="20"
-                   class="ng-valid ng-valid-maxlength ng-dirty ng-touched ng-empty"></div>
-        </div>
-        <div class="messageBox">
-          <div class="message-title">联系电话</div>
-          <div class="message-input">
-            <input type="text" id="accAddPhone" v-model="submitAddAccInfo.contact" maxlength="11"
-                   class="ng-valid ng-valid-maxlength ng-dirty ng-touched ng-empty"></div>
-        </div>
-        <div class="messageBox">
-          <div class="message-title">纳税类型</div>
-          <div class="message-input">
-            <select v-model="submitAddAccInfo.taxTypes"
-                    class="ng-pristine ng-valid ng-not-empty ng-touched">
-              <option :label="item.value" v-for="item in accountOptions" v-text="item.value" :value="item.key"></option>
-            </select>
-          </div>
-        </div>
-        <div class="messageBox">
-          <div class="message-title">纳税周期</div>
-          <div class="message-input"> &lt;!&ndash; ngRepeat: r in optionInfo.taxPeriod &ndash;&gt;
-            <div class="popSelectBox ng-binding ng-scope" ng-repeat="r in optionInfo.taxPeriod"
-                 @click="selectRoleType('2')">
-              <div
-                :class="submitAddAccInfo.taxPaymentPeriod == '2' ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
-              季报
-            </div>
-            <div class="popSelectBox ng-binding ng-scope" @click="selectRoleType('1')">
-              <div
-                :class="submitAddAccInfo.taxPaymentPeriod == '1' ? 'icon-select-radio-on' : 'icon-select-radio-off'"></div>
-              月报
-            </div></div>
-        </div>
-        <div class="messageBox submitBox">
-          <div class="message-title">
-            <div class="btn-cancel" @click="hideAddAccountPop">取消</div>
-          </div>
-          <div class="message-input">
-            <div class="btn-submit anime" @click="addAccount()">确定</div>
-            <div class="size-hint ng-binding" v-text="show.hint"></div>
-          </div>
-        </div>
-        <div class="batchGuide" v-if="show.canBatchImport">
-          <div @click="showBatchPop">批量导入账套</div>
-        </div>
-      </div>
-    </div>-->
-
     <!-- 操作成功 -->
     <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="isSuccess">
       <div class="site-popup anime popup-message flex--column site-popup--expand">
         <div class="site-popup_head">
-          <div class="site-popup_title">小君提醒您：</div>
+          <div class="site-popup_title">财税通提醒您：</div>
           <div class="site-popup_close g-icon-close" @click="hideShade"></div>
         </div>
         <div class="site-popup_body">
@@ -406,7 +343,7 @@
             if (res.body.result == 0) {
               this.close()
               utils.dbSet("userInfo", JSON.stringify(res.body.data))
-              this.this.copyUserConfig()
+              this.copyUserConfig()
             } else {
               this.setErrMsg(res.body.msg)
             }
