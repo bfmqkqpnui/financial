@@ -23,15 +23,13 @@
               </div>
             </div>
             <div class="setBtnMenu btnReportBox" v-if="setMenu.type == 'assets'">
-              <div class="btn-template" ng-click="dwldFaTpl()">下载模板</div>
+              <div class="btn-template" @click="downTemp">下载模板</div>
               <div class="btn-fileAssets" ng-show="isMyAccount"> 导入固定资产
-                <input type="file" id="fileSingle" name="file[]"
-                       accept=".xlsx"
-                       onchange="angular.element(this).scope().onSelectFile()">
+                <input type="file" id="fileSingle" name="file[]" accept=".xlsx">
               </div>
-              <div class="btn-addAssets" ng-click="addFixedAsset()" ng-show="isMyAccount">添加固定资产</div>
-              <div class="btn-reconciliationAssets" ng-click="checkEquilibrium(true)">对账</div>
-              <div class="icon-download" ng-click="dwldData()" title="下载固定资产清单"></div>
+              <div class="btn-addAssets" @click="addFixedAsset" ng-show="isMyAccount">添加固定资产</div>
+              <div class="btn-reconciliationAssets" @click="checkEquilibrium">对账</div>
+              <div class="icon-download" @click="dwldData" title="下载固定资产清单"></div>
             </div>
             <div class="setBtnMenu btnReportBox" v-if="setMenu.type == 'report'">
               <div class="btn-switchCurrency-off ng-binding" ng-click="amountPop(true)" v-if="isNullBtnFlag"></div>
@@ -647,15 +645,71 @@
                       </div>
                       <table>
                         <tbody> <!-- ngRepeat: data in tableData['assets'] | orderBy: order.order + order.type -->
-                        <tr ng-show="showInfo(tableData['assets'].length)" style="font-weight:700" class="ng-hide">
+                        <tr ng-repeat="data in tableData['assets'] | orderBy: order.order + order.type"
+                            ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                            ng-dblclick="showSubjectPop(data, 'readAssets', $event)" ng-click="highlightRow($index)"
+                            on-repeat-finished="" class="ng-scope" style="">
+                          <td class="span-4 ng-binding">1</td>
+                          <td class="span-14 ng-binding">xxx</td>
+                          <td class="span-8 ng-binding">2018-08</td>
+                          <td class="span-8 ng-binding">6,000.00</td>
+                          <td class="span-8 ng-binding">300.00</td>
+                          <td class="span-10 ng-binding">60</td>
+                          <td class="span-10 ng-binding">0</td>
+                          <td class="span-10 ng-binding">0.00</td>
+                          <td class="span-8 ng-binding"></td>
+                          <td class="span-8 ng-binding">6,000.00</td>
+                          <td class="span-12"> <!-- ngIf: checkAssetsState(data) == 1 -->
+                            <div ng-if="checkAssetsState(data) == 1"
+                                 ng-class="{'prepare': isMyAccount, 'myAcc-prepare': !isMyAccount}"
+                                 ng-click="editFixedAsset(data)" class="ng-scope prepare"></div>
+                            <div class="deleteAssets-btn" data-toggle="tooltip" title="删除该条固定资产"
+                                 ng-show="account.currentIssue === data.beginIssue &amp;&amp;
+                                          account.currentIssue === account.selectIssue &amp;&amp;
+                                          account.selectIssue === data.beginIssue &amp;&amp;
+                                        isMyAccount" ng-click="deleteFixedAsset(data)"></div>
+                            <div class="lockAssets-icon ng-hide" data-toggle="tooltip" title="已锁定"
+                                 ng-show="account.currentIssue !== account.selectIssue "></div>
+                          </td>
+                        </tr>
+                        <tr ng-repeat="data in tableData['assets'] | orderBy: order.order + order.type"
+                            ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                            ng-dblclick="showSubjectPop(data, 'readAssets', $event)" ng-click="highlightRow($index)"
+                            on-repeat-finished="" class="ng-scope" style="">
+                          <td class="span-4 ng-binding">2</td>
+                          <td class="span-14 ng-binding">yyy</td>
+                          <td class="span-8 ng-binding">2018-08</td>
+                          <td class="span-8 ng-binding">4,000.00</td>
+                          <td class="span-8 ng-binding">0.00</td>
+                          <td class="span-10 ng-binding">1</td>
+                          <td class="span-10 ng-binding">0</td>
+                          <td class="span-10 ng-binding">0.00</td>
+                          <td class="span-8 ng-binding"></td>
+                          <td class="span-8 ng-binding">4,000.00</td>
+                          <td class="span-12"> <!-- ngIf: checkAssetsState(data) == 1 -->
+                            <div ng-if="checkAssetsState(data) == 1"
+                                 ng-class="{'prepare': isMyAccount, 'myAcc-prepare': !isMyAccount}"
+                                 ng-click="editFixedAsset(data)" class="ng-scope prepare"></div>
+                            <div class="deleteAssets-btn" data-toggle="tooltip" title="删除该条固定资产"
+                                 ng-show="account.currentIssue === data.beginIssue &amp;&amp;
+                                          account.currentIssue === account.selectIssue &amp;&amp;
+                                          account.selectIssue === data.beginIssue &amp;&amp;
+                                        isMyAccount" ng-click="deleteFixedAsset(data)"></div>
+                            <div class="lockAssets-icon ng-hide" data-toggle="tooltip" title="已锁定"
+                                 ng-show="account.currentIssue !== account.selectIssue "></div>
+                          </td>
+                        </tr>
+
+
+                        <tr ng-show="showInfo(tableData['assets'].length)" style="font-weight:700" class="">
                           <td colspan="3">合计：</td>
-                          <td style="text-align:right" class="ng-binding"></td>
+                          <td style="text-align:right" class="ng-binding">10,000.00</td>
                           <td></td>
                           <td></td>
                           <td></td>
-                          <td style="text-align:right" class="ng-binding"></td>
-                          <td style="text-align:right" class="ng-binding"></td>
-                          <td style="text-align:right" class="ng-binding"></td>
+                          <td style="text-align:right" class="ng-binding">0.00</td>
+                          <td style="text-align:right" class="ng-binding">0.00</td>
+                          <td style="text-align:right" class="ng-binding">10,000.00</td>
                           <td></td>
                         </tr>
                         </tbody>
@@ -1533,6 +1587,26 @@
       downloadFile(opt) {
         console.log("xiazai: ", opt.fileUrl)
         window.open(opt.fileUrl);
+      },
+      // 下载模板
+      downTemp() {
+        console.log("下载模板")
+      },
+      // 导入固定资产
+      importFixedAssets() {
+        console.log("导入固定资产")
+      },
+      // 添加固定资产
+      addFixedAsset() {
+        console.log("添加固定资产")
+      },
+      // 对账
+      checkEquilibrium() {
+        console.log("对账")
+      },
+      // 下载固定资产清单
+      dwldData() {
+        console.log("下载固定资产清单")
       }
     },
     created() {
