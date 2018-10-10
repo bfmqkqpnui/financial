@@ -25,7 +25,7 @@
             <div class="setBtnMenu btnReportBox" v-if="setMenu.type == 'assets'">
               <div class="btn-template" @click="downTemp">下载模板</div>
               <div class="btn-fileAssets" ng-show="isMyAccount"> 导入固定资产
-                <input type="file" id="fileSingle" name="file[]" accept=".xlsx">
+                <input type="file" id="fileSingle" name="file" accept=".xlsx">
               </div>
               <div class="btn-addAssets" @click="addFixedAsset" ng-show="isMyAccount">添加固定资产</div>
               <div class="btn-reconciliationAssets" @click="checkEquilibrium">对账</div>
@@ -639,12 +639,30 @@
                       </table>
                     </div>
                     <div class="content-rel" id="scrollBar-assets">
-                      <div ng-show="tableData['assets'].length == 0" style="text-align:center;margin-top:100px">
+                      <div v-if="assetTableList.length == 0" style="text-align:center;margin-top:100px">
                         <img src="./i/notFound.png">
                         <p style="color:rgba(50,63,77,.5);margin-top:40px" class="ng-binding"> 未搜索到固定资产 </p>
                       </div>
                       <table>
                         <tbody> <!-- ngRepeat: data in tableData['assets'] | orderBy: order.order + order.type -->
+                        <tr v-for="(item, index) in assetTableList" :key="index">
+                          <td class="span-4 ng-binding" v-text="index"></td>
+                          <td class="span-14 ng-binding" v-text="item.name"></td>
+                          <td class="span-8 ng-binding" v-text="item.beginIssue"></td>
+                          <td class="span-8 ng-binding" v-text="item.initVal"></td>
+                          <td class="span-8 ng-binding" v-text="item.residualRate"></td>
+                          <td class="span-10 ng-binding" v-text="item.depreciationPeriod"></td>
+                          <td class="span-10 ng-binding" v-text="item.beginIssueUsedPeriod"></td>
+                          <td class="span-10 ng-binding" v-text="item.beginIssueUsedVal"></td>
+                          <td class="span-8 ng-binding" v-text="item.mouthNow"></td>
+                          <td class="span-8 ng-binding" v-text="item.netVal"></td>
+                          <td class="span-12">
+                            <div ng-if="checkAssetsState(data) == 3"
+                                 ng-class="{'depreciationIng': isMyAccount, 'myAcc-depreciationIng': !isMyAccount}"
+                                 ng-click="disposeIng(data)" class="ng-scope depreciationIng" v-text="item.status"></div>
+                            <div class="deleteAssets-btn" data-toggle="tooltip" title="删除该条固定资产" ng-click="deleteFixedAsset(data)"></div>
+                          </td>
+                        </tr>
                         <tr ng-repeat="data in tableData['assets'] | orderBy: order.order + order.type"
                             ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
                             ng-dblclick="showSubjectPop(data, 'readAssets', $event)" ng-click="highlightRow($index)"
@@ -1095,6 +1113,112 @@
         </div>
       </div>
     </div>
+
+    <!-- 添加固定资产 -->
+    <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="isFixedAssets">
+      <div class="site-popup anime popup-fixedAssetInfo site-popup--expand">
+        <div class="site-popup_head">
+          <p class="ng-binding">添加固定资产</p>
+          <div class="site-popup_close g-icon-close" @click.stop="hide"></div>
+        </div>
+        <div class="site-popup_body">
+          <div class="entry-container">
+            <div class="entry-row">
+              <p class="grid-label popup-label">资产名称</p>
+              <input class="grid-content ng-valid ng-dirty ng-touched ng-empty" type="text" v-model="asset.name">
+            </div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">入账日期</p>
+              <input class="grid-content grid-content--lock ng-pristine ng-untouched ng-valid ng-not-empty" type="text"
+                     v-model="asset.beginIssue" disabled="disabled">
+            </div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">原值</p>
+              <input class="grid-content ng-valid ng-dirty ng-touched ng-not-empty" type="number"
+                     v-model="asset.initVal">
+            </div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">预计残值率</p>
+              <input class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
+                     v-model="asset.residualRate">
+            </div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">折旧周期</p>
+              <input class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
+                     v-model="asset.depreciationPeriod">
+            </div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">累计折旧周期</p>
+              <input class="grid-content ng-valid ng-dirty ng-touched ng-not-empty" type="number"
+                     v-model="asset.beginIssueUsedPeriod" ng-disabled="lock || !canEditBeginIssueUsedPeriod">
+            </div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">累计折旧</p>
+              <input class="grid-content ng-valid ng-dirty ng-touched ng-not-empty" type="number"
+                     v-model="asset.beginIssueUsedVal">
+            </div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">入账科目</p>
+              <select class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty"
+                      v-model="asset.accountedSubject">
+                <option ng-repeat="sub in fixedAssetModel.ACCOUNTED_SUBJECTS" value="4101" class="ng-binding ng-scope">
+                  4101 - 制造費用
+                </option><!-- end ngRepeat: sub in fixedAssetModel.ACCOUNTED_SUBJECTS -->
+                <option ng-repeat="sub in fixedAssetModel.ACCOUNTED_SUBJECTS" value="5401" class="ng-binding ng-scope">
+                  5401 - 主营业务成本
+                </option><!-- end ngRepeat: sub in fixedAssetModel.ACCOUNTED_SUBJECTS -->
+                <option ng-repeat="sub in fixedAssetModel.ACCOUNTED_SUBJECTS" value="5601" class="ng-binding ng-scope">
+                  5601 - 销售费用
+                </option><!-- end ngRepeat: sub in fixedAssetModel.ACCOUNTED_SUBJECTS -->
+                <option ng-repeat="sub in fixedAssetModel.ACCOUNTED_SUBJECTS" value="5602" class="ng-binding ng-scope">
+                  5602 - 管理费用
+                </option><!-- end ngRepeat: sub in fixedAssetModel.ACCOUNTED_SUBJECTS --> </select></div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">折旧方法</p>
+              <select class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" v-model="asset.arithmetic">
+                <option ng-repeat="a in fixedAssetModel.ARITHMETICS" value="平均折旧" class="ng-binding ng-scope">平均折旧
+                </option>
+                <option ng-repeat="a in fixedAssetModel.ARITHMETICS" value="一次性折旧" class="ng-binding ng-scope">一次性折旧
+                </option>
+              </select>
+            </div>
+            <div class="entry-row flex-left">
+              <p class="grid-label popup-label">本月计提</p>
+              <label class="checkbox icon-select"
+                     :class="{'icon-select': !asset.isIssueAccrued, 'icon-selected': asset.isIssueAccrued}">
+                <input type="checkbox" v-model="asset.isIssueAccrued" id="fixedAssetAccrued"
+                       class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty">
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="site-popup_footer"><p class="popup-error ng-binding"></p>
+          <div class="entry-row">
+            <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="hide">
+              <div><span class="ng-scope">取消</span></div>
+            </div>
+            <div class="btn-ok com-button anime ng-isolate-scope com-button--ok" @click.stop="ok">
+              <div><span class="ng-scope">确定</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 固定资产折旧操作 -->
+    <div class="site-mask anime site-mask--shade" v-if="showDisposeAssets">
+      <div class="disposeAssetsBox anime site-popup--expand" ng-class="{'site-popup--expand' : showDisposeAssets}">
+        <div class="voucherBox">
+          <div class="disposeAssets-title"> 固定资产处理操作
+            <div class="closeDisposeAssetsPop-icon" data-toggle="tooltip" title="关闭"
+                 @click.stop="disposeSelectPop('false')"></div>
+          </div>
+          <div class="disposeAssets-btn-sell" ng-click="disposeSelect('sale')">出售</div>
+          <div class="disposeAssets-btn-scrap" ng-click="disposeSelect('报废')">报废</div>
+          <div class="disposeAssets-btn-loss" ng-click="disposeSelect('盘亏')">盘亏</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -1102,6 +1226,24 @@
   import api from './api/index'
   import utils from '../../utils'
 
+  /**
+   * 累计折旧
+   固定资产折旧费用根据固定资产的原值和规定的折旧率计算确定，按照一定的标准分摊记入各期的间接费用和期间费用。生产车间用房屋建筑物、机器设备
+   的折旧，作为间接费用，计入制造费用帐户，厂部行政用办公房屋的，计入管理费用帐户，由当期收入负担。折旧合计数计入“累计折旧”帐户的贷方。
+
+   比如说购入一台电脑5000元，电脑一般折旧年限为5年
+
+   1、残值：
+   5000元*残值率5%=250元
+   2、年折旧额：
+   （5000-250）/5=950（元）
+   3、月折旧额：
+   950/12=79.17（元）
+
+   分录：
+   借：管理费用：79.17
+   贷：累计折旧 79.17
+   * **/
   export default {
     name: "bookSettings",
     data() {
@@ -1172,7 +1314,53 @@
           assistAccountingName: '',
           assistAccountingType: '',
           unitStr: ''
-        }
+        },
+        // 显示固定资产标识
+        isFixedAssets: false,
+        // 添加固定资产对象
+        asset: {
+          // 资产名字
+          name: '',
+          // 入账日期
+          beginIssue: '',
+          // 原值
+          initVal: '',
+          // 预计残值率
+          residualRate: '',
+          // 折旧周期
+          depreciationPeriod: '',
+          // 累计折旧周期
+          beginIssueUsedPeriod: '',
+          // 累计折旧
+          beginIssueUsedVal: '',
+          // 入账科目
+          accountedSubject: '',
+          // 折旧方法
+          arithmetic: '',
+          // 本月计提
+          isIssueAccrued: ''
+        },
+        // 固定资产折旧弹层
+        showDisposeAssets: false,
+        // 固定资产数据
+        assetTableList: [
+          {
+            code: '001',
+            name: '家用电器',
+            beginIssue: '2018-10',
+            type: 'jd',
+            arithmetic: '平均折旧',
+            initVal: '6000',
+            depreciationPeriod: '60',
+            beginIssueUsedVal: '4560',
+            beginIssueUsedPeriod: '48',
+            residualRate: '300',
+            netVal: '1140',
+            mouthNow: '95',
+            status: '准备折旧'
+          }
+
+        ]
       }
     },
     methods: {
@@ -1599,6 +1787,7 @@
       // 添加固定资产
       addFixedAsset() {
         console.log("添加固定资产")
+        this.isFixedAssets = true
       },
       // 对账
       checkEquilibrium() {
@@ -1607,6 +1796,23 @@
       // 下载固定资产清单
       dwldData() {
         console.log("下载固定资产清单")
+      },
+      // 隐藏固定资产弹层
+      hide() {
+        console.log("隐藏固定资产弹层")
+        this.isFixedAssets = false
+      },
+      // 确认添加固定资产
+      ok() {
+        console.log("确认添加固定资产")
+      },
+      // 固定资产处理弹层
+      disposeSelectPop(value) {
+        if (value == "false") {
+          this.showDisposeAssets = false
+        } else {
+          this.showDisposeAssets = true
+        }
       }
     },
     created() {
@@ -2755,5 +2961,230 @@
 
   #scrollBar-assist tbody tr:hover .icon25-delete {
     display: inherit;
+  }
+
+  .settingBox [class*=tableData-] table td:first-child {
+    border-left: 1px solid rgba(182, 192, 210, .5);
+  }
+
+  /**添加固定资产**/
+  .popup-fixedAssetInfo {
+    width: 460px;
+  }
+
+  /**添加固定资产 头部**/
+  .site-popup_head {
+    height: 25px;
+    position: relative;
+  }
+
+  .popup-fixedAssetInfo .site-popup_head > p {
+    line-height: 60px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  /**添加固定资产 主体**/
+  .site-popup_body {
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    font-size: 18px;
+  }
+
+  .popup-fixedAssetInfo .entry-container {
+    width: 100%;
+    padding: 25px;
+  }
+
+  .popup-fixedAssetInfo .entry-row {
+    width: 100%;
+    height: 30px;
+    margin-top: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+
+  .popup-fixedAssetInfo .grid-label {
+    width: 120px;
+  }
+
+  .popup-fixedAssetInfo .popup-label {
+    display: inline-block;
+    text-align: right;
+    font-size: 14px;
+    line-height: 30px;
+    padding: 0 8px;
+  }
+
+  .popup-fixedAssetInfo .grid-content {
+    max-width: 250px;
+  }
+
+  .popup-fixedAssetInfo .flex-left {
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+  }
+
+  .popup-fixedAssetInfo .icon-select {
+    background-image: url(./i/unselected.png);
+  }
+
+  .popup-fixedAssetInfo .icon-selected {
+    background-image: url(./i/selected.png);
+  }
+
+  .popup-fixedAssetInfo .checkbox {
+    width: 30px;
+    height: 30px;
+    background-position: 50%;
+    background-repeat: no-repeat;
+  }
+
+  .popup-fixedAssetInfo #fixedAssetAccrued {
+    opacity: 0;
+  }
+
+  .settingBox .tableData-assets table tbody tr td, .settingBox .tableData-report table.assetTable tr td:nth-child(3), .settingBox .tableData-report table.assetTable tr td:nth-child(4), .settingBox .tableData-report table tbody tr td:last-child, .settingBox .tableData-report table tbody tr td:nth-last-child(2), .settingBox .tableData-report table tbody tr td:nth-last-child(3), .settingBox .tableData-report table tbody tr td:nth-last-child(4), .settingBox .tableData-tax table tbody tr td:last-child {
+    text-align: right;
+  }
+
+  .settingBox .tableData-assets table tbody tr td:first-child, .settingBox .tableData-assets table tbody tr td:last-child, .settingBox .tableData-assets table tbody tr td:nth-child(3), .settingBox .tableData-assets table tbody tr td:nth-child(6), .settingBox .tableData-assets table tbody tr td:nth-child(7), .settingBox .tableData-report table.assetTable tr td:nth-child(2), .settingBox .tableData-report table.assetTable tr td:nth-child(6), .settingBox .tableData-report table.cashTable tr td:nth-child(2), .settingBox .tableData-report table.incomeTable tr td:nth-child(2), .settingBox .tableData-report table tbody tr td:nth-child(3), .settingBox .tableData-report table tbody tr td:nth-child(4), .settingBox .tableData-subject .tableBody div:last-child, .settingBox .tableData-subject .tableBody div:nth-last-child(2) {
+    text-align: center;
+  }
+
+  .settingBox .tableData-assets table tbody tr td:nth-child(2), .settingBox .tableData-report table.assetTable tr td:nth-child(5), .settingBox .tableData-report table.cashTable tr td:first-child, .settingBox .tableData-report table.incomeTable tr td:first-child {
+    text-align: left;
+  }
+
+  .settingBox .tableData-assets table tbody tr td:last-child > div {
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-loss, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-scrap, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-sell, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationIng, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationNewIng, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationOther, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationOver, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationOverEdit, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-depreciationIng, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-depreciationOverEdit, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-prepare, .settingBox .tableData-assets table tbody tr td:last-child > div.prepare {
+    display: inline-block;
+  }
+
+  .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-loss, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-scrap, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-sell, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-prepare, .settingBox .tableData-assets table tbody tr td:last-child > div.prepare {
+    color: #53cf93;
+  }
+
+  .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationIng, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationNewIng, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-depreciationIng {
+    color: #5fbbfc;
+  }
+
+  .settingBox [class*=tableData-] table {
+    width: 100%;
+    background: #fff;
+  }
+
+  .settingBox .deleteAssets-btn, .settingBox .lockAssets-icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    margin-top: -10px;
+    display: none;
+  }
+  .settingBox .deleteAssets-btn {
+    background: url(./i/remove.png) center -20px no-repeat;
+    background-size: 20px;
+  }
+  .settingBox .tableData-assets table tbody tr td:last-child>div {
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  .settingBox .tableData-assets table tbody tr td:last-child>div:nth-last-child(1), .settingBox .tableData-assets table tbody tr td:last-child>div:nth-last-child(2) {
+    margin-right: 0;
+  }
+  .settingBox .tableData-assets table tbody tr:hover td .deleteAssets-btn, .settingBox .tableData-assets table tbody tr:hover td .lockAssets-icon {
+    display: inline-block;
+  }
+  .settingBox .tableData-assets table tbody tr:hover td:last-child>div {
+    text-decoration: underline;
+    color: #ff6364;
+  }
+
+  /**添加固定资产 底部**/
+  .popup-fixedAssetInfo .site-popup_footer {
+    padding: 0 25px 25px;
+  }
+
+  .popup-fixedAssetInfo .popup-error {
+    color: red;
+    font-size: 12px;
+    padding-left: 130px;
+    height: 30px;
+  }
+
+  .popup-fixedAssetInfo .site-popup_footer .entry-row {
+    margin: 0;
+  }
+
+  .popup-fixedAssetInfo .btn-cancel {
+    width: 60px;
+    margin: 0 30px;
+  }
+
+  .popup-fixedAssetInfo .btn-ok {
+    width: 250px;
+  }
+
+  /**固定资产处理操作*/
+  .disposeAssetsBox {
+    width: 400px;
+    height: 300px;
+    background: #fff;
+    border-radius: 2px;
+    overflow: hidden;
+    padding: 5px;
+    position: fixed;
+    z-index: 1002;
+    left: 50%;
+    margin-left: -200px;
+    top: 50%;
+    margin-top: -150px;
+    box-shadow: 5px 5px 20px #666;
+  }
+
+  .disposeAssets-title {
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #ccc;
+    line-height: 49px;
+    font-size: 1.2em;
+    padding-left: 10px;
+    position: relative;
+  }
+
+  .closeDisposeAssetsPop-icon {
+    width: 25px;
+    height: 25px;
+    background: url(./i/remove.png) 0 -50px no-repeat;
+    background-size: 25px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+
+  [class*=disposeAssets-btn-] {
+    width: 90%;
+    height: 50px;
+    line-height: 50px;
+    background: #5fbbfc;
+    color: #fff;
+    text-align: center;
+    font-size: 1.1em;
+    margin: 22px auto 0;
+    cursor: pointer;
   }
 </style>
