@@ -61,4 +61,12 @@ export default {
   deleteAssists: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/assistaccounting/delete', params)
   },
+  // 添加固定资产
+  addFixedAsset: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/fixedassets/insert', params)
+  },
+  // 获取入账日期
+  getDate: params => {
+    return Vue.http.get(Vue.$SERVICE_BASE_URL + '/sys/getNowYMD', params)
+  }
 }

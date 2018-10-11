@@ -646,7 +646,7 @@
                       <table>
                         <tbody> <!-- ngRepeat: data in tableData['assets'] | orderBy: order.order + order.type -->
                         <tr v-for="(item, index) in assetTableList" :key="index">
-                          <td class="span-4 ng-binding" v-text="index"></td>
+                          <td class="span-4 ng-binding" v-text="index+1"></td>
                           <td class="span-14 ng-binding" v-text="item.name"></td>
                           <td class="span-8 ng-binding" v-text="item.beginIssue"></td>
                           <td class="span-8 ng-binding" v-text="item.initVal"></td>
@@ -1359,8 +1359,9 @@
             mouthNow: '95',
             status: '准备折旧'
           }
-
-        ]
+        ],
+        // 当前日期
+        dateNow: ""
       }
     },
     methods: {
@@ -1519,7 +1520,7 @@
           } else if (opt.index == 3) {
 
           } else if (opt.index == 4) {
-
+            // this.getDate()
           } else if (opt.index == 5) {
 
           } else if (opt.index == 6) {
@@ -1813,10 +1814,22 @@
         } else {
           this.showDisposeAssets = true
         }
+      },
+      // 获取当前日期
+      getDate() {
+        api.getDate({token: this.token}).then(res => {
+          console.log("获取当前日期", res.body)
+          if (res.body.result == 0) {
+            this.dateNow = res.body.data
+          }
+        })
       }
     },
     created() {
       this.subjectClassify({index: 1}, 'subject')
+    },
+    mounted() {
+
     }
   }
 </script>
