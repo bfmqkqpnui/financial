@@ -1,0 +1,1476 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
+  display: none !important;
+}
+
+/**表格头部样式*/
+.settingBox .setBtnMenu, .settingBox .setHeadMenu {
+  height: 30px;
+  position: relative;
+  margin-top: 10px;
+}
+
+.settingBox .setHeadMenu {
+  float: left;
+}
+
+.settingBox .setHeadMenu ul li {
+  float: left;
+  height: 30px;
+  width: 60px;
+  text-align: center;
+  padding: 2px 0 0;
+  list-style: none;
+  letter-spacing: .9px;
+  color: rgba(42, 51, 59, .6);
+  margin-right: 15px;
+}
+
+.settingBox .setHeadMenu ul li.menuOn, .settingBox .setHeadMenu ul li.menuOn:hover {
+  cursor: default;
+  border-bottom: 5px solid #5fbbfc;
+  color: #2a333b;
+}
+
+.settingBox .setHeadMenu ul li:hover {
+  cursor: pointer;
+  color: #2a333b;
+}
+
+.settingBox .setBtnMenu {
+  position: absolute;
+  right: 0;
+}
+
+.settingBox .page-searchBox {
+  height: 100%;
+  width: 200px;
+  position: relative;
+}
+
+.settingBox input, .settingBox select, .settingBox textarea {
+  box-sizing: border-box;
+}
+
+.settingBox .page-searchBox .icon-close, .settingBox .page-searchBox .icon-search {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  display: inline-block;
+}
+
+.settingBox .page-searchBox .icon-search {
+  background: url(../i/search.png) no-repeat 50%;
+}
+
+.settingBox .hover_bar {
+  width: 60px;
+  height: 5px;
+  position: absolute;
+  bottom: -5px;
+}
+
+.settingBox .setHeadMenu ul li ~ .hover_bar.li-0 {
+  left: 0;
+}
+
+.settingBox .hover_bar, .settingBox .setHeadMenu ul li.li-0:hover ~ .hover_bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(45, 168, 255, .4);
+}
+
+.settingBox .setHeadMenu ul li.li-1:hover ~ .hover_bar, .settingBox .setHeadMenu ul li ~ .hover_bar.li-1 {
+  left: 75px;
+}
+
+.settingBox .setHeadMenu ul li.li-4:hover ~ .hover_bar, .settingBox .setHeadMenu ul li ~ .hover_bar.li-4 {
+  left: 300px;
+}
+
+.settingBox .setHeadMenu ul li.li-1:hover ~ .hover_bar, .settingBox .setHeadMenu ul li ~ .hover_bar.li-1 {
+  left: 75px;
+}
+
+.settingBox .setHeadMenu ul li.li-2:hover ~ .hover_bar, .settingBox .setHeadMenu ul li ~ .hover_bar.li-2 {
+  left: 150px;
+}
+
+.settingBox .setHeadMenu ul li.li-3:hover ~ .hover_bar, .settingBox .setHeadMenu ul li ~ .hover_bar.li-3 {
+  left: 225px;
+}
+
+.settingBox .setHeadMenu ul li.li-5:hover ~ .hover_bar, .settingBox .setHeadMenu ul li ~ .hover_bar.li-5 {
+  left: 375px;
+}
+
+.settingBox .btnReportBox > [class*=btn-], .settingBox .btnReportBox > div.btn-check, .settingBox .btnReportBox > div.btn-check:hover, .settingBox .reportTable-left > [class*=btn-] {
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  float: left;
+  position: relative;
+  margin-left: 10px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #5fbbfc;
+  color: #5fbbfc;
+  padding: 0 20px;
+}
+
+.settingBox .btnReportBox > div.btn-check, .settingBox .btnReportBox > div.btn-check:hover {
+  padding: 0 20px 0 40px;
+  color: #38aafc;
+}
+
+.settingBox .icon-addAssets, .settingBox .icon-cancelReport, .settingBox .icon-fileAssets, .settingBox .icon-reconciliationAssets, .settingBox .icon-saveReport, .settingBox [class*=icon-isShowNullNum-] {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  margin-top: -12px;
+  left: 15px;
+  background: red;
+}
+
+.settingBox .icon-isShowNullNum-off {
+  background: url(../i/unselected.png) no-repeat 50%;
+}
+
+.settingBox .setBtnMenu .icon-download {
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+  float: right;
+  background: url(../i/download.png) no-repeat 50%;
+  margin-left: 10px;
+}
+
+/**page-content*/
+.settingBox .page-content {
+  overflow: visible;
+}
+
+.settingBox .tableData-report, .settingBox .tableData-subject {
+  padding-right: 30px;
+}
+
+.settingBox [class*=tableData-] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/**右側tab菜單*/
+/*.settingBox .navSubjectMenuBox {
+  width: 30px;
+  color: #5fbbfc;
+  text-align: center;
+  position: absolute;
+  top: 40px;
+  right: 0;
+}*/
+
+.settingBox .navSubjectMenuBox > div {
+  padding: 10px 4px;
+  background: #fff;
+  border-bottom: 1px solid #5fbbfc;
+  border-right: 1px solid #5fbbfc;
+  cursor: pointer;
+}
+
+.settingBox .navSubjectMenuBox > div.navSubjectMenuMask {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  background: hsla(0, 0%, 100%, .5);
+  border: 1px solid hsla(0, 0%, 100%, .5);
+  cursor: default;
+}
+
+.settingBox .navSubjectMenuBox > div:nth-child(2) {
+  border-top: 1px solid #5fbbfc;
+  border-radius: 0 5px 0 0;
+}
+
+.settingBox .navSubjectMenuBox > div.menuOn, .settingBox .navSubjectMenuBox > div.menuOn:hover {
+  color: #fff;
+  background: #5fbbfc;
+  cursor: default;
+}
+
+.settingBox .navSubjectMenuBox > div:hover {
+  background: #f4f4f4;
+}
+
+/**table主体*/
+.settingBox .setSubjectListBox, .settingBox .setTaxListBox, .settingBox .tableData-assets, .settingBox .tableData-info {
+  overflow: hidden;
+}
+
+.settingBox .setSubjectListBox {
+  border-bottom: 1px solid rgba(182, 192, 210, .5);
+}
+
+.settingBox .setSubjectListBox, .settingBox .setTaxListBox, .settingBox .tableData-report .setSubjectListBox {
+  border-radius: 3px;
+  background: #fff;
+  padding: 40px 0 0;
+}
+
+.settingBox .tableBox, .settingBox .tableBox .tableBody, .settingBox .tableBox .tableHead {
+  width: 100%;
+}
+
+.settingBox [class*=tableData-] .reportTableFixed, .settingBox [class*=tableData-] .tableFixed {
+  position: absolute;
+  top: -40px;
+  left: 0;
+}
+
+.settingBox [class*=tableData-] > .content-rel .tableBox {
+  width: 100%;
+}
+
+.settingBox .tableBox .tableHead {
+  height: 40px;
+  background: #5fbbfc;
+  color: #fff;
+  border-left: 1px solid #5fbbfc;
+  border-right: 1px solid #5fbbfc;
+}
+
+.settingBox .tableBox .tableHead .tableTh {
+  line-height: 40px;
+  text-align: center;
+}
+
+.settingBox .tableBox .tableBody .tableTd, .settingBox .tableBox .tableHead .tableTh {
+  height: 100%;
+  float: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.settingBox .tableBox .tableHead .tableTh {
+  border-right: 1px solid hsla(0, 0%, 100%, .3);
+}
+
+.settingBox #scrollBar-subject > .tableBox {
+  border-left: 1px solid rgba(182, 192, 210, .5);
+  border-right: 1px solid rgba(182, 192, 210, .5);
+}
+
+.settingBox .tableBody, .settingBox table td {
+  font-size: 12px;
+}
+
+.settingBox .tableBox .tableBody {
+  height: 30px;
+  background: #fff;
+}
+
+.settingBox .tableBox .tableBody .tableTd {
+  position: relative;
+  line-height: 30px;
+  padding: 0 5px;
+}
+
+.settingBox .tableBox .tableBody .tableTd {
+  border-right: 1px solid rgba(182, 192, 210, .5);
+  border-bottom: 1px solid rgba(182, 192, 210, .5);
+}
+
+.settingBox [class*=-sizeColor-red] {
+  color: #ff6364;
+}
+
+.settingBox [class*=-sizeColor-green] {
+  color: #53cf93;
+}
+
+.settingBox .tableData-assets table tbody tr td:first-child, .settingBox .tableData-assets table tbody tr td:last-child, .settingBox .tableData-assets table tbody tr td:nth-child(3), .settingBox .tableData-assets table tbody tr td:nth-child(6), .settingBox .tableData-assets table tbody tr td:nth-child(7), .settingBox .tableData-report table.assetTable tr td:nth-child(2), .settingBox .tableData-report table.assetTable tr td:nth-child(6), .settingBox .tableData-report table.cashTable tr td:nth-child(2), .settingBox .tableData-report table.incomeTable tr td:nth-child(2), .settingBox .tableData-report table tbody tr td:nth-child(3), .settingBox .tableData-report table tbody tr td:nth-child(4), .settingBox .tableData-subject .tableBody div:last-child, .settingBox .tableData-subject .tableBody div:nth-last-child(2) {
+  text-align: center;
+}
+
+.settingBox .tableData-subject .tableBody div:last-child, .settingBox .tableData-subject .tableHead div:last-child {
+  border-right: none;
+}
+
+.settingBox .tableData-subject .tableBody:hover, .settingBox .tableData-tax table tbody tr:hover, .settingBox [class*=tableData-] table tbody tr:hover {
+  background: rgba(255, 232, 136, .5);
+}
+
+/**伸缩展示*/
+.settingBox .tableBody .btn-operateBox {
+  height: 30px;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  margin-top: -15px;
+  display: none;
+}
+
+.settingBox .icon-arrows-90, .settingBox .icon-arrows-90-hover {
+  background: url(../i/arrows.png) center -10px no-repeat;
+  background-size: 10px;
+}
+
+.settingBox .icon-arrows-0, .settingBox .icon-arrows-0-hover {
+  background: url(../i/arrows.png) center 0 no-repeat;
+  background-size: 10px;
+}
+
+.icon-assist, .subjectText {
+  float: left;
+}
+
+.settingBox [class*=icon-arrows-] {
+  width: 10px;
+  height: 10px;
+  display: inline-table;
+}
+
+.settingBox .icon-arrows-0-hover:hover, .settingBox .icon-arrows-90-hover:hover {
+  cursor: pointer;
+}
+
+/**科目编辑等*/
+.settingBox .tableData-subject .tableBody div:first-child:hover .btn-operateBox {
+  display: inline-block;
+}
+
+.settingBox .tableBody .btn-operateBox > div {
+  width: 24px;
+  height: 30px;
+  float: left;
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.settingBox .tableBody .btn-operateBox .btn-operate {
+  background: url(../i/operate.png) 50% no-repeat;
+  position: relative;
+}
+
+/**子集菜单*/
+.settingBox .tableBody .btn-operateBox .btn-operate .operateBox {
+  border-radius: 3px;
+  background-color: #fff;
+  display: none;
+  position: absolute;
+  width: 100px;
+  z-index: 10;
+  left: -70px;
+}
+
+.settingBox .tableBody .btn-operateBox .btn-operate .bottom {
+  top: 30px;
+}
+
+.settingBox .tableBody .btn-operateBox .btn-operate:hover .operateBox {
+  display: inline-block;
+}
+
+.settingBox .tableBody .btn-operateBox .btn-operate .bottom:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 6px 7px;
+  border-color: transparent transparent #5fbbfc;
+  position: absolute;
+  top: -7px;
+  right: 12px;
+}
+
+.settingBox .tableData-subject .btn-operateBox .operateBox .operate {
+  text-align: center;
+  font-weight: 400;
+  height: 30px;
+  border-left: 1px solid #5fbbfc;
+  border-right: 1px solid #5fbbfc;
+  border-bottom: 1px solid #5fbbfc;
+}
+
+.settingBox .btn-operateBox .operateBox .operate:first-child {
+  border-top: 1px solid #5fbbfc;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.settingBox .tableData-subject .btn-operateBox .operateBox .operate:hover {
+  background-color: #5fbbfc;
+}
+
+.settingBox .btn-operateBox .operateBox .operate:last-child {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+#scrollBar-subject::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+#scrollBar-subject::-webkit-scrollbar-track   {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+/*定义滑块 内阴影+圆角*/
+#scrollBar-subject::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: #bdbdbd;
+}
+
+/*滑块效果*/
+#scrollBar-subjecty::-webkit-scrollbar-thumb:hover {
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/**账套信息*/
+#accountInfo {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#accountInfo .column {
+  width: 100%;
+  position: relative;
+  border: 1px solid rgba(182, 192, 210, .5);
+  margin-bottom: 20px;
+  line-height: 30px;
+  border-radius: 3px;
+}
+
+#accountInfo .column .title {
+  width: 100%;
+  font-size: 14px;
+  line-height: 40px;
+  border-bottom: 1px solid rgba(182, 192, 210, .5);
+  position: relative;
+  text-indent: 20px;
+  letter-spacing: .9px;
+  color: #2a333b;
+}
+
+#accountInfo span {
+  display: inline-block;
+}
+
+#accountInfo .column .title .sideLine {
+  width: 10px;
+  height: 100%;
+  background: #ff8a52;
+  position: absolute;
+  left: 0;
+}
+
+#accountInfo .column .content {
+  width: 100%;
+}
+
+#accountInfo .column .content .leftBox, #accountInfo .column .content .rightBox {
+  float: left;
+  width: 50%;
+  height: 100%;
+  position: relative;
+  padding: 20px;
+}
+
+#accountInfo .column .content .leftBox {
+  border-right: 1px solid rgba(182, 192, 210, .5);
+}
+
+#accountInfo .inputLabel {
+  text-align: right;
+  display: inline-block;
+  width: 90px;
+}
+
+#accountInfo .input-normal {
+  width: 300px;
+  height: 30px;
+  display: inline-block;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+input[type="number"], input[type="password"], input[type="text"], select {
+  width: 100%;
+  height: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(95, 187, 252);
+  border-image: initial;
+  background: rgb(235, 240, 245);
+  border-radius: 4px;
+}
+
+#accountInfo .secretKey {
+  position: relative;
+  height: 50px;
+}
+
+#accountInfo .secretKey label {
+  height: 30px;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+#accountInfo .basic .secretKey-warp {
+  width: 300px;
+  display: inline-block;
+  position: relative;
+  height: 50px;
+  left: 105px;
+}
+
+#accountInfo .secretKey-warp .input-normal {
+  width: 220px;
+  margin-left: 0;
+}
+
+#secretKey {
+  border: 0;
+  background: #ebf0f5;
+  border-radius: 3px;
+  padding-left: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+#accountInfo .btn {
+  cursor: pointer;
+  border: 1px solid rgba(182, 192, 210, .5);
+  text-align: center;
+}
+
+#accountInfo .getSecretKey {
+  position: absolute;
+  right: 0;
+  top: 0;
+  line-height: 30px;
+  padding: 0 10px;
+  border-radius: 4px;
+  height: 30px;
+  color: #5fbbfc;
+  border: 1px solid #5fbbfc;
+}
+
+#accountInfo .clear:after {
+  content: "";
+  height: 0;
+  visibility: hidden;
+  display: block;
+  clear: both;
+}
+
+#accountInfo .selectBox {
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+
+#accountInfo .inputLabel {
+  text-align: right;
+  display: inline-block;
+  width: 90px;
+}
+
+#accountInfo .selectBox .item {
+  display: initial;
+  text-indent: 25px;
+  position: relative;
+  margin-left: 30px;
+}
+
+#accountInfo .icon-select {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background: url(../i/unselected.png) no-repeat 50%;
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+#accountInfo .icon-selected {
+  background: url(../i/selected.png) no-repeat 50%;
+}
+
+#accountInfo .column .content .leftBox {
+  border-right: 1px solid rgba(182, 192, 210, .5);
+}
+
+#accountInfo .connect .communicate .leftBox, #accountInfo .connect .company .leftBox {
+  border-right: 0;
+}
+
+#accountInfo .connect .inputLabel, #accountInfo .tax .rightBox .inputLabel {
+  text-align: right;
+  display: inline-block;
+  width: 75px;
+}
+
+#accountInfo .icon-person {
+  float: left;
+  width: 30px;
+  height: 30px;
+  background: url(../i/person.png) no-repeat 50%;
+}
+
+#accountInfo .icon-phone {
+  float: left;
+  width: 30px;
+  height: 30px;
+  background: url(../i/accountInfoPhone.png) no-repeat 50%;
+}
+
+#accountInfo .connect .inputLabel, #accountInfo .tax .rightBox .inputLabel {
+  text-align: right;
+  display: inline-block;
+  width: 75px;
+}
+
+#accountInfo .companyManage .range {
+  position: relative;
+}
+
+#accountInfo .companyManage .range label {
+  position: absolute;
+  top: 0;
+}
+
+.companyManage .range textarea {
+  width: 380px;
+  height: 130px;
+  border: 1px solid rgba(182, 192, 210, .5);
+  background: #ebf0f5;
+  border-radius: 4px;
+  position: absolute;
+  left: 105px;
+  border: 1px solid #5fbbfc;
+  padding: 8px;
+}
+
+#accountInfo .column .content {
+  width: 100%;
+}
+
+.settingBox .infoBox-leftBottom [class*=basicInfo-], .settingBox .infoBox-leftBottom [class*=companyInfo-], .settingBox .infoNameBox-bottom, .settingBox .infoNameBox-top, .settingBox [class*=infoBox-] {
+  width: 100%;
+}
+
+.settingBox .infoBox-bankBody, .settingBox .infoBox-bankHead {
+  height: 50px;
+  border-bottom: 1px solid #ebf0f5;
+}
+
+.settingBox .infoBox-bankHead {
+  background: #fff;
+}
+
+.settingBox .infoBox-bankBody > div, .settingBox .infoBox-bankHead > div, .settingBox .infoBox-left, .settingBox .infoBox-right, .settingBox .left-infoNameBox, .settingBox .right-infoOtherBox {
+  height: 100%;
+}
+
+.settingBox .infoBox-bankBody > div, .settingBox .infoBox-bankHead > div {
+  float: left;
+  line-height: 50px;
+  text-align: center;
+}
+
+.settingBox .infoBox-bankHead > div {
+  font-weight: 700;
+}
+
+.settingBox .infoBox-bankBody [class*=bankTd-], .settingBox .infoBox-bankHead [class*=bankTd-] {
+  width: 30%;
+  position: relative;
+  border-right: 1px solid rgba(182, 192, 210, .5);
+}
+
+.settingBox .infoBox-bankHead [class*=bankTd-] {
+  border-left: 1px solid #ebf0f5;
+}
+
+.settingBox .infoBox-bankBody .bankTd-index, .settingBox .infoBox-bankHead .bankTd-add {
+  width: 10%;
+}
+
+.settingBox .infoBox-bankHead .bankTd-add {
+  cursor: pointer;
+}
+
+.settingBox .bankTd-add .icon-addBankInfo {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -12px 0 0 -12px;
+  background: url(../i/icon-gather-25.png) -125px -100px no-repeat;
+  opacity: .5;
+}
+
+.settingBox .icon-assEnclosure {
+  background: url(../i/icon-gather-25.png) -125px -100px no-repeat;
+  opacity: .5;
+  top: 50%;
+  left: 50%;
+  margin-top: -12px;
+  margin-left: -12px;
+}
+
+#accountInfo .icon-addBankInfo, #accountInfo .icon-assEnclosure {
+  background: url(../i/add.png) no-repeat 50%;
+}
+
+#accountInfo .adjunct [class*=enclosureBox] {
+  padding: 10px;
+  height: 150px;
+  float: left;
+  cursor: pointer;
+}
+
+.settingBox .enclosureBox-add .enclosure-containBox {
+  background: rgba(102, 178, 255, .1);
+}
+
+.settingBox .enclosureBox-add:hover .enclosure-containBox {
+  background: rgba(102, 178, 255, .2);
+  overflow: hidden;
+}
+
+#accountInfo .adjunct .enclosure-containBox {
+  height: 100px;
+  border: 3px solid #f5f7fa;
+  position: relative;
+}
+
+.settingBox input#fileAmounts, .settingBox input#fileBalance, .settingBox input#fileCash, .settingBox input#fileCurrencies, .settingBox input#fileEnclosure, .settingBox input#fileSingle {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 3;
+}
+
+.settingBox .icon-assEnclosure, .settingBox .icon-deleteEnclosure {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+}
+
+.settingBox .infoBox-bankBody {
+  background: #fff;
+  position: relative;
+}
+
+#accountInfo .bank select {
+  width: auto;
+  height: auto;
+  border: 0;
+  background: #fff;
+  border-radius: 0;
+  text-indent: 0;
+}
+
+.settingBox input.tdInput, .settingBox label.tdLabel {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 96%;
+  height: 85%;
+  padding: 0 5px;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.settingBox label.tdLabel {
+  background: #e6f2ff;
+  border: 1px solid #90c7ff;
+}
+
+.settingBox label.tdLabel {
+  cursor: default;
+  z-index: 2;
+  line-height: 26px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settingBox .bankTd-bank label.tdLabel {
+  line-height: 41px;
+}
+
+#accountInfo .bank label {
+  text-align: center;
+}
+
+.settingBox .infoBox-bankBody .icon-removeBank {
+  width: 25px;
+  height: 25px;
+  border-radius: 3px;
+  background: url(../i/remove.png) 0 -25px no-repeat;
+  background-size: 25px;
+  position: absolute;
+  z-index: 5;
+  right: 15px;
+  top: 12px;
+  cursor: pointer;
+  display: none;
+}
+
+.settingBox .infoBox-bankBody:hover .icon-removeBank {
+  display: inline-block;
+}
+
+.settingBox input.tdInput:focus {
+  opacity: 1;
+  z-index: 3;
+}
+
+input:focus, select:focus {
+  outline: none;
+  background: #fff;
+}
+
+.settingBox input:focus, .settingBox select:focus, .settingBox textarea:focus {
+  outline: none;
+}
+
+input.align {
+  text-align: center;
+}
+
+input.align:focus {
+  text-align: left;
+}
+
+.settingBox .icon-deleteEnclosure {
+  border-radius: 3px;
+  background: url(../i/icon-gather-25.png) -175px -50px no-repeat hsla(0, 0%, 100%, .7);
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+}
+
+.settingBox .enclosure-containBox img {
+  width: 99%;
+  height: 99%;
+}
+
+.settingBox .enclosureBox:hover .icon-deleteEnclosure {
+  opacity: .5;
+}
+
+.settingBox .enclosureBox:hover .icon-deleteEnclosure:hover {
+  opacity: 1;
+}
+
+/**辅助核算*/
+.settingBox .navSubjectMenuBox {
+  width: 30px;
+  color: #5fbbfc;
+  text-align: center;
+  position: absolute;
+  top: 40px;
+  right: 0;
+}
+
+.settingBox .navSubjectMenuBox > div {
+  padding: 10px 4px;
+  background: #fff;
+  border-bottom: 1px solid #5fbbfc;
+  border-right: 1px solid #5fbbfc;
+  cursor: pointer;
+}
+
+.settingBox .navSubjectMenuBox > div.navSubjectMenuMask {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  background: hsla(0, 0%, 100%, .5);
+  border: 1px solid hsla(0, 0%, 100%, .5);
+  cursor: default;
+}
+
+.settingBox .navSubjectMenuBox > div:nth-child(2) {
+  border-top: 1px solid #5fbbfc;
+  border-radius: 0 5px 0 0;
+}
+
+.settingBox .assistBox {
+  overflow: hidden;
+  border-radius: 3px;
+  background: #fff;
+  padding: 40px 0 0;
+}
+
+.assistBox .content-rel {
+  border-left: 0 solid rgba(182, 192, 210, .5);
+}
+
+.settingBox [class*=tableData-] table {
+  width: 100%;
+  background: #fff;
+}
+
+.settingBox [class*=tableData-] table tr {
+  border-bottom: 1px solid rgba(182, 192, 210, .5);
+}
+
+.settingBox [class*=tableData-] table th {
+  height: 40px;
+  background: #5fbbfc;
+  color: #fff;
+  font-weight: 400;
+}
+
+.settingBox [class*=tableData-] table td, .settingBox [class*=tableData-] table th {
+  border-right: 1px solid rgba(182, 192, 210, .5);
+  position: relative;
+  padding: 0 4px;
+}
+
+.settingBox [class*=tableData-] table tr th:last-child {
+  border-right: 1px solid #5fbbfc;
+}
+
+.settingBox .tableData-assist .assistBox .content-rel .content-rel {
+  border: 1px solid rgba(182, 192, 210, .5);
+}
+
+#assistTableBox {
+  padding-bottom: 31px;
+}
+
+#assistTableBox, .fullScrollBar {
+  position: relative;
+  height: 100%;
+}
+
+.settingBox [class*=tableData-] table tbody tr {
+  height: 30px;
+}
+
+.tableData-assist table td {
+  position: relative;
+  height: 30px;
+}
+
+.assistBox .createBox, .assistBox .selectBox {
+  position: relative;
+}
+
+.settingBox .tableData-assist table td:first-child {
+  border-left: 0;
+}
+
+.settingBox [class*=tableData-] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.settingBox .tableData-assist {
+  padding-right: 30px;
+}
+
+.assistBox .icon-create {
+  background: url(../i/add.png) 50% no-repeat;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.tableData-assist table label {
+  display: inline-block;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  line-height: 30px;
+}
+
+.tableData-assist table label span {
+  position: absolute;
+  left: 0;
+  text-indent: 4px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tableData-assist table label > div {
+  height: 100%;
+  width: 100%;
+  padding: 2px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 2px;
+}
+
+.tableData-assist input {
+  background-color: #e8efff;
+  border: 1px solid #66b2ff;
+}
+
+.tableData-assist table label input {
+  position: relative;
+  z-index: -1;
+  top: -4px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tableData-assist table label input:focus {
+  z-index: 1;
+}
+
+/**初始报表*/
+.settingBox [class*=tableData-] .reportTableFixed, .settingBox [class*=tableData-] .tableFixed {
+  position: absolute;
+  top: -40px;
+  left: 0;
+}
+
+.settingBox [class*=tableData-] .reportTableFixed {
+  width: 100%;
+  height: 40px;
+  top: -40px;
+  padding: 7px 20px;
+  border-radius: 4px 4px 0 0;
+  border-left: 1px solid #38aafc;
+  border-top: 1px solid #38aafc;
+  border-right: 1px solid #38aafc;
+  color: rgba(42, 51, 59, .6);
+}
+
+.settingBox .reportTableFixed [class*=reportTable-], .settingBox .reportTableFixed [class*=reportTable-] > div {
+  height: 100%;
+}
+
+.settingBox .reportTableFixed .reportTable-left, .settingBox .reportTableFixed [class*=reportTable-] > div {
+  float: left;
+}
+
+.settingBox .reportTableFixed .reportTable-left {
+  position: relative;
+}
+
+.settingBox .reportTableFixed .reportTable-right {
+  float: right;
+}
+
+.settingBox .reportTableFixed .reportTable-left .viewInfoSize {
+  width: 180px;
+}
+
+.settingBox .reportTableFixed .reportTable-right > div {
+  margin-left: 30px;
+  cursor: pointer;
+}
+
+.assistBox [class*=icon25-] {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
+
+.assistBox .icon25-select {
+  background: url(../i/unselected.png) 50% no-repeat;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.assistBox .icon25-selected {
+  background: url(../i/selected.png) 50% no-repeat;
+}
+
+.tableData-assist tbody tr .icon25-delete {
+  background: url(../i/del.png) 50% no-repeat;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: 5px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  display: none;
+  cursor: pointer;
+}
+
+#scrollBar-assist tbody tr:hover .icon25-delete {
+  display: inherit;
+}
+
+.settingBox [class*=tableData-] table td:first-child {
+  border-left: 1px solid rgba(182, 192, 210, .5);
+}
+
+/**添加固定资产**/
+.popup-fixedAssetInfo {
+  width: 460px;
+}
+
+/**添加固定资产 头部**/
+.site-popup_head {
+  height: 25px;
+  position: relative;
+}
+
+.popup-fixedAssetInfo .site-popup_head > p {
+  line-height: 60px;
+  font-size: 18px;
+  text-align: center;
+}
+
+/**添加固定资产 主体**/
+.site-popup_body {
+  position: relative;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  font-size: 18px;
+}
+
+.popup-fixedAssetInfo .entry-container {
+  width: 100%;
+  padding: 25px;
+}
+
+.popup-fixedAssetInfo .entry-row {
+  width: 100%;
+  height: 30px;
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.popup-fixedAssetInfo .grid-label {
+  width: 120px;
+}
+
+.popup-fixedAssetInfo .popup-label {
+  display: inline-block;
+  text-align: right;
+  font-size: 14px;
+  line-height: 30px;
+  padding: 0 8px;
+}
+
+.popup-fixedAssetInfo .grid-content {
+  max-width: 250px;
+}
+
+.popup-fixedAssetInfo .flex-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.popup-fixedAssetInfo .icon-select {
+  background-image: url(../i/unselected.png);
+}
+
+.popup-fixedAssetInfo .icon-selected {
+  background-image: url(../i/selected.png);
+}
+
+.popup-fixedAssetInfo .checkbox {
+  width: 30px;
+  height: 30px;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+
+.popup-fixedAssetInfo #fixedAssetAccrued {
+  opacity: 0;
+}
+
+.settingBox .tableData-assets table tbody tr td, .settingBox .tableData-report table.assetTable tr td:nth-child(3), .settingBox .tableData-report table.assetTable tr td:nth-child(4), .settingBox .tableData-report table tbody tr td:last-child, .settingBox .tableData-report table tbody tr td:nth-last-child(2), .settingBox .tableData-report table tbody tr td:nth-last-child(3), .settingBox .tableData-report table tbody tr td:nth-last-child(4), .settingBox .tableData-tax table tbody tr td:last-child {
+  text-align: right;
+}
+
+.settingBox .tableData-assets table tbody tr td:first-child, .settingBox .tableData-assets table tbody tr td:last-child, .settingBox .tableData-assets table tbody tr td:nth-child(3), .settingBox .tableData-assets table tbody tr td:nth-child(6), .settingBox .tableData-assets table tbody tr td:nth-child(7), .settingBox .tableData-report table.assetTable tr td:nth-child(2), .settingBox .tableData-report table.assetTable tr td:nth-child(6), .settingBox .tableData-report table.cashTable tr td:nth-child(2), .settingBox .tableData-report table.incomeTable tr td:nth-child(2), .settingBox .tableData-report table tbody tr td:nth-child(3), .settingBox .tableData-report table tbody tr td:nth-child(4), .settingBox .tableData-subject .tableBody div:last-child, .settingBox .tableData-subject .tableBody div:nth-last-child(2) {
+  text-align: center;
+}
+
+.settingBox .tableData-assets table tbody tr td:nth-child(2), .settingBox .tableData-report table.assetTable tr td:nth-child(5), .settingBox .tableData-report table.cashTable tr td:first-child, .settingBox .tableData-report table.incomeTable tr td:first-child {
+  text-align: left;
+}
+
+.settingBox .tableData-assets table tbody tr td:last-child > div {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-loss, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-scrap, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-sell, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationIng, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationNewIng, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationOther, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationOver, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationOverEdit, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-depreciationIng, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-depreciationOverEdit, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-prepare, .settingBox .tableData-assets table tbody tr td:last-child > div.prepare {
+  display: inline-block;
+}
+
+.settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-loss, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-scrap, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciation-sell, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-prepare, .settingBox .tableData-assets table tbody tr td:last-child > div.prepare {
+  color: #53cf93;
+}
+
+.settingBox .tableData-assets table tbody tr td:last-child > div.depreciationIng, .settingBox .tableData-assets table tbody tr td:last-child > div.depreciationNewIng, .settingBox .tableData-assets table tbody tr td:last-child > div.myAcc-depreciationIng {
+  color: #5fbbfc;
+}
+
+.settingBox [class*=tableData-] table {
+  width: 100%;
+  background: #fff;
+}
+
+.settingBox .deleteAssets-btn, .settingBox .lockAssets-icon {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  margin-top: -10px;
+  display: none;
+}
+.settingBox .deleteAssets-btn {
+  background: url(../i/remove.png) center -20px no-repeat;
+  background-size: 20px;
+}
+.settingBox .tableData-assets table tbody tr td:last-child>div {
+  cursor: pointer;
+  margin-right: 10px;
+}
+.settingBox .tableData-assets table tbody tr td:last-child>div:nth-last-child(1), .settingBox .tableData-assets table tbody tr td:last-child>div:nth-last-child(2) {
+  margin-right: 0;
+}
+.settingBox .tableData-assets table tbody tr:hover td .deleteAssets-btn, .settingBox .tableData-assets table tbody tr:hover td .lockAssets-icon {
+  display: inline-block;
+}
+.settingBox .tableData-assets table tbody tr:hover td:last-child>div {
+  text-decoration: underline;
+  color: #ff6364;
+}
+
+/**添加固定资产 底部**/
+.popup-fixedAssetInfo .site-popup_footer {
+  padding: 0 25px 25px;
+}
+
+.popup-fixedAssetInfo .popup-error {
+  color: red;
+  font-size: 12px;
+  padding-left: 130px;
+  height: 30px;
+}
+
+.popup-fixedAssetInfo .site-popup_footer .entry-row {
+  margin: 0;
+}
+
+.popup-fixedAssetInfo .btn-cancel {
+  width: 60px;
+  margin: 0 30px;
+}
+
+.popup-fixedAssetInfo .btn-ok {
+  width: 250px;
+}
+
+/**固定资产处理操作*/
+.disposeAssetsBox {
+  width: 400px;
+  height: 300px;
+  background: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+  padding: 5px;
+  position: fixed;
+  z-index: 1002;
+  left: 50%;
+  margin-left: -200px;
+  top: 50%;
+  margin-top: -150px;
+  box-shadow: 5px 5px 20px #666;
+}
+
+.disposeAssets-title {
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #ccc;
+  line-height: 49px;
+  font-size: 1.2em;
+  padding-left: 10px;
+  position: relative;
+}
+
+.closeDisposeAssetsPop-icon {
+  width: 25px;
+  height: 25px;
+  background: url(../i/remove.png) 0 -50px no-repeat;
+  background-size: 25px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+[class*=disposeAssets-btn-] {
+  width: 90%;
+  height: 50px;
+  line-height: 50px;
+  background: #5fbbfc;
+  color: #fff;
+  text-align: center;
+  font-size: 1.1em;
+  margin: 22px auto 0;
+  cursor: pointer;
+}
+
+/**待摊费用*/
+.settingBox [class*=tableData-] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.popup-amortise {
+  width: 460px;
+}
+
+.amortiseBox .menuBox {
+  position: absolute;
+  top: -40px;
+  right: 0;
+}
+
+.amortiseBox .menuBox .com-button {
+  margin-left: 10px;
+  float: right;
+}
+
+.amortiseBox .state--editable:hover .state-tag, .amortiseBox input {
+  display: none;
+}
+.popup-amortise .site-popup_footer {
+  padding: 0 25px 25px;
+}
+/**待摊费用 head*/
+.popup-amortise .site-popup_head>p {
+  line-height: 60px;
+  font-size: 18px;
+  text-align: center;
+}
+
+/**待摊费用-body*/
+.popup-amortise .entry-container {
+  width: 100%;
+  padding: 25px;
+}
+
+.popup-amortise .entry-row {
+  width: 100%;
+  height: 30px;
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.popup-amortise .flex-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.popup-amortise .grid-label {
+  width: 120px;
+}
+
+.popup-amortise .popup-label {
+  display: inline-block;
+  text-align: right;
+  font-size: 14px;
+  line-height: 30px;
+  padding: 0 8px;
+}
+
+.popup-amortise .grid-content {
+  max-width: 250px;
+}
+
+.popup-amortise .grid-content--lock {
+  border: none;
+}
+
+.popup-amortise .grid-content--short {
+  margin-left: 10px;
+  max-width: 50px;
+}
+
+.popup-amortise .grid-tail {
+  margin-left: 8px;
+  font-size: 14px;
+  line-height: 30px;
+}
+
+/**待摊费用-底部*/
+.popup-amortise .popup-error {
+  color: red;
+  font-size: 12px;
+  padding-left: 130px;
+  height: 30px;
+}
+
+.popup-amortise .site-popup_footer .entry-row {
+  margin: 0;
+}
+
+.popup-amortise .btn-cancel {
+  width: 60px;
+  margin: 0 30px;
+}
+
+.popup-amortise .btn-ok {
+  width: 250px;
+}
