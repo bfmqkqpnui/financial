@@ -77,4 +77,12 @@ export default {
   queryAccountingCourse: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/course/getAccountingCourse', params)
   },
+  // 查询所有待摊费用
+  queryUnamortizedexpense: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/unamortizedexpense/queryByAccountSetId', params)
+  },
+  // 查询待摊科目
+  queryAmortizedExpenseCourse: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/course/getAmortizedExpenseCourse', params)
+  }
 }

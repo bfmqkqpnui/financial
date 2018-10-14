@@ -660,7 +660,7 @@
                             <div ng-if="checkAssetsState(data) == 3"
                                  ng-class="{'depreciationIng': isMyAccount, 'myAcc-depreciationIng': !isMyAccount}"
                                  ng-click="disposeIng(data)" class="ng-scope depreciationIng"
-                                 v-text="item.status"></div>
+                                 v-text="item.statusDescription"></div>
                             <div class="deleteAssets-btn" data-toggle="tooltip" title="删除该条固定资产"
                                  ng-click="deleteFixedAsset(data)"></div>
                           </td>
@@ -1345,6 +1345,25 @@
         // 当前日期
         dateNow: "",
         accountingCourselist: [],
+        // 待摊费用对象列表
+        amortiseTableList: [],
+        // 添加待摊费用对象
+        amortise:{
+          // 费用名称
+          costName: '',
+          // 摊销起始期
+          amortizationPeriod: '',
+          // 摊销金额
+          amortizationAmount: '',
+          // 摊销期限（单位：月）
+          amortizationSchedule: '',
+          // 已摊销期数（单位：月）
+          amortizedPeriod: '',
+          // 已摊销金额
+          amortizedAmount: '',
+          // 入账科目主键
+          courseId: ''
+        }
       }
     },
     methods: {
@@ -1811,6 +1830,7 @@
           api.addFixedAsset(params).then(res => {
             console.log("添加固定资产结果：",res.body)
             if(res.body.result == 0){
+              this.isFixedAssets = false
               this.queryFixedAssets()
             }
           })
@@ -1900,6 +1920,9 @@
       // 待摊费用-导入模板
       downloadTemplate() {
         console.log("待摊费用-导入模板")
+      },
+      queryAmortise(){
+        console.log("查询待摊费用")
       },
       // 添加待摊费用数据
       okAmortise() {
