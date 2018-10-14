@@ -645,17 +645,17 @@
                       </div>
                       <table>
                         <tbody> <!-- ngRepeat: data in tableData['assets'] | orderBy: order.order + order.type -->
-                        <tr v-for="(item, index) in assetTableList" :key="index">
+                        <tr v-for="(item, index) in assetTableList" :key="index" v-if="item.accountSetId != null && item.accountSetId != ''">
                           <td class="span-4 ng-binding" v-text="index+1"></td>
-                          <td class="span-14 ng-binding" v-text="item.name"></td>
-                          <td class="span-8 ng-binding" v-text="item.beginIssue"></td>
-                          <td class="span-8 ng-binding" v-text="item.initVal"></td>
-                          <td class="span-8 ng-binding" v-text="item.residualRate"></td>
+                          <td class="span-14 ng-binding" v-text="item.assetName"></td>
+                          <td class="span-8 ng-binding" v-text="item.dateRecorded"></td>
+                          <td class="span-8 ng-binding" v-text="item.originalValue"></td>
+                          <td class="span-8 ng-binding" v-text="item.expectedSalvage"></td>
                           <td class="span-10 ng-binding" v-text="item.depreciationPeriod"></td>
-                          <td class="span-10 ng-binding" v-text="item.beginIssueUsedPeriod"></td>
-                          <td class="span-10 ng-binding" v-text="item.beginIssueUsedVal"></td>
-                          <td class="span-8 ng-binding" v-text="item.mouthNow"></td>
-                          <td class="span-8 ng-binding" v-text="item.netVal"></td>
+                          <td class="span-10 ng-binding" v-text="item.accumulatedDepreciationPeriod"></td>
+                          <td class="span-10 ng-binding" v-text="item.accumulatedDepreciation"></td>
+                          <td class="span-8 ng-binding" v-text="item.thisMonthDepreciation"></td>
+                          <td class="span-8 ng-binding" v-text="item.netWorth"></td>
                           <td class="span-12">
                             <div ng-if="checkAssetsState(data) == 3"
                                  ng-class="{'depreciationIng': isMyAccount, 'myAcc-depreciationIng': !isMyAccount}"
@@ -665,71 +665,15 @@
                                  ng-click="deleteFixedAsset(data)"></div>
                           </td>
                         </tr>
-                        <tr ng-repeat="data in tableData['assets'] | orderBy: order.order + order.type"
-                            ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                            ng-dblclick="showSubjectPop(data, 'readAssets', $event)" ng-click="highlightRow($index)"
-                            on-repeat-finished="" class="ng-scope" style="">
-                          <td class="span-4 ng-binding">1</td>
-                          <td class="span-14 ng-binding">xxx</td>
-                          <td class="span-8 ng-binding">2018-08</td>
-                          <td class="span-8 ng-binding">6,000.00</td>
-                          <td class="span-8 ng-binding">300.00</td>
-                          <td class="span-10 ng-binding">60</td>
-                          <td class="span-10 ng-binding">0</td>
-                          <td class="span-10 ng-binding">0.00</td>
-                          <td class="span-8 ng-binding"></td>
-                          <td class="span-8 ng-binding">6,000.00</td>
-                          <td class="span-12"> <!-- ngIf: checkAssetsState(data) == 1 -->
-                            <div ng-if="checkAssetsState(data) == 1"
-                                 ng-class="{'prepare': isMyAccount, 'myAcc-prepare': !isMyAccount}"
-                                 ng-click="editFixedAsset(data)" class="ng-scope prepare"></div>
-                            <div class="deleteAssets-btn" data-toggle="tooltip" title="删除该条固定资产"
-                                 ng-show="account.currentIssue === data.beginIssue &amp;&amp;
-                                          account.currentIssue === account.selectIssue &amp;&amp;
-                                          account.selectIssue === data.beginIssue &amp;&amp;
-                                        isMyAccount" ng-click="deleteFixedAsset(data)"></div>
-                            <div class="lockAssets-icon ng-hide" data-toggle="tooltip" title="已锁定"
-                                 ng-show="account.currentIssue !== account.selectIssue "></div>
-                          </td>
-                        </tr>
-                        <tr ng-repeat="data in tableData['assets'] | orderBy: order.order + order.type"
-                            ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                            ng-dblclick="showSubjectPop(data, 'readAssets', $event)" ng-click="highlightRow($index)"
-                            on-repeat-finished="" class="ng-scope" style="">
-                          <td class="span-4 ng-binding">2</td>
-                          <td class="span-14 ng-binding">yyy</td>
-                          <td class="span-8 ng-binding">2018-08</td>
-                          <td class="span-8 ng-binding">4,000.00</td>
-                          <td class="span-8 ng-binding">0.00</td>
-                          <td class="span-10 ng-binding">1</td>
-                          <td class="span-10 ng-binding">0</td>
-                          <td class="span-10 ng-binding">0.00</td>
-                          <td class="span-8 ng-binding"></td>
-                          <td class="span-8 ng-binding">4,000.00</td>
-                          <td class="span-12"> <!-- ngIf: checkAssetsState(data) == 1 -->
-                            <div ng-if="checkAssetsState(data) == 1"
-                                 ng-class="{'prepare': isMyAccount, 'myAcc-prepare': !isMyAccount}"
-                                 ng-click="editFixedAsset(data)" class="ng-scope prepare"></div>
-                            <div class="deleteAssets-btn" data-toggle="tooltip" title="删除该条固定资产"
-                                 ng-show="account.currentIssue === data.beginIssue &amp;&amp;
-                                          account.currentIssue === account.selectIssue &amp;&amp;
-                                          account.selectIssue === data.beginIssue &amp;&amp;
-                                        isMyAccount" ng-click="deleteFixedAsset(data)"></div>
-                            <div class="lockAssets-icon ng-hide" data-toggle="tooltip" title="已锁定"
-                                 ng-show="account.currentIssue !== account.selectIssue "></div>
-                          </td>
-                        </tr>
-
-
-                        <tr ng-show="showInfo(tableData['assets'].length)" style="font-weight:700" class="">
+                        <tr v-for="(item, index) in assetTableList" :key="index" style="font-weight:700" v-if="item.accountSetId == null">
                           <td colspan="3">合计：</td>
-                          <td style="text-align:right" class="ng-binding">10,000.00</td>
+                          <td style="text-align:right" class="ng-binding" v-text="item.sumOriginalValue"></td>
                           <td></td>
                           <td></td>
                           <td></td>
-                          <td style="text-align:right" class="ng-binding">0.00</td>
-                          <td style="text-align:right" class="ng-binding">0.00</td>
-                          <td style="text-align:right" class="ng-binding">10,000.00</td>
+                          <td style="text-align:right" class="ng-binding" v-text="item.sumAccumulatedDepreciation"></td>
+                          <td style="text-align:right" class="ng-binding" v-text="item.sumThisMonthDepreciation"></td>
+                          <td style="text-align:right" class="ng-binding" v-text="item.sumNetWorth"></td>
                           <td></td>
                         </tr>
                         </tbody>
@@ -1124,22 +1068,22 @@
           <div class="entry-container">
             <div class="entry-row">
               <p class="grid-label popup-label">资产名称</p>
-              <input class="grid-content ng-valid ng-dirty ng-touched ng-empty" type="text" v-model="asset.name">
+              <input class="grid-content ng-valid ng-dirty ng-touched ng-empty" type="text" v-model="asset.assetName">
             </div>
             <div class="entry-row">
               <p class="grid-label popup-label">入账日期</p>
               <input class="grid-content grid-content--lock ng-pristine ng-untouched ng-valid ng-not-empty" type="text"
-                     v-model="asset.beginIssue" disabled="disabled">
+                     v-model="asset.dateRecorded" disabled="disabled">
             </div>
             <div class="entry-row">
               <p class="grid-label popup-label">原值</p>
               <input class="grid-content ng-valid ng-dirty ng-touched ng-not-empty" type="number"
-                     v-model="asset.initVal">
+                     v-model="asset.originalValue">
             </div>
             <div class="entry-row">
               <p class="grid-label popup-label">预计残值率</p>
               <input class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-                     v-model="asset.residualRate">
+                     v-model="asset.expectedSalvageRate">
             </div>
             <div class="entry-row">
               <p class="grid-label popup-label">折旧周期</p>
@@ -1149,49 +1093,42 @@
             <div class="entry-row">
               <p class="grid-label popup-label">累计折旧周期</p>
               <input class="grid-content ng-valid ng-dirty ng-touched ng-not-empty" type="number"
-                     v-model="asset.beginIssueUsedPeriod" ng-disabled="lock || !canEditBeginIssueUsedPeriod">
+                     v-model="asset.accumulatedDepreciationPeriod" ng-disabled="lock || !canEditBeginIssueUsedPeriod">
             </div>
             <div class="entry-row">
               <p class="grid-label popup-label">累计折旧</p>
               <input class="grid-content ng-valid ng-dirty ng-touched ng-not-empty" type="number"
-                     v-model="asset.beginIssueUsedVal">
+                     v-model="asset.accumulatedDepreciation">
             </div>
             <div class="entry-row">
               <p class="grid-label popup-label">入账科目</p>
               <select class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty"
-                      v-model="asset.accountedSubject">
-                <option ng-repeat="sub in fixedAssetModel.ACCOUNTED_SUBJECTS" value="4101" class="ng-binding ng-scope">
-                  4101 - 制造費用
-                </option><!-- end ngRepeat: sub in fixedAssetModel.ACCOUNTED_SUBJECTS -->
-                <option ng-repeat="sub in fixedAssetModel.ACCOUNTED_SUBJECTS" value="5401" class="ng-binding ng-scope">
-                  5401 - 主营业务成本
-                </option><!-- end ngRepeat: sub in fixedAssetModel.ACCOUNTED_SUBJECTS -->
-                <option ng-repeat="sub in fixedAssetModel.ACCOUNTED_SUBJECTS" value="5601" class="ng-binding ng-scope">
-                  5601 - 销售费用
-                </option><!-- end ngRepeat: sub in fixedAssetModel.ACCOUNTED_SUBJECTS -->
-                <option ng-repeat="sub in fixedAssetModel.ACCOUNTED_SUBJECTS" value="5602" class="ng-binding ng-scope">
-                  5602 - 管理费用
-                </option><!-- end ngRepeat: sub in fixedAssetModel.ACCOUNTED_SUBJECTS --> </select></div>
+                      v-model="asset.courseId">
+                <option v-for="sub in accountingCourselist" :value="sub.id" class="ng-binding ng-scope">
+                  {{sub.coding}} - {{sub.courseName}}
+                </option>
+              </select>
+            </div>
             <div class="entry-row">
               <p class="grid-label popup-label">折旧方法</p>
-              <select class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" v-model="asset.arithmetic">
-                <option ng-repeat="a in fixedAssetModel.ARITHMETICS" value="平均折旧" class="ng-binding ng-scope">平均折旧
-                </option>
-                <option ng-repeat="a in fixedAssetModel.ARITHMETICS" value="一次性折旧" class="ng-binding ng-scope">一次性折旧
-                </option>
+              <select class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty"
+                      v-model="asset.depreciationMethod">
+                <option v-for="a in fixedAssetModel" class="ng-binding ng-scope" :value="a.value"
+                        v-text="a.name"></option>
               </select>
             </div>
             <div class="entry-row flex-left">
               <p class="grid-label popup-label">本月计提</p>
               <label class="checkbox icon-select"
-                     :class="{'icon-select': !asset.isIssueAccrued, 'icon-selected': asset.isIssueAccrued}">
-                <input type="checkbox" v-model="asset.isIssueAccrued" id="fixedAssetAccrued"
+                     :class="{'icon-selected': asset.thisMonthPlan}">
+                <input type="checkbox" v-model="asset.thisMonthPlan" id="fixedAssetAccrued"
                        class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty">
               </label>
             </div>
           </div>
         </div>
-        <div class="site-popup_footer"><p class="popup-error ng-binding"></p>
+        <div class="site-popup_footer">
+          <p class="popup-error ng-binding" v-text="asset.error"></p>
           <div class="entry-row">
             <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="hide">
               <div><span class="ng-scope">取消</span></div>
@@ -1367,53 +1304,47 @@
         },
         // 显示固定资产标识
         isFixedAssets: false,
+        // 折旧方法
+        fixedAssetModel: [
+          {value: 1, name: '平均折旧', isSelected: true},
+          {value: 2, name: '一次性折旧', isSelected: false},
+        ],
         // 添加固定资产对象
         asset: {
           // 资产名字
-          name: '',
+          assetName: '',
           // 入账日期
-          beginIssue: '',
+          dateRecorded: '',
           // 原值
-          initVal: '',
+          originalValue: 0,
           // 预计残值率
-          residualRate: '',
+          expectedSalvageRate: 0.05,
           // 折旧周期
-          depreciationPeriod: '',
+          depreciationPeriod: 60,
           // 累计折旧周期
-          beginIssueUsedPeriod: '',
+          accumulatedDepreciationPeriod: 0,
           // 累计折旧
-          beginIssueUsedVal: '',
+          accumulatedDepreciation: 0,
           // 入账科目
-          accountedSubject: '',
+          courseId: '',
           // 折旧方法
-          arithmetic: '',
+          depreciationMethod: 1,
           // 本月计提
-          isIssueAccrued: ''
+          thisMonthPlan: false,
+          // 入账科目列表
+          accountedSubject: [],
+          // 错误信息
+          error: ''
         },
         // 固定资产折旧弹层
         showDisposeAssets: false,
         // 待摊费用弹层
         isAmortise: false,
         // 固定资产数据
-        assetTableList: [
-          {
-            code: '001',
-            name: '家用电器',
-            beginIssue: '2018-10',
-            type: 'jd',
-            arithmetic: '平均折旧',
-            initVal: '6000',
-            depreciationPeriod: '60',
-            beginIssueUsedVal: '4560',
-            beginIssueUsedPeriod: '48',
-            residualRate: '300',
-            netVal: '1140',
-            mouthNow: '95',
-            status: '准备折旧'
-          }
-        ],
+        assetTableList: [],
         // 当前日期
-        dateNow: ""
+        dateNow: "",
+        accountingCourselist: [],
       }
     },
     methods: {
@@ -1573,6 +1504,9 @@
 
           } else if (opt.index == 4) {
             // this.getDate()
+            console.log("固定资产")
+            this.getAccountingCourse()
+            this.queryFixedAssets()
           } else if (opt.index == 5) {
 
           } else if (opt.index == 6) {
@@ -1841,6 +1775,7 @@
       addFixedAsset() {
         console.log("添加固定资产")
         this.isFixedAssets = true
+        this.asset.dateRecorded = this.dateNow
       },
       // 对账
       checkEquilibrium() {
@@ -1856,9 +1791,75 @@
         this.isFixedAssets = false
         this.isAmortise = false
       },
+      // 查询固定资产
+      queryFixedAssets() {
+        api.queryFixedAssets({accountSetId: this.accountId, token: this.token}).then(res => {
+          console.log("查询固定资产:",res.body)
+          if(res.body.result == 0){
+            this.assetTableList = res.body.data
+          }
+        })
+      },
       // 确认添加固定资产
       ok() {
-        console.log("确认添加固定资产")
+        console.log("确认添加固定资产>", this.asset)
+        if (this.addBefore(this.asset)) {
+          let params = this.asset
+          params.thisMonthPlan ? params.thisMonthPlan = 1 : params.thisMonthPlan = 0
+          params.accountSetId = this.accountId
+          params.token = this.token
+          api.addFixedAsset(params).then(res => {
+            console.log("添加固定资产结果：",res.body)
+            if(res.body.result == 0){
+              this.queryFixedAssets()
+            }
+          })
+        }
+      },
+      // 校验
+      addBefore(opt) {
+        let flag = false
+        if (utils.isExist(opt)) {
+          if(utils.isExist(opt.assetName)){
+            if (!isNaN(opt.originalValue) && Number(opt.originalValue) > 0) {
+              flag = true
+            }else{
+              this.asset.error = '请填写固定资产原值'
+            }
+          }else{
+            this.asset.error = '请填写固定资产名称'
+          }
+        }
+        return flag
+      },
+      // 初始化
+      configAsset() {
+        this.asset = {
+          // 资产名字
+          assetName: '',
+          // 入账日期
+          dateRecorded: '',
+          // 原值
+          originalValue: 0,
+          // 预计残值率
+          expectedSalvageRate: 0.05,
+          // 折旧周期
+          depreciationPeriod: 60,
+          // 累计折旧周期
+          accumulatedDepreciationPeriod: 0,
+          // 累计折旧
+          accumulatedDepreciation: 0,
+          // 入账科目
+          courseId: '',
+          // 折旧方法
+          depreciationMethod: 1,
+          // 本月计提
+          thisMonthPlan: false,
+          // 入账科目列表
+          accountedSubject: [],
+          // 错误信息
+          error: ''
+        }
       },
       // 固定资产处理弹层
       disposeSelectPop(value) {
@@ -1874,6 +1875,21 @@
           console.log("获取当前日期", res.body)
           if (res.body.result == 0) {
             this.dateNow = res.body.data
+          }
+        })
+      },
+      // 获取入账科目
+      getAccountingCourse() {
+        api.queryAccountingCourse({accountSetId: this.accountId, token: this.token}).then(res => {
+          console.log("获取入账科目:", res.body)
+          if (res.body.result == 0) {
+            this.accountingCourselist = res.body.data
+            const that = this
+            this.accountingCourselist.forEach(function (el) {
+              if (el.coding == "5602") {
+                that.asset.courseId = el.id
+              }
+            })
           }
         })
       },
@@ -1894,7 +1910,7 @@
       this.subjectClassify({index: 1}, 'subject')
     },
     mounted() {
-
+      this.getDate()
     }
   }
 </script>
