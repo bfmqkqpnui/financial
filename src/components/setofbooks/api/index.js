@@ -69,6 +69,10 @@ export default {
   addFixedAsset: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/fixedassets/insert', params)
   },
+  // 删除固定资产
+  delAsset: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/fixedassets/delete', params)
+  },
   // 获取入账日期
   getDate: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/sys/getNowYMD', params)

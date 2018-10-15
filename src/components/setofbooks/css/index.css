@@ -1474,3 +1474,12 @@ input.align:focus {
 .popup-amortise .btn-ok {
   width: 250px;
 }
+
+.popup-fixedAssetInfo .grid-content--lock {
+  border: none;
+}
+
+.popup-amortise .grid-content--lock {
+  border: none;
+}
+

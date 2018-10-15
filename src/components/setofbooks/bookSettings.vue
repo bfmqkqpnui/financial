@@ -548,7 +548,7 @@
                     <div class="tableBox tableFixed" style="top:0">
                       <table>
                         <thead>
-                        <tr> <!-- ngRepeat: title in setMenu['assets'] -->
+                        <tr>
                           <th ng-repeat="title in setMenu['assets']" data-toggle="tooltip" title="按 序号 排序"
                               ng-class="title.class" ng-click="orderByAssets(title.type)"
                               class="ng-binding ng-scope span-4"> 序号
@@ -645,7 +645,9 @@
                       </div>
                       <table>
                         <tbody> <!-- ngRepeat: data in tableData['assets'] | orderBy: order.order + order.type -->
-                        <tr v-for="(item, index) in assetTableList" :key="index" v-if="item.accountSetId != null && item.accountSetId != ''">
+                        <tr v-for="(item, index) in assetTableList" :key="index"
+                            v-if="item.accountSetId != null && item.accountSetId != ''"
+                            @mouseenter="showAssetStatus(index)" @mouseleave="hideAssetStatus(index)">
                           <td class="span-4 ng-binding" v-text="index+1"></td>
                           <td class="span-14 ng-binding" v-text="item.assetName"></td>
                           <td class="span-8 ng-binding" v-text="item.dateRecorded"></td>
@@ -660,12 +662,19 @@
                             <div ng-if="checkAssetsState(data) == 3"
                                  ng-class="{'depreciationIng': isMyAccount, 'myAcc-depreciationIng': !isMyAccount}"
                                  ng-click="disposeIng(data)" class="ng-scope depreciationIng"
-                                 v-text="item.statusDescription"></div>
+                                 v-text="item.statusDescription" v-if="item.bool">
+                            </div>
+                            <div v-if="!item.bool" class="depreciationNewIng ng-scope" ng-click="editFixedAsset(item)">- 编辑
+                              -
+                            </div>
+                            <div v-if="!item.bool" class="depreciationNewIng ng-scope" ng-click="disposeIng(item)">- 处理 -
+                            </div>
                             <div class="deleteAssets-btn" data-toggle="tooltip" title="删除该条固定资产"
-                                 ng-click="deleteFixedAsset(data)"></div>
+                                 @click.stop="deleteFixedAsset(item)"></div>
                           </td>
                         </tr>
-                        <tr v-for="(item, index) in assetTableList" :key="index" style="font-weight:700" v-if="item.accountSetId == null">
+                        <tr v-for="(item, index) in assetTableList" :key="index" style="font-weight:700"
+                            v-if="item.accountSetId == null">
                           <td colspan="3">合计：</td>
                           <td style="text-align:right" class="ng-binding" v-text="item.sumOriginalValue"></td>
                           <td></td>
@@ -1141,6 +1150,28 @@
       </div>
     </div>
 
+    <!-- 确认删除固定资产 -->
+    <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="isRealDelAssetMask">
+      <div class="site-popup anime popup-confirm flex--column site-popup--expand" ng-class="{'site-popup--expand': on}">
+        <div class="site-popup_head">
+          <div class="site-popup_title">财税通提醒您：</div>
+        </div>
+        <div class="site-popup_body">
+          <div class="site-popup_type">
+            <div class="typeIcon g-icon-warn"></div>
+            <p class="typeTitle typeTitle--warn ng-binding">确定要删除资产 “{{asset.assetName}}” 吗？</p></div>
+        </div>
+        <div class="site-popup_footer">
+          <div class="btn--cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="cancelAsset">
+            <div><span class="ng-scope">否</span></div>
+          </div>
+          <div class="btn--ok com-button anime ng-isolate-scope com-button--ok" @click.stop="realDelAsset">
+            <div><span class="ng-scope">是</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 固定资产折旧操作 -->
     <div class="site-mask anime site-mask--shade" v-if="showDisposeAssets">
       <div class="disposeAssetsBox anime site-popup--expand" ng-class="{'site-popup--expand' : showDisposeAssets}">
@@ -1164,36 +1195,48 @@
         </div>
         <div class="site-popup_body">
           <div class="entry-container">
-            <div class="entry-row"><p class="grid-label popup-label">费用名称</p> <input
-              class="grid-content ng-pristine ng-untouched ng-valid ng-empty" type="text" ng-model="amortisation.name"
-              ng-disabled="lock"></div>
-            <div class="entry-row"><p class="grid-label popup-label">摊销起始期</p> <input
-              class="grid-content grid-content--lock ng-pristine ng-untouched ng-valid ng-not-empty" type="text"
-              ng-model="amortisation.beginIssue" ng-disabled="true" disabled="disabled"></div>
-            <div class="entry-row"><p class="grid-label popup-label">摊销金额</p> <input
-              class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-              ng-model="amortisation.cash" ng-disabled="lock"></div>
-            <div class="entry-row flex-left"><p class="grid-label popup-label">摊销期限</p> <input
-              class="grid-content grid-content--short ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-              ng-model="amortisation.depreciationPeriod" ng-disabled="lock"> <span class="grid-tail">月</span></div>
-            <div class="entry-row flex-left"><p class="grid-label popup-label">已摊销期数</p> <input
-              class="grid-content grid-content--short ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-              ng-model="amortisation.beginIssueUsedPeriod" ng-disabled="lock"> <span class="grid-tail">月</span></div>
-            <div class="entry-row"><p class="grid-label popup-label">已摊销金额</p> <input
-              class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-              ng-model="amortisation.beginIssueUsedVal" ng-disabled="lock"></div>
-            <div class="entry-row"><p class="grid-label popup-label">入账科目</p> <select
-              class="grid-content grid-content--lock ng-pristine ng-untouched ng-valid ng-not-empty"
-              ng-model="amortisation.accountedSubject"> <!-- ngRepeat: sub in amortisationModel.ACCOUNTED_SUBJECTS -->
-              <option ng-repeat="sub in amortisationModel.ACCOUNTED_SUBJECTS" value="5602" class="ng-binding ng-scope">
-                5602 - 管理费用
-              </option><!-- end ngRepeat: sub in amortisationModel.ACCOUNTED_SUBJECTS -->
-              <option ng-repeat="sub in amortisationModel.ACCOUNTED_SUBJECTS" value="4101" class="ng-binding ng-scope">
-                4101 - 制造費用
-              </option><!-- end ngRepeat: sub in amortisationModel.ACCOUNTED_SUBJECTS --> </select></div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">费用名称</p>
+              <input class="grid-content ng-pristine ng-untouched ng-valid ng-empty" type="text"
+                     v-model="amortise.costName"></div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">摊销起始期</p>
+              <input class="grid-content grid-content--lock ng-pristine ng-untouched ng-valid ng-not-empty" type="text"
+                     disabled="disabled" v-model="amortise.amortizationPeriod"></div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">摊销金额</p>
+              <input class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
+                     v-model="amortise.amortizationAmount">
+            </div>
+            <div class="entry-row flex-left">
+              <p class="grid-label popup-label">摊销期限</p>
+              <input class="grid-content grid-content--short ng-pristine ng-untouched ng-valid ng-not-empty"
+                     type="number" v-model="amortise.amortizationSchedule">
+              <span class="grid-tail">月</span>
+            </div>
+            <div class="entry-row flex-left">
+              <p class="grid-label popup-label">已摊销期数</p>
+              <input class="grid-content grid-content--short ng-pristine ng-untouched ng-valid ng-not-empty"
+                     type="number" v-model="amortise.amortizedPeriod">
+              <span class="grid-tail">月</span>
+            </div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">已摊销金额</p>
+              <input class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
+                     v-model="amortise.amortizedAmount"></div>
+            <div class="entry-row">
+              <p class="grid-label popup-label">入账科目</p>
+              <select class="grid-content grid-content--lock ng-pristine ng-untouched ng-valid ng-not-empty"
+                      v-model="amortise.courseId">
+                <option v-for="sub in accountingAmortiseCourselist" :value="sub.id" class="ng-binding ng-scope">
+                  {{sub.coding}} - {{sub.courseName}}
+                </option>
+              </select>
+            </div>
           </div>
         </div>
-        <div class="site-popup_footer"><p class="popup-error ng-binding"></p>
+        <div class="site-popup_footer">
+          <p class="popup-error ng-binding" v-text="amortise.error"></p>
           <div class="entry-row">
             <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="hide">
               <div><span class="ng-scope">取消</span></div>
@@ -1334,7 +1377,9 @@
           // 入账科目列表
           accountedSubject: [],
           // 错误信息
-          error: ''
+          error: '',
+          // 固定资产编号
+          id: '',
         },
         // 固定资产折旧弹层
         showDisposeAssets: false,
@@ -1344,25 +1389,34 @@
         assetTableList: [],
         // 当前日期
         dateNow: "",
+        // 固定资产科目列表
         accountingCourselist: [],
+        // 确认删除固定资产蒙层
+        isRealDelAssetMask: false,
+        // 待摊费用科目列表
+        accountingAmortiseCourselist: [],
         // 待摊费用对象列表
         amortiseTableList: [],
         // 添加待摊费用对象
-        amortise:{
+        amortise: {
           // 费用名称
           costName: '',
           // 摊销起始期
           amortizationPeriod: '',
           // 摊销金额
-          amortizationAmount: '',
+          amortizationAmount: 0,
           // 摊销期限（单位：月）
-          amortizationSchedule: '',
+          amortizationSchedule: 12,
           // 已摊销期数（单位：月）
-          amortizedPeriod: '',
+          amortizedPeriod: 0,
           // 已摊销金额
-          amortizedAmount: '',
+          amortizedAmount: 0,
           // 入账科目主键
-          courseId: ''
+          courseId: '',
+          // 新增错误信息
+          error: '',
+          // 待摊费用编号
+          id: '',
         }
       }
     },
@@ -1527,7 +1581,9 @@
             this.getAccountingCourse()
             this.queryFixedAssets()
           } else if (opt.index == 5) {
-
+            console.log("待摊费用")
+            this.queryAmortiseProject()
+            this.queryAmortiseData()
           } else if (opt.index == 6) {
             this.queryAccountInfo()
           }
@@ -1813,9 +1869,13 @@
       // 查询固定资产
       queryFixedAssets() {
         api.queryFixedAssets({accountSetId: this.accountId, token: this.token}).then(res => {
-          console.log("查询固定资产:",res.body)
-          if(res.body.result == 0){
-            this.assetTableList = res.body.data
+          console.log("查询固定资产:", res.body)
+          if (res.body.result == 0) {
+            let array = res.body.data
+            array.forEach(function(el){
+              el.bool = true
+            })
+            this.assetTableList = array
           }
         })
       },
@@ -1828,10 +1888,11 @@
           params.accountSetId = this.accountId
           params.token = this.token
           api.addFixedAsset(params).then(res => {
-            console.log("添加固定资产结果：",res.body)
-            if(res.body.result == 0){
+            console.log("添加固定资产结果：", res.body)
+            if (res.body.result == 0) {
               this.isFixedAssets = false
               this.queryFixedAssets()
+              this.configAsset()
             }
           })
         }
@@ -1840,13 +1901,13 @@
       addBefore(opt) {
         let flag = false
         if (utils.isExist(opt)) {
-          if(utils.isExist(opt.assetName)){
+          if (utils.isExist(opt.assetName)) {
             if (!isNaN(opt.originalValue) && Number(opt.originalValue) > 0) {
               flag = true
-            }else{
+            } else {
               this.asset.error = '请填写固定资产原值'
             }
-          }else{
+          } else {
             this.asset.error = '请填写固定资产名称'
           }
         }
@@ -1913,6 +1974,99 @@
           }
         })
       },
+      // focus时展示固定资产每条数据的状态
+      showAssetStatus(index) {
+        this.assetTableList[index].bool = false
+        console.log("showAssetStatus",this.assetTableList, index)
+      },
+      // focus时隐藏固定资产每条数据的状态
+      hideAssetStatus(index) {
+        this.assetTableList[index].bool = true
+        console.log("hideAssetStatus",this.assetTableList[index])
+      },
+      // 更新当前选中的固定资产数据
+      editFixedAsset(opt) {
+        console.log("更新当前选中的固定资产数据", opt)
+        this.asset = opt
+        this.addFixedAsset()
+      },
+      // 处理当前选中的固定资产数据
+      disposeIng(opt) {
+        console.log("处理当前选中的固定资产数据", opt)
+      },
+      // 取消当前选中的固定资产数据
+      cancelDepreciation(opt) {
+        console.log("取消当前选中的固定资产数据", opt)
+      },
+      // 删除当前选中的固定资产数据
+      deleteFixedAsset(opt) {
+        console.log("删除当前选中的固定资产数据", opt)
+        if (utils.isExist(opt)) {
+          this.isRealDelAssetMask = true
+          this.asset = opt
+        }
+      },
+      // 取消删除固定资产
+      cancelAsset() {
+        console.log("取消删除固定资产")
+        this.isRealDelAssetMask = false
+        this.configAsset()
+        this.queryFixedAssets()
+      },
+      // 确认删除固定资产
+      realDelAsset(){
+        console.log("确认删除固定资产")
+        api.delAsset({id: this.asset.id, token: this.token}).then(res => {
+          console.log("删除固定资产结果：",res.body)
+          if(res.body.result == 0){
+            this.cancelAsset()
+          }
+        })
+      },
+      // 查询待摊费用
+      queryAmortiseData() {
+        console.log("查询待摊费用")
+        api.queryUnamortizedexpense({accountSetId: this.accountId, token: this.token}).then(res => {
+          console.log("查询结果：", res.body)
+          if (res.body.result == 0) {
+            this.amortiseTableList = res.body.data
+          }
+        })
+      },
+      // 查询待摊科目
+      queryAmortiseProject() {
+        console.log("查询待摊科目")
+        api.queryAmortizedExpenseCourse({accountSetId: this.accountId, token: this.token}).then(res => {
+          console.log("查询结果：", res.body)
+          if (res.body.result == 0) {
+            this.accountingAmortiseCourselist = res.body.data
+            const that = this
+            this.accountingAmortiseCourselist.forEach(function (el) {
+              if (el.coding == "5602") {
+                that.amortise.courseId = el.id
+              }
+            })
+          }
+        })
+      },
+      configAmortise() {
+        this.amortise = {
+          // 费用名称
+          costName: '',
+          // 摊销起始期
+          amortizationPeriod: '',
+          // 摊销金额
+          amortizationAmount: 0,
+          // 摊销期限（单位：月）
+          amortizationSchedule: 12,
+          // 已摊销期数（单位：月）
+          amortizedPeriod: 0,
+          // 已摊销金额
+          amortizedAmount: 0,
+          // 入账科目主键
+          courseId: ''
+        }
+      },
       // 添加待摊费用
       addAmortise() {
         this.isAmortise = true
@@ -1921,12 +2075,30 @@
       downloadTemplate() {
         console.log("待摊费用-导入模板")
       },
-      queryAmortise(){
+      queryAmortise() {
         console.log("查询待摊费用")
       },
       // 添加待摊费用数据
       okAmortise() {
         console.log("添加待摊费用数据")
+        if (this.addBeforeAmortise(this.amortise)) {
+
+        }
+      },
+      addBeforeAmortise(opt) {
+        let flag = false
+        if (utils.isExist(opt)) {
+          if (utils.isExist(opt.costName)) {
+            if (!isNaN(opt.amortizationAmount) && Number(opt.amortizationAmount) > 0) {
+              flag = true
+            } else {
+              this.amortise.error = '请填写正确的摊销金额'
+            }
+          } else {
+            this.amortise.error = '请填写待摊费用名称'
+          }
+        }
+        return flag
       }
     },
     created() {
