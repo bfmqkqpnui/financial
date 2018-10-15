@@ -647,7 +647,7 @@
                         <tbody> <!-- ngRepeat: data in tableData['assets'] | orderBy: order.order + order.type -->
                         <tr v-for="(item, index) in assetTableList" :key="index"
                             v-if="item.accountSetId != null && item.accountSetId != ''"
-                            @mouseenter="showAssetStatus(index)" @mouseleave="hideAssetStatus(index)">
+                            @mouseenter="showAssetStatus(index,item)" @mouseleave="hideAssetStatus(index,item)">
                           <td class="span-4 ng-binding" v-text="index+1"></td>
                           <td class="span-14 ng-binding" v-text="item.assetName"></td>
                           <td class="span-8 ng-binding" v-text="item.dateRecorded"></td>
@@ -659,15 +659,17 @@
                           <td class="span-8 ng-binding" v-text="item.thisMonthDepreciation"></td>
                           <td class="span-8 ng-binding" v-text="item.netWorth"></td>
                           <td class="span-12">
-                            <div ng-if="checkAssetsState(data) == 3"
-                                 ng-class="{'depreciationIng': isMyAccount, 'myAcc-depreciationIng': !isMyAccount}"
-                                 ng-click="disposeIng(data)" class="ng-scope depreciationIng"
-                                 v-text="item.statusDescription" v-if="item.bool">
+                            <div class="ng-scope" v-text="item.statusDescription" v-if="item.edit"
+                                :class="item.status == 1 || item.status == 2 || item.status == 3 || item.status == 4? 'prepare' : 'depreciationIng'">
                             </div>
-                            <div v-if="!item.bool" class="depreciationNewIng ng-scope" ng-click="editFixedAsset(item)">- 编辑
-                              -
+                            <div v-if="!item.edit" class="depreciationNewIng ng-scope" @click="editFixedAsset(item)">
+                              - 编辑 -
                             </div>
-                            <div v-if="!item.bool" class="depreciationNewIng ng-scope" ng-click="disposeIng(item)">- 处理 -
+                            <div v-if="!item.dispose" class="depreciationNewIng ng-scope" @click="disposeIng(item)">
+                              - 处理 -
+                            </div>
+                            <div v-if="!item.cancel" class="depreciationNewIng ng-scope" @click="cancel(item)">
+                              - 取消 -
                             </div>
                             <div class="deleteAssets-btn" data-toggle="tooltip" title="删除该条固定资产"
                                  @click.stop="deleteFixedAsset(item)"></div>
@@ -1102,7 +1104,7 @@
             <div class="entry-row">
               <p class="grid-label popup-label">累计折旧周期</p>
               <input class="grid-content ng-valid ng-dirty ng-touched ng-not-empty" type="number"
-                     v-model="asset.accumulatedDepreciationPeriod" ng-disabled="lock || !canEditBeginIssueUsedPeriod">
+                     v-model="asset.accumulatedDepreciationPeriod">
             </div>
             <div class="entry-row">
               <p class="grid-label popup-label">累计折旧</p>
@@ -1180,9 +1182,9 @@
             <div class="closeDisposeAssetsPop-icon" data-toggle="tooltip" title="关闭"
                  @click.stop="disposeSelectPop('false')"></div>
           </div>
-          <div class="disposeAssets-btn-sell" ng-click="disposeSelect('sale')">出售</div>
-          <div class="disposeAssets-btn-scrap" ng-click="disposeSelect('报废')">报废</div>
-          <div class="disposeAssets-btn-loss" ng-click="disposeSelect('盘亏')">盘亏</div>
+          <div class="disposeAssets-btn-sell" @click="disposeSelect('4')">出售</div>
+          <div class="disposeAssets-btn-scrap" @click="disposeSelect('3')">报废</div>
+          <div class="disposeAssets-btn-loss" @click="disposeSelect('2')">盘亏</div>
         </div>
       </div>
     </div>
@@ -1873,7 +1875,9 @@
           if (res.body.result == 0) {
             let array = res.body.data
             array.forEach(function(el){
-              el.bool = true
+              el.edit = true
+              el.dispose = true
+              el.cancel = true
             })
             this.assetTableList = array
           }
@@ -1887,14 +1891,25 @@
           params.thisMonthPlan ? params.thisMonthPlan = 1 : params.thisMonthPlan = 0
           params.accountSetId = this.accountId
           params.token = this.token
-          api.addFixedAsset(params).then(res => {
-            console.log("添加固定资产结果：", res.body)
-            if (res.body.result == 0) {
-              this.isFixedAssets = false
-              this.queryFixedAssets()
-              this.configAsset()
-            }
-          })
+          if (utils.isExist(params.id)) {
+            api.updateFiexdAsset(params).then(res => {
+              console.log("更新固定资产结果：", res.body)
+              if (res.body.result == 0) {
+                this.isFixedAssets = false
+                this.queryFixedAssets()
+                this.configAsset()
+              }
+            })
+          } else {
+            api.addFixedAsset(params).then(res => {
+              console.log("添加固定资产结果：", res.body)
+              if (res.body.result == 0) {
+                this.isFixedAssets = false
+                this.queryFixedAssets()
+                this.configAsset()
+              }
+            })
+          }
         }
       },
       // 校验
@@ -1950,6 +1965,19 @@
           this.showDisposeAssets = true
         }
       },
+      // 处理 出售 盘亏 报废
+      disposeSelect(value){
+        if (Number(value)) {
+          api.changeAssetStatus({id: this.asset.id,status: value, token: this.token}).then(res => {
+            console.log("出售盘亏变卖结果：",res.body)
+            if(res.body.result == 0){
+              this.showDisposeAssets = false
+              this.queryFixedAssets()
+              this.configAsset()
+            }
+          })
+        }
+      },
       // 获取当前日期
       getDate() {
         api.getDate({token: this.token}).then(res => {
@@ -1975,14 +2003,20 @@
         })
       },
       // focus时展示固定资产每条数据的状态
-      showAssetStatus(index) {
-        this.assetTableList[index].bool = false
-        console.log("showAssetStatus",this.assetTableList, index)
+      showAssetStatus(index,item) {
+        if (item.status == 2 || item.status == 3 || item.status == 4) {
+          this.assetTableList[index].cancel = false
+        }
+        if(item.status == 5){
+          this.assetTableList[index].dispose = false
+        }
+        this.assetTableList[index].edit = false
       },
       // focus时隐藏固定资产每条数据的状态
       hideAssetStatus(index) {
-        this.assetTableList[index].bool = true
-        console.log("hideAssetStatus",this.assetTableList[index])
+        this.assetTableList[index].cancel = true
+        this.assetTableList[index].dispose = true
+        this.assetTableList[index].edit = true
       },
       // 更新当前选中的固定资产数据
       editFixedAsset(opt) {
@@ -1993,10 +2027,18 @@
       // 处理当前选中的固定资产数据
       disposeIng(opt) {
         console.log("处理当前选中的固定资产数据", opt)
+        if (utils.isExist(opt)) {
+          this.asset = opt
+          this.showDisposeAssets = true
+        }
       },
       // 取消当前选中的固定资产数据
-      cancelDepreciation(opt) {
-        console.log("取消当前选中的固定资产数据", opt)
+      cancel(opt){
+        console.log("取消当前选中的固定资产数据")
+        if (utils.isExist(opt)) {
+          this.asset = opt
+          this.disposeSelect(1)
+        }
       },
       // 删除当前选中的固定资产数据
       deleteFixedAsset(opt) {
@@ -2082,7 +2124,7 @@
       okAmortise() {
         console.log("添加待摊费用数据")
         if (this.addBeforeAmortise(this.amortise)) {
-
+          api.addAmortized().then()
         }
       },
       addBeforeAmortise(opt) {

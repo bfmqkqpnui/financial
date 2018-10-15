@@ -69,6 +69,14 @@ export default {
   addFixedAsset: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/fixedassets/insert', params)
   },
+  // 更新固定资产
+  updateFiexdAsset: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/fixedassets/update', params)
+  },
+  // 更新固定资产状态 出售 盘亏 变卖
+  changeAssetStatus: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/fixedassets/changeStatus', params)
+  },
   // 删除固定资产
   delAsset: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/fixedassets/delete', params)
@@ -88,5 +96,12 @@ export default {
   // 查询待摊科目
   queryAmortizedExpenseCourse: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/course/getAmortizedExpenseCourse', params)
-  }
+  },
+// 新增待摊费用
+  addAmortized: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/unamortizedexpense/insert', params)
+  },
+  updateAmortized: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/unamortizedexpense/update', params)
+  },
 }
