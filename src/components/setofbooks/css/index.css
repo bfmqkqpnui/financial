@@ -1483,3 +1483,96 @@ input.align:focus {
   border: none;
 }
 
+.amortiseBox .col-bi, .amortiseBox .col-biup, .amortiseBox .col-dp, .amortiseBox .col-index, .amortiseBox .col-name, .amortiseBox .col-state {
+  text-align: center;
+}
+
+.amortiseBox .col-biuv, .amortiseBox .col-cash, .amortiseBox .col-spl, .amortiseBox .col-tiv {
+  text-align: right;
+}
+
+.amortiseBox .state-container {
+  display: none;
+  opacity: 0;
+  height: 29px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.amortiseBox .state--editable:hover .state-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  opacity: 1;
+}
+
+.amortiseBox .state-container .com-button {
+  height: 20px;
+}
+
+.amortiseBox .state-container .com-button * {
+  line-height: 20px;
+  font-size: 12px;
+}
+
+/**初始报表*/
+.settingBox .reportTableFixed [class*=reportTable-], .settingBox .reportTableFixed [class*=reportTable-]>div {
+  height: 100%;
+}
+
+.settingBox .reportTableFixed [class*=reportTable-]>div {
+  line-height: 26px;
+}
+
+.settingBox .reportTableFixed .reportTable-left, .settingBox .reportTableFixed [class*=reportTable-]>div {
+  float: left;
+}
+
+.settingBox .reportTableFixed .reportTable-right>div {
+  margin-left: 30px;
+  cursor: pointer;
+}
+
+.settingBox .reportTableFixed .reportTable-right>div.menuOn, .settingBox .reportTableFixed .reportTable-right>div.menuOn:hover {
+  color: #5fbbfc;
+  cursor: default;
+}
+
+.settingBox .reportTableFixed .reportTable-right>div:hover {
+  color: #5fbbfc;
+}
+
+.amortiseBox .state--editable:hover .state-container.onlyMiddle{
+  justify-content: center!important;
+}
+
+.settingBox .setBtnMenu .icon-help {
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  background: #fff;
+  text-align: center;
+  border: 1px solid #b6c0d3;
+  border-radius: 10px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+}
+
+.settingBox .selectModuleBtn {
+  right: 10px;
+}
+
+.settingBox .setBtnMenu .icon-help:hover {
+  border: 1px solid #5fbbfc;
+  color: #5fbbfc;
+}
+
+.settingBox .tableData-report table.assetTable tr td:first-child, .settingBox .tableData-report table.cashTable tr td:first-child, .settingBox .tableData-report table.incomeTable tr td:first-child {
+  /*white-space: pre;*/
+}

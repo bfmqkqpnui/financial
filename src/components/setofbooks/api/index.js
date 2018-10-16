@@ -97,11 +97,20 @@ export default {
   queryAmortizedExpenseCourse: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/course/getAmortizedExpenseCourse', params)
   },
-// 新增待摊费用
+  // 新增待摊费用
   addAmortized: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/unamortizedexpense/insert', params)
   },
+  // 更新待摊费用
   updateAmortized: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/unamortizedexpense/update', params)
+  },
+  // 删除待摊费用
+  delAmortized: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/unamortizedexpense/delete', params)
+  },
+  // 查询报表-资产负债数据
+  queryReoprtByLiabilities: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/balancesheet/queryByAccountSetId', params)
   },
 }

@@ -27,7 +27,7 @@
               <div class="btn-fileAssets" ng-show="isMyAccount"> 导入固定资产
                 <input type="file" id="fileSingle" name="file" accept=".xlsx">
               </div>
-              <div class="btn-addAssets" @click="addFixedAsset" ng-show="isMyAccount">添加固定资产</div>
+              <div class="btn-addAssets" @click="addFixedAsset('添加')">添加固定资产</div>
               <div class="btn-reconciliationAssets" @click="checkEquilibrium">对账</div>
               <div class="icon-download" @click="dwldData" title="下载固定资产清单"></div>
             </div>
@@ -39,13 +39,21 @@
                 <div class="icon-isShowNullNum-off"></div>
                 隐藏空值
               </div>
-              <div class="btn-fileReport" ng-click="fileReportPop(true)">
+              <div class="btn-fileReport" ng-click="fileReportPop(true)" v-if="isNullBtnFlag">
                 导入报表
               </div>
-              <div class="btn-cancelReport" ng-show="checkChange()" ng-click="cancelEdit()">取消</div>
-              <div class="btn-saveReport" ng-show="checkChange()" ng-click="save()">保存修改</div>
+              <template v-if="reportMenu.type == 'cashFlow'">
+                <div class="btn-cancelReport" ng-click="cancelEditCashFlow()">取消</div>
+                <div class="btn-saveReport" ng-click="saveCashFlow()">保存修改</div>
+              </template>
+              <template v-if="reportMenu.type == 'subjectBalance'">
+                <div class="btn-cancelReport" ng-click="cancelEditSubjectBalance()">取消</div>
+                <div class="btn-saveReport" ng-click="saveSubjectBalance()">保存修改</div>
+              </template>
+
             </div>
-            <div class="setBtnMenu btnReportBox selectModuleBtn" v-if="setMenu.type == 'report'">
+            <div class="setBtnMenu btnReportBox selectModuleBtn"
+                 v-if="setMenu.type == 'report' && reportMenu.type == 'liabilities'">
               <select ng-options="type.name for type in adjustAsset.list" ng-model="adjustAsset.type"
                       ng-change="changeAdjustAsset(true)" class="ng-pristine ng-untouched ng-valid ng-not-empty">
                 <option label="默认模式" value="object:2025" selected="selected">默认模式</option>
@@ -353,7 +361,7 @@
               <div class="contentArea">
                 <div class="content-abs tableData-report">
                   <!-- 表格右侧tab -->
-                  <div class="navSubjectMenuBox">
+                  <div class="navSubjectMenuBox" :class="reportMenu.type != 'subjectBalance' ? 'ng-hide' : ''">
                     <div class="navSubjectMenuMask ng-hide"></div>
                     <div :class="item.isSelected? 'menuOn' : ''"
                          @click="subjectClassify(item, 'report')" class="ng-binding ng-scope"
@@ -361,96 +369,74 @@
                          :key="item.index" v-text="item.name">
                     </div>
                   </div>
+                  <!-- 报表主体 -->
                   <div class="content-rel setSubjectListBox">
                     <div class="content-rel">
                       <div class="reportTableFixed">
                         <div class="content-rel">
                           <div class="reportTable-left">
-                            <div class="viewInfoSize ng-binding">数据</div>
+                            <div class="viewInfoSize ng-binding"></div>
                           </div>
-                          <div class="reportTable-right"> <!-- ngRepeat: menu in reportMenu.list -->
-                            <div ng-repeat="menu in reportMenu.list"
-                                 ng-class="menu.type == reportMenu.type.type ? 'menuOn' : ''"
-                                 ng-hide="(checkChange() &amp;&amp; menu.type == 'asset') || (checkChange() &amp;&amp; menu.type == 'income')"
-                                 ng-click="switchReport(menu, 'reportType')"
-                                 ng-show="menu.type === 'assistInitBalance' &amp;&amp; tableData.assistInitBalance.balancesSubjectsShow.length"
-                                 class="ng-binding ng-scope"> 辅助核算余额表
-                            </div><!-- end ngRepeat: menu in reportMenu.list -->
-                            <div ng-repeat="menu in reportMenu.list"
-                                 ng-class="menu.type == reportMenu.type.type ? 'menuOn' : ''"
-                                 ng-hide="(checkChange() &amp;&amp; menu.type == 'asset') || (checkChange() &amp;&amp; menu.type == 'income')"
-                                 ng-click="switchReport(menu, 'reportType')"
-                                 ng-show="menu.type === 'assistInitBalance' &amp;&amp; tableData.assistInitBalance.balancesSubjectsShow.length"
-                                 class="ng-binding ng-scope"> 资产负债表
-                            </div><!-- end ngRepeat: menu in reportMenu.list -->
-                            <div ng-repeat="menu in reportMenu.list"
-                                 ng-class="menu.type == reportMenu.type.type ? 'menuOn' : ''"
-                                 ng-hide="(checkChange() &amp;&amp; menu.type == 'asset') || (checkChange() &amp;&amp; menu.type == 'income')"
-                                 ng-click="switchReport(menu, 'reportType')"
-                                 ng-show="menu.type === 'assistInitBalance' &amp;&amp; tableData.assistInitBalance.balancesSubjectsShow.length"
-                                 class="ng-binding ng-scope"> 利润表
-                            </div><!-- end ngRepeat: menu in reportMenu.list -->
-                            <div ng-repeat="menu in reportMenu.list"
-                                 ng-class="menu.type == reportMenu.type.type ? 'menuOn' : ''"
-                                 ng-hide="(checkChange() &amp;&amp; menu.type == 'asset') || (checkChange() &amp;&amp; menu.type == 'income')"
-                                 ng-click="switchReport(menu, 'reportType')"
-                                 ng-show="menu.type === 'assistInitBalance' &amp;&amp; tableData.assistInitBalance.balancesSubjectsShow.length"
-                                 class="ng-binding ng-scope"> 现金流量表
-                            </div><!-- end ngRepeat: menu in reportMenu.list -->
-                            <div ng-repeat="menu in reportMenu.list"
-                                 ng-class="menu.type == reportMenu.type.type ? 'menuOn' : ''"
-                                 ng-hide="(checkChange() &amp;&amp; menu.type == 'asset') || (checkChange() &amp;&amp; menu.type == 'income')"
-                                 ng-click="switchReport(menu, 'reportType')"
-                                 ng-show="menu.type === 'assistInitBalance' &amp;&amp; tableData.assistInitBalance.balancesSubjectsShow.length"
-                                 class="ng-binding ng-scope menuOn"> 科目余额表
-                            </div><!-- end ngRepeat: menu in reportMenu.list --> </div>
+                          <div class="reportTable-right">
+                            <div v-for="menu in reportMenu.list" @click.stop="switchReport(menu)"
+                                 v-if="menu.type != 'auxiliaryBalance'"
+                                 class="ng-binding ng-scope" v-text="menu.name"
+                                 :class="menu.isSelected ? 'menuOn' : ''">
+                            </div>
+                          </div>
                         </div>
                       </div>
+
                       <div class="tableBox tableFixed" style="top:0">
                         <table>
-                          <thead>
+                          <!-- 科目余额表 -->
+                          <thead v-if="reportMenu.type == 'subjectBalance'">
                           <tr>
-                            <!-- ngRepeat: title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type]) -->
-                            <th ng-repeat="title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type])"
-                                ng-class="title.class" class="ng-binding ng-scope span-16">科目编码
-                            </th>
-                            <!-- end ngRepeat: title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type]) -->
-                            <th ng-repeat="title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type])"
-                                ng-class="title.class" class="ng-binding ng-scope span-35">科目名称
-                            </th>
-                            <!-- end ngRepeat: title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type]) -->
-                            <th ng-repeat="title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type])"
-                                ng-class="title.class" class="ng-binding ng-scope span-5">借贷
-                            </th>
-                            <!-- end ngRepeat: title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type]) -->
-                            <th ng-repeat="title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type])"
-                                ng-class="title.class" class="ng-binding ng-scope span-11">借方累计
-                            </th>
-                            <!-- end ngRepeat: title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type]) -->
-                            <th ng-repeat="title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type])"
-                                ng-class="title.class" class="ng-binding ng-scope span-11">贷方累计
-                            </th>
-                            <!-- end ngRepeat: title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type]) -->
-                            <th ng-repeat="title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type])"
-                                ng-class="title.class" class="ng-binding ng-scope span-11">期末余额
-                            </th>
-                            <!-- end ngRepeat: title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type]) -->
-                            <th ng-repeat="title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type])"
-                                ng-class="title.class" class="ng-binding ng-scope span-11">年初余额
-                            </th>
-                            <!-- end ngRepeat: title in (getThList() ? setMenu['currency'] : setMenu[reportMenu.type.type]) -->
+                            <th class="ng-binding ng-scope span-16">科目编码</th>
+                            <th class="ng-binding ng-scope span-35">科目名称</th>
+                            <th class="ng-binding ng-scope span-5">借贷</th>
+                            <th class="ng-binding ng-scope span-11">借方累计</th>
+                            <th class="ng-binding ng-scope span-11">贷方累计</th>
+                            <th class="ng-binding ng-scope span-11">期末余额</th>
+                            <th class="ng-binding ng-scope span-11">年初余额</th>
+                          </tr>
+                          </thead>
+                          <!-- 资产负债表 -->
+                          <thead v-if="reportMenu.type == 'liabilities'">
+                          <tr>
+                            <th class="ng-binding ng-scope span-15">资产</th>
+                            <th class="ng-binding ng-scope span-5">行次</th>
+                            <th class="ng-binding ng-scope span-15">期末余额</th>
+                            <th class="ng-binding ng-scope span-15">年初余额</th>
+                            <th class="ng-binding ng-scope span-15">负债和所有者权益</th>
+                            <th class="ng-binding ng-scope span-5">行次</th>
+                            <th class="ng-binding ng-scope span-15">期末余额</th>
+                            <th class="ng-binding ng-scope span-15">年初余额</th>
+                          </tr>
+                          </thead>
+                          <!-- 利润表 || 现金流量表 -->
+                          <thead v-if="reportMenu.type == 'profit' || reportMenu.type == 'cashFlow'">
+                          <tr>
+                            <th class="ng-binding ng-scope span-55">项目</th>
+                            <th class="ng-binding ng-scope span-5">行次</th>
+                            <th class="ng-binding ng-scope span-20">本年累计金额</th>
+                            <th class="ng-binding ng-scope span-20">本月金额</th>
                           </tr>
                           </thead>
                         </table>
                       </div>
+
+
                       <div>
-                        <div class="content-rel" id="scrollBar-report">
-                          <table class="reportTable"
-                                 ng-show="reportMenu.type.type == 'report' &amp;&amp; currency.type == 'balances'">
+                        <div class="content-rel tableBox tableFixed" id="scrollBar-report"
+                             style="overflow-y: auto;top:40px;padding-bottom: 40px;">
+                          <!-- 科目余额表 -->
+                          <table class="reportTable" v-if="reportMenu.typ == 'subjectBalance'">
                             <tbody>
-                            <!-- ngRepeat: data in tableData['reportMap'][navMenu.reportType.index] | orderBy:'subject' --> </tbody>
+                            </tbody>
                           </table>
-                          <div class="assistInitBalance ng-hide" ng-show="reportMenu.type.type == 'assistInitBalance'">
+                          <!-- 辅助核算余额表 -->
+                          <div class="assistInitBalance ng-hide">
                             <div click-test="" listen="enableClickTest" onmouselost="assistBoxSetOnblur()"
                                  class="span-50 dowmWrap ng-isolate-scope ng-hide" ng-show="showSelector"
                                  id="assistBox-" cnclgqll="">
@@ -513,26 +499,572 @@
                               <!-- ngRepeat: data in tableData.assistInitBalance.balancesSubjectsShow --> </tbody>
                             </table>
                           </div>
+                          <!--  -->
                           <table class="reportTable ng-hide"
                                  ng-show="reportMenu.type.type == 'report' &amp;&amp; currency.type == 'currency'">
                             <tbody> <!-- ngRepeat: data in tableData['currency'] | orderBy:'subject' --> </tbody>
                           </table>
-                          <table class="cashTable ng-hide" ng-show="reportMenu.type.type == 'cash'">
+                          <!-- 现金流量表 -->
+                          <table class="cashTable" v-if="reportMenu.typ == 'cashFlow'">
                             <tbody> <!-- ngRepeat: row in reportData['cash'] --> </tbody>
                           </table>
-                          <table class="incomeTable ng-hide" ng-show="reportMenu.type.type == 'income'">
+                          <!-- 利润表 -->
+                          <table class="incomeTable" v-if="reportMenu.typ == 'profit'">
                             <tbody> <!-- ngRepeat: row in reportData['income'] --> </tbody>
                           </table>
-                          <table class="assetTable ng-hide" ng-show="reportMenu.type.type == 'asset'">
-                            <tbody> <!-- ngRepeat: row in reportData['asset'] --> </tbody>
+                          <!-- 资产负债表 -->
+                          <table class="assetTable" v-if="reportMenu.type == 'liabilities'">
+                            <tbody>
+                            <tr class="ng-scope">
+                              <td class="span-15 ng-binding" style="font-weight: bold;">流动资产:</td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" style="font-weight: bold;">流动负债:</td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr>
+
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                货币资金
+                              </td>
+                              <td class="span-5 ng-binding">1</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                短期借款
+                              </td>
+                              <td class="span-5 ng-binding">31</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr>
+
+
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                短期投资
+                              </td>
+                              <td class="span-5 ng-binding">2</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                应付票据
+                              </td>
+                              <td class="span-5 ng-binding">32</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr>
+
+
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                应收票据
+                              </td>
+                              <td class="span-5 ng-binding">3</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                应付账款
+                              </td>
+                              <td class="span-5 ng-binding">33</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr>
+
+
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                应收账款
+                              </td>
+                              <td class="span-5 ng-binding">4</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                预收账款
+                              </td>
+                              <td class="span-5 ng-binding">34</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr>
+
+
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                预付账款
+                              </td>
+                              <td class="span-5 ng-binding">5</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                应付职工薪酬
+                              </td>
+                              <td class="span-5 ng-binding">35</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                应收股利
+                              </td>
+                              <td class="span-5 ng-binding">6</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                应交税费
+                              </td>
+                              <td class="span-5 ng-binding">36</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                应收利息
+                              </td>
+                              <td class="span-5 ng-binding">7</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                应付利息
+                              </td>
+                              <td class="span-5 ng-binding">37</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                其他应收款
+                              </td>
+                              <td class="span-5 ng-binding">8</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                应付利润
+                              </td>
+                              <td class="span-5 ng-binding">38</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                存货
+                              </td>
+                              <td class="span-5 ng-binding">9</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                其他应付款
+                              </td>
+                              <td class="span-5 ng-binding">39</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr class="ng-scope">
+                              <td class="span-15 ng-binding"> 其中:
+                                原材料
+                              </td>
+                              <td class="span-5 ng-binding">10</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                其他流动负债
+                              </td>
+                              <td class="span-5 ng-binding">40</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                在产品
+                              </td>
+                              <td class="span-5 ng-binding">11</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                流动负债合计
+                              </td>
+                              <td class="span-5 ng-binding">41</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                库存商品
+                              </td>
+                              <td class="span-5 ng-binding">12</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;">非流动负债:
+                              </td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                周转材料
+                              </td>
+                              <td class="span-5 ng-binding">13</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                长期借款:
+                              </td>
+                              <td class="span-5 ng-binding">42</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                其他流动资产
+                              </td>
+                              <td class="span-5 ng-binding">14</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                长期应付款:
+                              </td>
+                              <td class="span-5 ng-binding">43</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                流动资产合计
+                              </td>
+                              <td class="span-5 ng-binding">15</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                递延收益:
+                              </td>
+                              <td class="span-5 ng-binding">44</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;">非流动资产:
+                              </td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                其他非流动负债:
+                              </td>
+                              <td class="span-5 ng-binding">45</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                长期债券投资
+                              </td>
+                              <td class="span-5 ng-binding">16</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                非流动负债合计:
+                              </td>
+                              <td class="span-5 ng-binding">46</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                长期股权投资
+                              </td>
+                              <td class="span-5 ng-binding">17</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                负债合计
+                              </td>
+                              <td class="span-5 ng-binding">47</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+
+
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                固定资产原价
+                              </td>
+                              <td class="span-5 ng-binding">18</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;"></td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+
+
+
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                减:累计折旧
+                              </td>
+                              <td class="span-5 ng-binding">19</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;"></td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                固定资产账面价值
+                              </td>
+                              <td class="span-5 ng-binding">20</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;"></td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                在建工程
+                              </td>
+                              <td class="span-5 ng-binding">21</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;"></td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                工程物资
+                              </td>
+                              <td class="span-5 ng-binding">22</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;"></td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                固定资产清理
+                              </td>
+                              <td class="span-5 ng-binding">23</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;"></td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                生产性生物资产
+                              </td>
+                              <td class="span-5 ng-binding">24</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}"
+                                  style="font-weight: bold;">所有者权益(或股东权益):
+                              </td>
+                              <td class="span-5 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                无形资产
+                              </td>
+                              <td class="span-5 ng-binding">25</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                实收资本(或股本)
+                              </td>
+                              <td class="span-5 ng-binding">48</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                开发支出
+                              </td>
+                              <td class="span-5 ng-binding">26</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                资本公积
+                              </td>
+                              <td class="span-5 ng-binding">49</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                长期待摊费用
+                              </td>
+                              <td class="span-5 ng-binding">27</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                盈余公积
+                              </td>
+                              <td class="span-5 ng-binding">50</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                其他非流动资产
+                              </td>
+                              <td class="span-5 ng-binding">28</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                未分配利润
+                              </td>
+                              <td class="span-5 ng-binding">51</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                非流动资产合计
+                              </td>
+                              <td class="span-5 ng-binding">29</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                所有者权益(或股东权益)合计:
+                              </td>
+                              <td class="span-5 ng-binding">52</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            <!-- ngIf: row[1] != '行次' -->
+                            <tr ng-repeat="row in reportData['asset']" ng-if="row[1] != '行次'"
+                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
+                                ng-click="highlightRow($index)" class="ng-scope">
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[1] == '' ? 'bold' : ''}">
+                                资产合计
+                              </td>
+                              <td class="span-5 ng-binding">30</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding" ng-style="{'font-weight': row[5] == '' ? 'bold' : ''}">
+                                负债和所有者权益(或股东权益)总计
+                              </td>
+                              <td class="span-5 ng-binding">53</td>
+                              <td class="span-15 ng-binding"></td>
+                              <td class="span-15 ng-binding"></td>
+                            </tr><!-- end ngIf: row[1] != '行次' --><!-- end ngRepeat: row in reportData['asset'] -->
+                            </tbody>
                           </table>
-                          <div ng-show="(reportMenu.type.type == 'asset' &amp;&amp; reportData['asset'].length == 0) ||
-                (reportMenu.type.type == 'income' &amp;&amp; reportData['income'].length == 0)"
+
+                          <div ng-show="(reportMenu.type.type == 'asset' && reportData['asset'].length == 0) ||
+                (reportMenu.type.type == 'income' && reportData['income'].length == 0)"
                                style="text-align:center;margin-top:100px" class="ng-hide"><img
                             src="data:image/png;base64,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">
                             <p style="color:rgba(50,63,77,.5);margin-top:40px;font-size:18px" class="ng-binding">
-                              小君提示您：系统未找到 的 利润表 </p></div>
+                              财税通提示您：系统未找到利润表 </p></div>
                         </div>
+
+
                       </div>
                     </div>
                   </div>
@@ -651,16 +1183,16 @@
                           <td class="span-4 ng-binding" v-text="index+1"></td>
                           <td class="span-14 ng-binding" v-text="item.assetName"></td>
                           <td class="span-8 ng-binding" v-text="item.dateRecorded"></td>
-                          <td class="span-8 ng-binding" v-text="item.originalValue"></td>
-                          <td class="span-8 ng-binding" v-text="item.expectedSalvage"></td>
+                          <td class="span-8 ng-binding">{{item.originalValue | moneyFilter}}</td>
+                          <td class="span-8 ng-binding">{{item.expectedSalvage | moneyFilter}}</td>
                           <td class="span-10 ng-binding" v-text="item.depreciationPeriod"></td>
                           <td class="span-10 ng-binding" v-text="item.accumulatedDepreciationPeriod"></td>
-                          <td class="span-10 ng-binding" v-text="item.accumulatedDepreciation"></td>
-                          <td class="span-8 ng-binding" v-text="item.thisMonthDepreciation"></td>
-                          <td class="span-8 ng-binding" v-text="item.netWorth"></td>
+                          <td class="span-10 ng-binding">{{item.accumulatedDepreciation | moneyFilter}}</td>
+                          <td class="span-8 ng-binding">{{item.thisMonthDepreciation | moneyFilter}}</td>
+                          <td class="span-8 ng-binding">{{item.netWorth | moneyFilter}}</td>
                           <td class="span-12">
                             <div class="ng-scope" v-text="item.statusDescription" v-if="item.edit"
-                                :class="item.status == 1 || item.status == 2 || item.status == 3 || item.status == 4? 'prepare' : 'depreciationIng'">
+                                 :class="item.status == 1 || item.status == 2 || item.status == 3 || item.status == 4? 'prepare' : 'depreciationIng'">
                             </div>
                             <div v-if="!item.edit" class="depreciationNewIng ng-scope" @click="editFixedAsset(item)">
                               - 编辑 -
@@ -682,9 +1214,13 @@
                           <td></td>
                           <td></td>
                           <td></td>
-                          <td style="text-align:right" class="ng-binding" v-text="item.sumAccumulatedDepreciation"></td>
-                          <td style="text-align:right" class="ng-binding" v-text="item.sumThisMonthDepreciation"></td>
-                          <td style="text-align:right" class="ng-binding" v-text="item.sumNetWorth"></td>
+                          <td style="text-align:right" class="ng-binding">{{item.sumAccumulatedDepreciation |
+                            moneyFilter}}
+                          </td>
+                          <td style="text-align:right" class="ng-binding">{{item.sumThisMonthDepreciation |
+                            moneyFilter}}
+                          </td>
+                          <td style="text-align:right" class="ng-binding">{{item.sumNetWorth | moneyFilter}}</td>
                           <td></td>
                         </tr>
                         </tbody>
@@ -706,7 +1242,7 @@
                     <div class="com-button anime ng-isolate-scope com-button--hollow">
                       <div><label for="amortise" class="ng-scope">导入待摊费用</label></div>
                     </div>
-                    <div class="com-button anime ng-isolate-scope com-button--hollow" @click.stop="addAmortise">
+                    <div class="com-button anime ng-isolate-scope com-button--hollow" @click.stop="addAmortise('添加')">
                       <div><span class="ng-scope">添加待摊费用</span></div>
                     </div>
                     <input id="amortise" type="file" file-model="" keep-file="false"></div>
@@ -731,30 +1267,61 @@
                     </div>
                     <div class="content-rel ps-container ps-theme-default" scroll="" scroll-behavior="top"
                          data-ps-id="713bceff-15c2-2e04-2e8f-e7f4906e762f">
-                      <div ng-show="amortise.entries.length === 0" style="text-align:center;margin-top:100px"><img
+                      <div v-if="amortiseTableList.length === 0" style="text-align:center;margin-top:100px"><img
                         src="./i/notFound.png">
                         <p style="color:rgba(50,63,77,.5);margin-top:40px" class="ng-binding"> 未搜索到待摊费用 </p>
                       </div>
                       <table>
-                        <tbody> <!-- ngRepeat: data in amortise.entries -->
-                        <tr ng-show="amortise.entries.length !== 0" style="font-weight:700" class="ng-hide">
+                        <tbody>
+                        <tr class="ng-scope state--editable" v-for="(item, index) in amortiseTableList" :key="index"
+                            v-if="item.accountSetId != null">
+                          <td class="col-index span-6 ng-binding" v-text="index+1"></td>
+                          <td class="col-name span-14 ng-binding" v-text="item.costName"></td>
+                          <td class="col-bi span-10 ng-binding" v-text="item.amortizationPeriod"></td>
+                          <td class="col-cash span-10 ng-binding">{{item.amortizationAmount | moneyFilter}}</td>
+                          <td class="col-dp span-10 ng-binding" v-text="item.amortizationSchedule"></td>
+                          <td class="col-biup span-10 ng-binding" v-text="item.amortizedPeriod"></td>
+                          <td class="col-biuv span-10 ng-binding">{{item.amortizedAmount | moneyFilter}}</td>
+                          <td class="col-spl span-10 ng-binding">{{item.unamortizedAmount | moneyFilter}}</td>
+                          <td class="col-tiv span-10 ng-binding">{{item.thisMonthAmortization | moneyFilter}}</td>
+                          <td class="col-state span-10">
+                            <span class="state-tag" v-text="item.statusDescription"></span>
+                            <div class="state-container" :class="item.status == 2 ? 'onlyMiddle' : ''">
+                              <div class="btn-op com-button anime ng-isolate-scope com-button--ok"
+                                   v-if="item.status == 1"
+                                   @click.stop="editAmortise(item)">
+                                <div><span class="ng-scope">编辑</span></div>
+                              </div>
+                              <div class="btn-op com-button anime ng-isolate-scope com-button--ok"
+                                   v-if="item.status == 1"
+                                   @click.stop="deleteAmortise(item)">
+                                <div><span class="ng-scope">删除</span></div>
+                              </div>
+                              <div class="btn-op com-button anime ng-isolate-scope com-button--ok"
+                                   v-if="item.status == 2" style="justify-content: center;"
+                                   @click.stop="showAmortise(item)">
+                                <div><span class="ng-scope">查看</span></div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+
+                        <tr v-for="(item, index) in amortiseTableList" :key="index" style="font-weight:700"
+                            v-if="item.accountSetId == null">
                           <td colspan="3" style="text-align:center">合计：</td>
-                          <td style="text-align:right" class="ng-binding"></td>
+                          <td style="text-align:right" class="ng-binding">{{item.sumAmortizationAmount | moneyFilter}}
+                          </td>
                           <td style="text-align:center">-</td>
                           <td style="text-align:center">-</td>
                           <td style="text-align:center">-</td>
                           <td style="text-align:center">-</td>
-                          <td style="text-align:right" class="ng-binding"></td>
+                          <td style="text-align:right" class="ng-binding">{{item.sumThisMonthAmortization |
+                            moneyFilter}}
+                          </td>
                           <td style="text-align:center">-</td>
                         </tr>
                         </tbody>
                       </table>
-                      <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                      </div>
-                      <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
-                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -1072,7 +1639,7 @@
     <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="isFixedAssets">
       <div class="site-popup anime popup-fixedAssetInfo site-popup--expand">
         <div class="site-popup_head">
-          <p class="ng-binding">添加固定资产</p>
+          <p class="ng-binding">{{assetsTitle}}固定资产</p>
           <div class="site-popup_close g-icon-close" @click.stop="hide"></div>
         </div>
         <div class="site-popup_body">
@@ -1192,7 +1759,8 @@
     <!-- 添加待摊费用 -->
     <div class="site-mask anime site-mask--shade" v-if="isAmortise">
       <div class="site-popup anime popup-amortise site-popup--expand">
-        <div class="site-popup_head"><p class="ng-binding">添加待摊费用</p>
+        <div class="site-popup_head">
+          <p class="ng-binding">{{amortiseTitle}}待摊费用</p>
           <div class="site-popup_close g-icon-close" @click.stop="hide"></div>
         </div>
         <div class="site-popup_body">
@@ -1200,6 +1768,7 @@
             <div class="entry-row">
               <p class="grid-label popup-label">费用名称</p>
               <input class="grid-content ng-pristine ng-untouched ng-valid ng-empty" type="text"
+                     :disabled="amortise.show" :class="amortise.show? 'grid-content--lock' : ''"
                      v-model="amortise.costName"></div>
             <div class="entry-row">
               <p class="grid-label popup-label">摊销起始期</p>
@@ -1208,28 +1777,33 @@
             <div class="entry-row">
               <p class="grid-label popup-label">摊销金额</p>
               <input class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
+                     :disabled="amortise.show" :class="amortise.show? 'grid-content--lock' : ''"
                      v-model="amortise.amortizationAmount">
             </div>
             <div class="entry-row flex-left">
               <p class="grid-label popup-label">摊销期限</p>
               <input class="grid-content grid-content--short ng-pristine ng-untouched ng-valid ng-not-empty"
-                     type="number" v-model="amortise.amortizationSchedule">
+                     :disabled="amortise.show" type="number" v-model="amortise.amortizationSchedule"
+                     :class="amortise.show? 'grid-content--lock' : ''">
               <span class="grid-tail">月</span>
             </div>
             <div class="entry-row flex-left">
               <p class="grid-label popup-label">已摊销期数</p>
               <input class="grid-content grid-content--short ng-pristine ng-untouched ng-valid ng-not-empty"
-                     type="number" v-model="amortise.amortizedPeriod">
+                     :disabled="amortise.show" type="number" v-model="amortise.amortizedPeriod"
+                     :class="amortise.show? 'grid-content--lock' : ''">
               <span class="grid-tail">月</span>
             </div>
             <div class="entry-row">
               <p class="grid-label popup-label">已摊销金额</p>
               <input class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-                     v-model="amortise.amortizedAmount"></div>
+                     :disabled="amortise.show" v-model="amortise.amortizedAmount"
+                     :class="amortise.show? 'grid-content--lock' : ''"></div>
             <div class="entry-row">
               <p class="grid-label popup-label">入账科目</p>
               <select class="grid-content grid-content--lock ng-pristine ng-untouched ng-valid ng-not-empty"
-                      v-model="amortise.courseId">
+                      :disabled="amortise.show" v-model="amortise.courseId"
+                      :class="amortise.show? 'grid-content--lock' : ''">
                 <option v-for="sub in accountingAmortiseCourselist" :value="sub.id" class="ng-binding ng-scope">
                   {{sub.coding}} - {{sub.courseName}}
                 </option>
@@ -1239,13 +1813,47 @@
         </div>
         <div class="site-popup_footer">
           <p class="popup-error ng-binding" v-text="amortise.error"></p>
-          <div class="entry-row">
-            <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="hide">
-              <div><span class="ng-scope">取消</span></div>
+          <template v-if="amortise.show">
+            <div class="entry-row">
+              <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="hide">
+                <div><span class="ng-scope">取消</span></div>
+              </div>
+              <div class="btn-ok com-button anime ng-isolate-scope com-button--ok" @click.stop="hide">
+                <div><span class="ng-scope">确定</span></div>
+              </div>
             </div>
-            <div class="btn-ok com-button anime ng-isolate-scope com-button--ok" @click.stop="okAmortise">
-              <div><span class="ng-scope">确定</span></div>
+          </template>
+          <template v-else>
+            <div class="entry-row">
+              <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="hide">
+                <div><span class="ng-scope">取消</span></div>
+              </div>
+              <div class="btn-ok com-button anime ng-isolate-scope com-button--ok" @click.stop="okAmortise">
+                <div><span class="ng-scope">确定</span></div>
+              </div>
             </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- 确认删除待摊费用 -->
+    <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="isRealDelAmortiseMask">
+      <div class="site-popup anime popup-confirm flex--column site-popup--expand" ng-class="{'site-popup--expand': on}">
+        <div class="site-popup_head">
+          <div class="site-popup_title">财税通提醒您：</div>
+        </div>
+        <div class="site-popup_body">
+          <div class="site-popup_type">
+            <div class="typeIcon g-icon-warn"></div>
+            <p class="typeTitle typeTitle--warn ng-binding">是否删除“{{amortise.costName}}”条目？</p></div>
+        </div>
+        <div class="site-popup_footer">
+          <div class="btn--cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="cancelDelAmortise">
+            <div><span class="ng-scope">否</span></div>
+          </div>
+          <div class="btn--ok com-button anime ng-isolate-scope com-button--ok" @click.stop="realDelAmortise">
+            <div><span class="ng-scope">是</span></div>
           </div>
         </div>
       </div>
@@ -1302,13 +1910,16 @@
           {"index": 6, "type": "cost", "name": "项目", isSelected: false}
         ],
         // 报表tab按钮
-        reportMenu: [
-          {index: 1, type: 'income', name: '辅助核算余额表', isSelected: false},
-          {index: 2, type: 'income', name: '资产负债表', isSelected: false},
-          {index: 3, type: 'income', name: '利润表', isSelected: false},
-          {index: 4, type: 'income', name: '现金流量表', isSelected: false},
-          {index: 5, type: 'income', name: '科目余额表', isSelected: true},
-        ],
+        reportMenu: {
+          type: 'subjectBalance',
+          list: [
+            {index: 1, type: 'auxiliaryBalance', name: '辅助核算余额表', isSelected: false},
+            {index: 2, type: 'liabilities', name: '资产负债表', isSelected: false},
+            {index: 3, type: 'profit', name: '利润表', isSelected: false},
+            {index: 4, type: 'cashFlow', name: '现金流量表', isSelected: false},
+            {index: 5, type: 'subjectBalance', name: '科目余额表', isSelected: true},
+          ]
+        },
         setMenu: {
           type: 'subject',
           list: [
@@ -1395,6 +2006,8 @@
         accountingCourselist: [],
         // 确认删除固定资产蒙层
         isRealDelAssetMask: false,
+        // 确认删除待摊费用资产蒙层
+        isRealDelAmortiseMask: false,
         // 待摊费用科目列表
         accountingAmortiseCourselist: [],
         // 待摊费用对象列表
@@ -1419,7 +2032,13 @@
           error: '',
           // 待摊费用编号
           id: '',
-        }
+        },
+        // 待摊费用蒙层title
+        amortiseTitle: '',
+        // 固定资产蒙层title
+        assetsTitle: '',
+        // 资产负债表
+        balanceSheet: {},
       }
     },
     methods: {
@@ -1553,6 +2172,7 @@
             }
             break;
           case 'report':
+            // 初始报表
             if (utils.isExist(opt)) {
               this.navMenuSubject.forEach(function (el) {
                 if (opt.index == el.index) {
@@ -1561,6 +2181,23 @@
                   el.isSelected = false
                 }
               })
+
+              let params = {
+                accountSetId: this.accountId,
+                token: this.token
+              }
+              if (opt.index == 1) { // 资产
+                params.courseType = 1;
+              } else if (opt.index == 2) { // 负债
+                params.courseType = 2;
+              } else if (opt.index == 3) { // 权益
+                params.courseType = 3;
+              } else if (opt.index == 4) { // 成本
+                params.courseType = 4;
+              } else if (opt.index == 5) { // 损益
+                params.courseType = 5;
+              }
+              console.log("报告入参：", params)
             }
             break;
         }
@@ -1576,9 +2213,8 @@
           } else if (opt.index == 2) {
             this.subjectClassify({index: 1}, 'assist')
           } else if (opt.index == 3) {
-
+            this.subjectClassify({index: 1}, 'report')
           } else if (opt.index == 4) {
-            // this.getDate()
             console.log("固定资产")
             this.getAccountingCourse()
             this.queryFixedAssets()
@@ -1849,10 +2485,15 @@
         console.log("导入固定资产")
       },
       // 添加固定资产
-      addFixedAsset() {
+      addFixedAsset(title) {
         console.log("添加固定资产")
         this.isFixedAssets = true
         this.asset.dateRecorded = this.dateNow
+        if (utils.isExist(title)) {
+          this.assetsTitle = title
+        } else {
+          this.assetsTitle = '添加'
+        }
       },
       // 对账
       checkEquilibrium() {
@@ -1867,6 +2508,7 @@
         console.log("隐藏固定资产弹层 || 隐藏待摊费用弹层")
         this.isFixedAssets = false
         this.isAmortise = false
+        this.isRealDelAmortiseMask = false
       },
       // 查询固定资产
       queryFixedAssets() {
@@ -1874,7 +2516,7 @@
           console.log("查询固定资产:", res.body)
           if (res.body.result == 0) {
             let array = res.body.data
-            array.forEach(function(el){
+            array.forEach(function (el) {
               el.edit = true
               el.dispose = true
               el.cancel = true
@@ -1956,6 +2598,12 @@
           // 错误信息
           error: ''
         }
+        const that = this
+        this.accountingCourselist.forEach(function (el) {
+          if (el.coding == "5602") {
+            that.asset.courseId = el.id
+          }
+        })
       },
       // 固定资产处理弹层
       disposeSelectPop(value) {
@@ -1966,11 +2614,11 @@
         }
       },
       // 处理 出售 盘亏 报废
-      disposeSelect(value){
+      disposeSelect(value) {
         if (Number(value)) {
-          api.changeAssetStatus({id: this.asset.id,status: value, token: this.token}).then(res => {
-            console.log("出售盘亏变卖结果：",res.body)
-            if(res.body.result == 0){
+          api.changeAssetStatus({id: this.asset.id, status: value, token: this.token}).then(res => {
+            console.log("出售盘亏变卖结果：", res.body)
+            if (res.body.result == 0) {
               this.showDisposeAssets = false
               this.queryFixedAssets()
               this.configAsset()
@@ -2003,11 +2651,11 @@
         })
       },
       // focus时展示固定资产每条数据的状态
-      showAssetStatus(index,item) {
+      showAssetStatus(index, item) {
         if (item.status == 2 || item.status == 3 || item.status == 4) {
           this.assetTableList[index].cancel = false
         }
-        if(item.status == 5){
+        if (item.status == 5) {
           this.assetTableList[index].dispose = false
         }
         this.assetTableList[index].edit = false
@@ -2022,7 +2670,7 @@
       editFixedAsset(opt) {
         console.log("更新当前选中的固定资产数据", opt)
         this.asset = opt
-        this.addFixedAsset()
+        this.addFixedAsset('编辑')
       },
       // 处理当前选中的固定资产数据
       disposeIng(opt) {
@@ -2033,7 +2681,7 @@
         }
       },
       // 取消当前选中的固定资产数据
-      cancel(opt){
+      cancel(opt) {
         console.log("取消当前选中的固定资产数据")
         if (utils.isExist(opt)) {
           this.asset = opt
@@ -2053,15 +2701,18 @@
         console.log("取消删除固定资产")
         this.isRealDelAssetMask = false
         this.configAsset()
-        this.queryFixedAssets()
       },
       // 确认删除固定资产
-      realDelAsset(){
+      realDelAsset() {
         console.log("确认删除固定资产")
+        this.isRealDelAssetMask = false
         api.delAsset({id: this.asset.id, token: this.token}).then(res => {
-          console.log("删除固定资产结果：",res.body)
-          if(res.body.result == 0){
+          console.log("删除固定资产结果：", res.body)
+          if (res.body.result == 0) {
             this.cancelAsset()
+            this.queryFixedAssets()
+          } else {
+            this.$emit('error', res.body.msg)
           }
         })
       },
@@ -2091,6 +2742,7 @@
           }
         })
       },
+      // 初始化添加待摊费用对象
       configAmortise() {
         this.amortise = {
           // 费用名称
@@ -2106,12 +2758,26 @@
           // 已摊销金额
           amortizedAmount: 0,
           // 入账科目主键
-          courseId: ''
+          courseId: '',
+          // 错误信息
+          error: ''
         }
+        const that = this
+        this.accountingAmortiseCourselist.forEach(function (el) {
+          if (el.coding == "5602") {
+            that.amortise.courseId = el.id
+          }
+        })
       },
       // 添加待摊费用
-      addAmortise() {
+      addAmortise(title) {
+        this.amortise.amortizationPeriod = this.dateNow
         this.isAmortise = true
+        if (utils.isExist(title)) {
+          this.amortiseTitle = title
+        } else {
+          this.amortiseTitle = '添加'
+        }
       },
       // 待摊费用-导入模板
       downloadTemplate() {
@@ -2122,17 +2788,67 @@
       },
       // 添加待摊费用数据
       okAmortise() {
-        console.log("添加待摊费用数据")
+        console.log("添加或更新待摊费用数据", this.amortise)
         if (this.addBeforeAmortise(this.amortise)) {
-          api.addAmortized().then()
+          let params = this.amortise
+          params.token = this.token
+          params.accountSetId = this.accountId
+          if (utils.isExist(params.id)) {
+            api.updateAmortized(params).then(res => {
+              console.log("更新结果：", res.body)
+              if (res.body.result == 0) {
+                this.isAmortise = false
+                this.queryAmortiseData()
+                this.configAmortise()
+              } else {
+                this.amortise.error = res.body.msg
+              }
+            })
+          } else {
+            api.addAmortized(params).then(res => {
+              console.log("添加结果：", res.body)
+              if (res.body.result == 0) {
+                this.isAmortise = false
+                this.queryAmortiseData()
+                this.configAmortise()
+              } else {
+                this.amortise.error = res.body.msg
+              }
+            })
+          }
         }
       },
+      // 添加前置校验
       addBeforeAmortise(opt) {
         let flag = false
         if (utils.isExist(opt)) {
           if (utils.isExist(opt.costName)) {
             if (!isNaN(opt.amortizationAmount) && Number(opt.amortizationAmount) > 0) {
-              flag = true
+              if (!isNaN(opt.amortizationSchedule) && Number(opt.amortizationSchedule) > 0) {
+                if (!isNaN(opt.amortizedPeriod) && Number(opt.amortizedPeriod) >= 0) {
+                  if (!isNaN(opt.amortizedAmount) && Number(opt.amortizedAmount) >= 0) {
+                    if (Number(opt.amortizedPeriod) > 0 && Number(opt.amortizedAmount) == 0) {
+                      this.amortise.error = '已摊销金额不能为0'
+                    } else {
+                      if (Number(opt.amortizedPeriod) == 0 && Number(opt.amortizedAmount) > 0) {
+                        this.amortise.error = '已摊销期数不能为0'
+                      } else {
+                        if (Number(opt.amortizedAmount) <= Number(opt.amortizationAmount)) {
+                          flag = true
+                        } else {
+                          this.amortise.error = '已摊销金额不能大于摊销总额'
+                        }
+                      }
+                    }
+                  } else {
+                    this.amortise.error = '请填写正确的已摊销金额'
+                  }
+                } else {
+                  this.amortise.error = '请填写正确的已摊销期数'
+                }
+              } else {
+                this.amortise.error = '请填写正确的摊销期限'
+              }
             } else {
               this.amortise.error = '请填写正确的摊销金额'
             }
@@ -2141,6 +2857,91 @@
           }
         }
         return flag
+      },
+      // 展示新增待摊费用蒙层
+      editAmortise(opt) {
+        console.log("展示新增待摊费用蒙层", opt)
+        if (utils.isExist(opt)) {
+          this.amortise = opt
+          this.addAmortise('编辑')
+        }
+      },
+      // 显示删除待摊费用蒙层
+      deleteAmortise(opt) {
+        console.log("显示删除待摊费用蒙层", opt)
+        if (utils.isExist(opt)) {
+          this.amortise = opt
+          this.isRealDelAmortiseMask = true
+        }
+      },
+      // 取消删除待摊费用
+      cancelDelAmortise() {
+        this.isRealDelAmortiseMask = false
+        this.configAmortise()
+      },
+      // 确认删除待摊费用
+      realDelAmortise() {
+        this.isRealDelAmortiseMask = false
+        console.log("确认删除待摊费用")
+        api.delAmortized({id: this.amortise.id, token: this.token}).then(res => {
+          console.log("删除待摊费用结果：", res.body)
+          if (res.body.result == 0) {
+            this.configAmortise()
+            this.queryAmortiseData()
+          } else {
+            this.$emit('error', res.body.msg)
+          }
+        })
+      },
+      // 查看待摊费用
+      showAmortise(opt) {
+        console.log("查看待摊费用", opt)
+        if (utils.isExist(opt)) {
+          this.amortise = opt
+          this.amortise.show = true
+          this.addAmortise('查看')
+        }
+      },
+      // 切换报表
+      switchReport(menu) {
+        console.log("初始报表切换报表", menu)
+        const that = this
+        this.reportMenu.list.forEach(function (el) {
+          if (menu.type == el.type) {
+            el.isSelected = true
+            that.reportMenu.type = menu.type
+          } else {
+            el.isSelected = false
+          }
+        })
+
+        switch (menu.type) {
+          // 科目余额表
+          case 'subjectBalance':
+            console.log("查询科目余额表数据")
+            break;
+          // 现金流量表
+          case 'cashFlow':
+            console.log("查询现金流量表数据")
+            break;
+          // 利润表
+          case 'profit':
+            console.log("查询利润表数据")
+            break;
+          // 资产负债表
+          case 'liabilities':
+            console.log("查询资产负债表数据")
+            api.queryReoprtByLiabilities({accountSetId: this.accountId, token: this.token}).then(res => {
+              console.log("查询资产负债表结果：",res.body)
+            })
+            break;
+          // 辅助核算余额表
+          case 'auxiliaryBalance':
+            console.log("查询辅助核算余额表数据")
+            break;
+          default:
+            console.log("默认查询科目余额表数据")
+        }
       }
     },
     created() {
@@ -2148,6 +2949,22 @@
     },
     mounted() {
       this.getDate()
+    },
+    filters: {
+      moneyFilter(value) {
+        if (utils.isExist(value)) {
+          let hasPoint = value.toString().split(".")
+          if (hasPoint.length == 1) {
+            return value + ".00";
+          } else if (hasPoint.length > 1) {
+            if (hasPoint[1].length < 2) {
+              return value + "0";
+            } else {
+              return value;
+            }
+          }
+        }
+      }
     }
   }
 </script>

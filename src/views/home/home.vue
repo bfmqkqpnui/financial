@@ -8,7 +8,7 @@
             <div class="customerService_item_left">
               <div class="customerService_title">在线客服：</div> <!-- ngRepeat: qq in qqList -->
               <div class="btn--basic customerService_item-qq ng-binding ng-scope" ng-click="openQQ(qq.number)"
-                   ng-repeat="qq in qqList">小君客服
+                   ng-repeat="qq in qqList">财税通客服
               </div><!-- end ngRepeat: qq in qqList -->
               <div class="customerService_content"></div>
               <div class="customerService_footer ng-binding"> 09:00-18:00</div>

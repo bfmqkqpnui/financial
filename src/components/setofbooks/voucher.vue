@@ -1185,7 +1185,23 @@
       }
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
-    components: {}
+    components: {},
+    filters: {
+      moneyFilter(value){
+        if(utils.isExist(value)){
+          let hasPoint = value.split(".")
+          if(hasPoint.length == 1){
+            return value +".00";
+          }else if(hasPoint.length > 1){
+            if(hasPoint[1].length < 2){
+              return value +"0";
+            }else{
+              return value;
+            }
+          }
+        }
+      }
+    }
   }
 </script>
 
