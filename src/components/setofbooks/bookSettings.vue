@@ -1336,7 +1336,7 @@
                           <!-- 利润表 -->
                           <table class="incomeTable" v-if="reportMenu.type == 'profit'">
                             <tbody>
-                            <tr v-for="row in profitList" class="ng-scope" style="font-weight: bold;">
+                            <tr v-for="row in profitList" class="ng-scope" :style="{'font-weight': row.bold ? 'bold' : ''}">
                               <td class="span-55 ng-binding" v-html="row.project"></td>
                               <td class="span-5 ng-binding" v-text="row.lineTime"></td>
                               <td class="span-20 ng-binding">{{row.amountOfThisMonth | moneyFilter}}</td>
