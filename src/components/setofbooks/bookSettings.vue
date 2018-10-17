@@ -516,11 +516,11 @@
                           <table class="assetTable" v-if="reportMenu.type == 'liabilities'">
                             <tbody>
                             <tr class="ng-scope" v-for="(item, index) in balanceSheet" :key="index">
-                              <td class="span-15 ng-binding" :style="{'font-weight': item.firstColumnBold ? 'bold' : ''}" v-text="item.assets1"></td>
+                              <td class="span-15 ng-binding" :style="{'font-weight': item.firstColumnBold ? 'bold' : ''}" v-html="item.assets1"></td>
                               <td class="span-5 ng-binding" v-text="item.lineTime1"></td>
                               <td class="span-15 ng-binding">{{item.endingBalance1 | moneyFilter}}</td>
                               <td class="span-15 ng-binding">{{item.beginningBalance1 | moneyFilter}}</td>
-                              <td class="span-15 ng-binding" :style="{'font-weight': item.firstColumnBold ? 'bold' : ''}" v-text="item.assets2"></td>
+                              <td class="span-15 ng-binding" :style="{'font-weight': item.secondColumnBold ? 'bold' : ''}" v-html="item.assets2"></td>
                               <td class="span-5 ng-binding" v-text="item.lineTime2"></td>
                               <td class="span-15 ng-binding">{{item.endingBalance2 | moneyFilter}}</td>
                               <td class="span-15 ng-binding">{{item.beginningBalance2 | moneyFilter}}</td>
