@@ -1576,3 +1576,10 @@ input.align:focus {
 .settingBox .tableData-report table.assetTable tr td:first-child, .settingBox .tableData-report table.cashTable tr td:first-child, .settingBox .tableData-report table.incomeTable tr td:first-child {
   /*white-space: pre;*/
 }
+
+/**隐藏滚动条*/
+#scrollBar-report::-webkit-scrollbar,#subjectTable::-webkit-scrollbar,#assistTableBox::-webkit-scrollbar { width: 0 !important }
+#scrollBar-report,#subjectTable,#assistTableBox { -ms-overflow-style: none; }
+#scrollBar-report,#subjectTable,#assistTableBox { overflow: -moz-scrollbars-none; }
+
+

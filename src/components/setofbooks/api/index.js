@@ -113,4 +113,12 @@ export default {
   queryReoprtByLiabilities: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/balancesheet/queryByAccountSetId', params)
   },
+  // 查询报表-利润数据
+  queryReoprtByProfit: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/incomestatement/queryByAccountSetId', params)
+  },
+  // 查询报表-现金流量数据
+  queryReoprtByCashFlow: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/cashflowstatement/queryByAccountSetId', params)
+  },
 }
