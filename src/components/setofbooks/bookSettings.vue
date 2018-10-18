@@ -329,7 +329,7 @@
                           <td class="span-50" :class="{'span-70':menu.type != 'profitAndLoss'}">
                             <label>
                               <span class="ng-binding"></span>
-                              <div ng-click="oprClick($index, data, 'create-name', $event)">
+                              <div>
                                 <input type="text" v-model="newAssist.assistAccountingName" @keydown.enter="addAss"
                                        id="vxnkguao-0-1"
                                        placeholder="请输入名称" style="z-index:1" maxlength="60"
@@ -340,9 +340,8 @@
                           <td class="span-20" v-if="menu.type == 'profitAndLoss'">
                             <label>
                               <span class="ng-binding"></span>
-                              <div ng-click="oprClick($index, data, 'create-unit', $event)">
-                                <input type="text" v-model="newAssist.unitStr" @keydown.enter="addAss"
-                                       id="vxnkguao-0-2"
+                              <div>
+                                <input type="text" v-model="newAssist.unitStr" @keydown.enter="addAss" id="vxnkguao-0-2"
                                        placeholder="请输入单位" style="z-index:1" maxlength="10"
                                        class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
                               </div>
@@ -508,38 +507,42 @@
                           <!-- 现金流量表 -->
                           <table class="cashTable" v-if="reportMenu.type == 'cashFlow'">
                             <tbody>
-                            <tr ng-repeat="row in reportData['cash']" class="ng-scope evenOff">
-                              <td class="span-55 ng-binding" style="font-weight: bold;">
-                                一、经营活动产生的现金流量：
+                            <tr v-for="(row,index) in cashList" class="ng-scope evenOff">
+                              <!-- 第一列 -->
+                              <td class="span-55 ng-binding" :style="{'font-weight': row.bold ? 'bold' : ''}"
+                                  v-html="row.project">
                               </td>
-                              <td class="span-5 ng-binding"></td>
+                              <!-- 第二列 -->
+                              <td class="span-5 ng-binding" v-text="row.lineTime"></td>
+                              <!-- 第三列 -->
                               <td class="span-20">
-                                <span style="padding-right: 11px; font-weight: bold;"
-                                      ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                      ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                      class="ng-binding">
-                                </span>
+                                <span :class="row.bold ? 'bold' : 'noBold'" class="ng-binding"></span>
 
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-2-0"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-0" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
+                                <div :class="row.hasInput ? '' : 'ng-hide'">
+                                  <label class="tdLabel ng-binding" :for="forIdByCashFlow(index,0)">
+                                    {{row.cumulativeAmountThisYear | moneyFilter}}
+                                  </label>
+                                  <input
+                                    class="tdInput ng-pristine ng-untouched ng-valid ng-empty"
+                                    :id="forIdByCashFlow(index,0)" type="number" v-model="row.cumulativeAmountThisYear">
+                                </div>
                               </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding" style="font-weight: bold;">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-3-0"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-0" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
+                              <!-- 第四列 -->
+                              <td class="span-20" style="padding-right:15px">
+                                <span class="ng-binding" :class="row.bold ? 'bold' : 'noBold'"></span>
+                                <div :class="row.hasInput ? '' : 'ng-hide'">
+                                  <label class="tdLabel ng-binding" :for="forIdByCashFlow(index,1)">
+                                    {{row.amountOfThisMonth | moneyFilter}}
+                                  </label>
+                                  <input
+                                    class="tdInput ng-pristine ng-untouched ng-valid ng-empty"
+                                    :id="forIdByCashFlow(index,1)" type="number"
+                                    v-model="row.amountOfThisMonth"></div>
                               </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
+                            </tr>
+
+
+                            <!--<tr ng-repeat="row in reportData['cash']"
                                 ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
                                 ng-click="highlightRow($index)"
                                 ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
@@ -548,11 +551,14 @@
                                   ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
                                 销售产成品、商品、提供劳务收到的现金
                               </td>
+
                               <td class="span-5 ng-binding">1</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
+
+                              <td class="span-20">
+                                <span style="padding-right:11px"
+                                      ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
+                                      ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
+                                      class="ng-binding ng-hide">  </span>
                                 <div
                                   ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
                                   <label class="tdLabel ng-binding" for="r-2-1"> </label> <input
@@ -560,6 +566,7 @@
                                   ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
                                   ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
                               </td>
+
                               <td class="span-20" style="padding-right:15px"><span
                                 ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
                                 ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
@@ -571,8 +578,8 @@
                                   ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
                                   ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
                               </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
+                            </tr>-->
+                            <!--<tr ng-repeat="row in reportData['cash']"
                                 ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
                                 ng-click="highlightRow($index)"
                                 ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
@@ -582,10 +589,11 @@
                                 收到其他与经营活动有关的现金
                               </td>
                               <td class="span-5 ng-binding">2</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
+                              <td class="span-20">
+                                <span style="padding-right:11px"
+                                      ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
+                                      ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
+                                      class="ng-binding ng-hide">  </span>
                                 <div
                                   ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
                                   <label class="tdLabel ng-binding" for="r-2-2"> </label> <input
@@ -604,8 +612,8 @@
                                   ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
                                   ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
                               </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
+                            </tr>-->
+                            <!--<tr ng-repeat="row in reportData['cash']"
                                 ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
                                 ng-click="highlightRow($index)"
                                 ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
@@ -615,10 +623,11 @@
                                 购买原材料、商品、接受劳务支付的现金
                               </td>
                               <td class="span-5 ng-binding">3</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
+                              <td class="span-20">
+                                <span style="padding-right:11px"
+                                      ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
+                                      ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
+                                      class="ng-binding ng-hide">  </span>
                                 <div
                                   ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
                                   <label class="tdLabel ng-binding" for="r-2-3"> </label> <input
@@ -637,706 +646,14 @@
                                   ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
                                   ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
                               </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                支付的职工薪酬
-                              </td>
-                              <td class="span-5 ng-binding">4</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-4"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-4" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-4"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-4" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                支付的税费
-                              </td>
-                              <td class="span-5 ng-binding">5</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-5"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-5" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-5"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-5" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                支付其他与经营活动有关的现金
-                              </td>
-                              <td class="span-5 ng-binding">6</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-6"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-6" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-6"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-6" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                经营活动产生的现金流量净额
-                              </td>
-                              <td class="span-5 ng-binding">7</td>
-                              <td class="span-20"><span style="padding-right: 11px; font-weight: bold;"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-2-7"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-7" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding" style="font-weight: bold;">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-3-7"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-7" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                  style="font-weight: bold;"> 二、投资活动产生的现金流量：
-                              </td>
-                              <td class="span-5 ng-binding"></td>
-                              <td class="span-20"><span style="padding-right: 11px; font-weight: bold;"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-2-8"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-8" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding" style="font-weight: bold;">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-3-8"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-8" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                收回短期投资、长期债券投资和长期股权投资收到的现金
-                              </td>
-                              <td class="span-5 ng-binding">8</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-9"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-9" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-9"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-9" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                取得投资收益收到的现金
-                              </td>
-                              <td class="span-5 ng-binding">9</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-10"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-10" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-10"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-10" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                处置固定资产、无形资产和其他非流动资产收回的现金净额
-                              </td>
-                              <td class="span-5 ng-binding">10</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-11"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-11" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-11"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-11" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                短期投资、长期债券投资和长期股权投资支付的现金
-                              </td>
-                              <td class="span-5 ng-binding">11</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-12"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-12" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-12"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-12" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                购建固定资产、无形资产和其他非流动资产支付的现金
-                              </td>
-                              <td class="span-5 ng-binding">12</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-13"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-13" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-13"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-13" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                投资活动产生的现金流量净额
-                              </td>
-                              <td class="span-5 ng-binding">13</td>
-                              <td class="span-20"><span style="padding-right: 11px; font-weight: bold;"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-2-14"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-14" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding" style="font-weight: bold;">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-3-14"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-14" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                  style="font-weight: bold;"> 三、筹资活动产生的现金流量：
-                              </td>
-                              <td class="span-5 ng-binding"></td>
-                              <td class="span-20"><span style="padding-right: 11px; font-weight: bold;"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-2-15"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-15" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding" style="font-weight: bold;">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-3-15"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-15" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                取得借款收到的现金
-                              </td>
-                              <td class="span-5 ng-binding">14</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-16"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-16" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-16"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-16" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                吸收投资者投资收到的现金
-                              </td>
-                              <td class="span-5 ng-binding">15</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-17"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-17" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-17"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-17" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                偿还借款本金支付的现金
-                              </td>
-                              <td class="span-5 ng-binding">16</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-18"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-18" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-18"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-18" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                偿还借款利息支付的现金
-                              </td>
-                              <td class="span-5 ng-binding">17</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-19"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-19" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-19"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-19" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                分配利润支付的现金
-                              </td>
-                              <td class="span-5 ng-binding">18</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-20"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-20" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-20"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-20" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                筹资活动产生的现金流量净额
-                              </td>
-                              <td class="span-5 ng-binding">19</td>
-                              <td class="span-20"><span style="padding-right: 11px; font-weight: bold;"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-2-21"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-21" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding" style="font-weight: bold;">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-3-21"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-21" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                  style="font-weight: bold;"> 四、现金净增加额
-                              </td>
-                              <td class="span-5 ng-binding">20</td>
-                              <td class="span-20"><span style="padding-right: 11px; font-weight: bold;"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-2-22"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-22" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding" style="font-weight: bold;">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-3-22"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-22" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}">
-                                加：期初现金余额
-                              </td>
-                              <td class="span-5 ng-binding">21</td>
-                              <td class="span-20"><span style="padding-right:11px"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-2-23"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-23" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding ng-hide">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="r-3-23"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-23" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
-                            <tr ng-repeat="row in reportData['cash']"
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-55 ng-binding"
-                                  ng-style="{'font-weight': ( isBold(['', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                  style="font-weight: bold;"> 五、期末现金余额
-                              </td>
-                              <td class="span-5 ng-binding">22</td>
-                              <td class="span-20"><span style="padding-right: 11px; font-weight: bold;"
-                                                        ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                                        ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                                        class="ng-binding">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-2-24"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-2-24" type="number"
-                                  ng-model="row[2]" ng-change="totalCash(row[1], 2)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-2-' + $index))" select-default=""></div>
-                              </td>
-                              <td class="span-20" style="padding-right:15px"><span
-                                ng-show="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                ng-style="{'font-weight': ( isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) ) ? 'bold' : ''}"
-                                class="ng-binding" style="font-weight: bold;">  </span>
-                                <div
-                                  ng-hide="isBold(['', '7', '13', '19', '20', '22'], row[1].trim()) || account.initIssue != account.currentIssue"
-                                  class="ng-hide"><label class="tdLabel ng-binding" for="r-3-24"> </label> <input
-                                  class="tdInput ng-pristine ng-untouched ng-valid ng-empty" id="r-3-24" type="number"
-                                  ng-model="row[3]" ng-change="totalCash(row[1], 3)" ng-disabled="!isMyAccount"
-                                  ng-keypress="keyPress($event, ('#r-3-' + $index))" select-default=""></div>
-                              </td>
-                            </tr><!-- end ngRepeat: row in reportData['cash'] -->
+                            </tr>-->
                             </tbody>
                           </table>
                           <!-- 利润表 -->
                           <table class="incomeTable" v-if="reportMenu.type == 'profit'">
                             <tbody>
-                            <tr v-for="row in profitList" class="ng-scope" :style="{'font-weight': row.bold ? 'bold' : ''}">
+                            <tr v-for="row in profitList" class="ng-scope"
+                                :style="{'font-weight': row.bold ? 'bold' : ''}">
                               <td class="span-55 ng-binding" v-html="row.project"></td>
                               <td class="span-5 ng-binding" v-text="row.lineTime"></td>
                               <td class="span-20 ng-binding">{{row.amountOfThisMonth | moneyFilter}}</td>
@@ -2745,6 +2062,9 @@
       forId(index, value) {
         return "assist_" + index + "_" + value
       },
+      forIdByCashFlow(index, value) {
+        return "cash_" + index + "_" + value
+      },
       oprClick(opt, index, value) {
         console.log("table td选中", opt, index, value)
         this.cacheAssist = opt
@@ -3286,16 +2606,16 @@
     filters: {
       moneyFilter(value) {
         if (utils.isExist(value)) {
-          let hasPoint = value.toString().split(".")
+          let val = Number(value)
+          let hasPoint = val.toString().split(".")
           if (hasPoint.length == 1) {
-            return value + ".00";
+            value = val + ".00";
           } else if (hasPoint.length > 1) {
             if (hasPoint[1].length < 2) {
-              return value + "0";
-            } else {
-              return value;
+              val = val + "0";
             }
           }
+          return val;
         }
       }
     }

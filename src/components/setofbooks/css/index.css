@@ -1582,4 +1582,19 @@ input.align:focus {
 #scrollBar-report,#subjectTable,#assistTableBox { -ms-overflow-style: none; }
 #scrollBar-report,#subjectTable,#assistTableBox { overflow: -moz-scrollbars-none; }
 
+/**现金流量表*/
+.cashTable span.bold{
+  font-weight: bold;
+  padding-right: 11px;
+}
+.cashTable span.noBold{
+  padding-right:15px
+}
 
+.settingBox table.cashTable td label.tdLabel {
+  padding-right: 15px;
+}
+
+.settingBox table.cashTable td label{
+  text-align: right;
+}
