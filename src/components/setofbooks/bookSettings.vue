@@ -2609,7 +2609,7 @@
           let val = Number(value)
           let hasPoint = val.toString().split(".")
           if (hasPoint.length == 1) {
-            value = val + ".00";
+            val = val + ".00";
           } else if (hasPoint.length > 1) {
             if (hasPoint[1].length < 2) {
               val = val + "0";
