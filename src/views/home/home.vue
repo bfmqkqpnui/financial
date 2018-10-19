@@ -90,7 +90,8 @@
         </div>
       </div>
       <!-- 二级导航 -->
-      <navComponent :menuType="menuType" @showAddAccountPop="showAddAccountPop" @success="success" @err="setErrMsg"></navComponent>
+      <navComponent :menuType="menuType" @showAddAccountPop="showAddAccountPop" @success="success"
+                    @err="setErrMsg" @loading="showLoading"></navComponent>
     </div>
 
 
@@ -195,6 +196,32 @@
       </div>
     </div>
 
+    <!-- 加载中蒙层 -->
+    <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="isLoading">
+      <div class="site-popup anime popup-spinner flex--column site-popup--expand">
+        <div class="site-popup_head">
+          <div class="site-popup_title">财税通提醒您：</div>
+        </div>
+        <div class="site-popup_body">
+          <div class="loading-container">
+            <div class="loading">
+              <div class="l1">
+                <div></div>
+              </div>
+              <div class="l2">
+                <div></div>
+              </div>
+              <div class="l3">
+                <div></div>
+              </div>
+              <div class="l4">
+                <div></div>
+              </div>
+            </div>
+            <p class="ng-binding">正在加载中......</p></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -265,7 +292,9 @@
           canBatchImport: false,    //是否批量导入
           hint: '',                 // 添加账套错误信息
           successMaskAccount: false,  // 添加账套成功后蒙层是否展示
-        }
+        },
+        // 是否加载中
+        isLoading: false
       }
     },
     methods: {
@@ -492,7 +521,7 @@
 
         this.show.successMaskAccount = false
       },
-      success(message){
+      success(message) {
         if (utils.isExist(message)) {
           this.isSuccess = true
           this.successMsg = message
@@ -503,10 +532,18 @@
           }, 2000)
         }
       },
-      hideShade(){
+      hideShade() {
         this.isSuccess = false
         this.successMsg = ''
-      }
+      },
+      showLoading(type){
+        console.log("home:", type)
+        if(type == "show"){
+          this.isLoading = true
+        }else{
+          this.isLoading = false
+        }
+      },
     },
     components: {},
     mounted() {

@@ -124,7 +124,7 @@
       </div>
     </div>
     <!-- 路由 -->
-    <router-view @sel="selMenu" @accPop="addPop" @error="error" @success="success"></router-view>
+    <router-view @sel="selMenu" @accPop="addPop" @error="error" @success="success" @loading="showLoading"></router-view>
   </div>
 </template>
 
@@ -251,7 +251,14 @@
       success(msg) {
         console.log("操作成功")
         this.$emit("success", msg)
-      }
+      },
+      showLoading(type){
+        if(type){
+          this.$emit("loading", type)
+        }else{
+          this.$emit("loading", "hide")
+        }
+      },
     },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
