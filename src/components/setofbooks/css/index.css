@@ -1231,10 +1231,6 @@ input.align:focus {
   text-align: right;
 }
 
-.settingBox .tableData-assets table tbody tr td:first-child, .settingBox .tableData-assets table tbody tr td:last-child, .settingBox .tableData-assets table tbody tr td:nth-child(3), .settingBox .tableData-assets table tbody tr td:nth-child(6), .settingBox .tableData-assets table tbody tr td:nth-child(7), .settingBox .tableData-report table.assetTable tr td:nth-child(2), .settingBox .tableData-report table.assetTable tr td:nth-child(6), .settingBox .tableData-report table.cashTable tr td:nth-child(2), .settingBox .tableData-report table.incomeTable tr td:nth-child(2), .settingBox .tableData-report table tbody tr td:nth-child(3), .settingBox .tableData-report table tbody tr td:nth-child(4), .settingBox .tableData-subject .tableBody div:last-child, .settingBox .tableData-subject .tableBody div:nth-last-child(2) {
-  text-align: center;
-}
-
 .settingBox .tableData-assets table tbody tr td:nth-child(2), .settingBox .tableData-report table.assetTable tr td:nth-child(5), .settingBox .tableData-report table.cashTable tr td:first-child, .settingBox .tableData-report table.incomeTable tr td:first-child {
   text-align: left;
 }

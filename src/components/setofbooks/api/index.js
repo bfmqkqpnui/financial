@@ -121,4 +121,8 @@ export default {
   queryReoprtByCashFlow: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/cashflowstatement/queryByAccountSetId', params)
   },
+  // 更新-现金流量数据
+  updateCashFlow: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/cashflowstatement/update', params)
+  }
 }
