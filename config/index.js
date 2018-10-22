@@ -12,10 +12,17 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/apiPath': {
-        target: 'http://106.14.202.237:8080',
+        target: 'http://popboy.51vip.biz:46321',
         changeOrigin: true,
         pathRewrite: {
           '^/apiPath': ''
+        }
+      },
+      '/apiPath2': {
+        target: 'http://106.14.202.237:8080',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/apiPath2': ''
         }
       }
     },

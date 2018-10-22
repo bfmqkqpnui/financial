@@ -2846,7 +2846,7 @@
     filters: {
       moneyFilter(value) {
         if (utils.isExist(value)) {
-          let val = Number(value)
+          let val = Number(value).toFixed(2)
           let hasPoint = val.toString().split(".")
           if (hasPoint.length == 1) {
             val = val + ".00";
@@ -2863,6 +2863,4 @@
 </script>
 
 <style scoped src="./css/index.css"></style>
-<style scoped>
-
-</style>
+<style scoped></style>
