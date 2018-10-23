@@ -188,8 +188,6 @@
           this.accountInfo = utils.dbGet("account")
           switch (opt.index) {
             case 1:
-              utils.dbRemove("account")
-              this.accountInfo =
               this.$router.push({name: 'accounts'})
               break;
             case 2:
