@@ -433,286 +433,49 @@
                           <!-- 科目余额表 -->
                           <table class="reportTable" v-if="reportMenu.type == 'subjectBalance'">
                             <tbody>
-                            <tr class="ng-scope evenOff">
-
-                              <td class="span-16 ng-binding" ng-style="{'padding-left': getPadding(data.subject),
-                        'font-weight': data.subject.length == 4 ? 'bold' : ''}"
-                                  style="padding-left: 5px;">
-                                <div class="borderLeft ng-hide"
-                                     ng-style="{'width': (((data.subject.length * 5) - 25) + 'px')}"></div>
-                                1001
+                            <tr v-for="data in subjectBalanceList" class="ng-scope evenOff">
+                              <td class="span-16 ng-binding" style="padding-left: 5px;"
+                                  :style="{'font-weight': data.course.coding.length == 4 ? 'bold' : ''}">
+                                <div class="borderLeft" v-if="data.course.coding.length > 4"
+                                     :style="{'width': (((data.course.coding.length * 5) - 25) + 'px')}">
+                                </div>
+                                {{data.course.coding}}
                               </td>
 
-                              <td ng-class="currency.type != 'balances' ? 'span-28' : 'span-35'"
-                                  class="ng-binding span-35">库存现金
-                              </td>
+                              <td class="ng-binding span-35" v-text="data.course.courseName"></td>
 
                               <td ng-class="data.direction == 1 ? '-sizeColor-red span-5' : '-sizeColor-green span-5'"
                                   class="ng-binding -sizeColor-red span-5"> 借
                               </td>
 
                               <td class="span-11">
-                                <span class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"><label
-                                  class="tdLabel ng-binding" for="d-0"> 0.00 </label>
-                                  <input class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty" id="d-0"
-                                         ng-model="data.year.debit" ng-change="onChangeBalanceData(data)" type="number">
-                                </div>
-                              </td>
-
-                              <td class="span-11">
-                                <span class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="c-0"> 0.00 </label>
-                                  <input type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                         id="c-0" ng-model="data.year.credit" ng-change="onChangeBalanceData(data)">
-                                </div>
-                              </td>
-
-                              <td class="span-11">
-                                <span class="ng-binding ng-hide"> 0.00 </span>
-                                <div>
-                                  <label class="tdLabel ng-binding" for="b-0"> 0.00 </label>
-                                  <input type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                         id="b-0" ng-model="data.end.balance" ng-change="onChangeBalanceData(data)">
-                                </div>
-                              </td>
-                              <td class="span-11 ng-binding">0.00</td>
-                            </tr>
-
-                            <tr ng-repeat="data in tableData['reportMap'][navMenu.reportType.index] | orderBy:'subject'"
-                                on-repeat-finished=""
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-if="!showNullData ? true : (data.year.debit != 0 || data.year.credit != 0 || data.end.balance != 0 || data.preYear.balance != 0)"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-16 ng-binding" ng-style="{'padding-left': getPadding(data.subject),
-                        'font-weight': data.subject.length == 4 ? 'bold' : ''}"
-                                  style="padding-left: 5px; font-weight: bold;">
-                                <div class="borderLeft ng-hide"
-                                     ng-show="currency.type == 'balances' &amp;&amp; showBorder(data.subject)"
-                                     ng-style="{'width': (((data.subject.length * 5) - 25) + 'px')}"></div>
-                                1002
-                              </td>
-                              <td ng-class="currency.type != 'balances' ? 'span-28' : 'span-35'"
-                                  class="ng-binding span-35">银行存款
-                              </td>
-                              <td ng-class="data.direction == 1 ? '-sizeColor-red span-5' : '-sizeColor-green span-5'"
-                                  class="ng-binding -sizeColor-red span-5"> 借
-                              </td> <!-- ngIf: currency.type != 'balances' -->
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue"
-                                class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"><label
-                                  class="tdLabel ng-binding" for="d-1"> 0.00 </label> <input type="number"
-                                                                                             class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                                                             id="d-1"
-                                                                                             ng-model="data.year.debit"
-                                                                                             ng-change="onChangeBalanceData(data)"
-                                                                                             ng-focus="focusData(data.year, 'debit')"
-                                                                                             ng-blur="blurData(data.year, 'debit')"
-                                                                                             ng-disabled="!isMyAccount"
-                                                                                             ng-keypress="keyPress($event, ('#d-' + $index))"
-                                                                                             select-default=""></div>
-                              </td>
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue"
-                                class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"><label
-                                  class="tdLabel ng-binding" for="c-1"> 0.00 </label> <input type="number"
-                                                                                             class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                                                             id="c-1"
-                                                                                             ng-model="data.year.credit"
-                                                                                             ng-change="onChangeBalanceData(data)"
-                                                                                             ng-focus="focusData(data.year, 'credit')"
-                                                                                             ng-blur="blurData(data.year, 'credit')"
-                                                                                             ng-disabled="!isMyAccount"
-                                                                                             ng-keypress="keyPress($event, ('#c-' + $index))"
-                                                                                             select-default=""></div>
-                              </td>
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue"
-                                class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"><label
-                                  class="tdLabel ng-binding" for="b-1"> 0.00 </label> <input type="number"
-                                                                                             class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                                                             id="b-1"
-                                                                                             ng-model="data.end.balance"
-                                                                                             ng-change="onChangeBalanceData(data)"
-                                                                                             ng-focus="focusData(data.end, 'balance')"
-                                                                                             ng-blur="blurData(data.end, 'balance')"
-                                                                                             ng-disabled="!isMyAccount"
-                                                                                             ng-keypress="keyPress($event, ('#b-' + $index))"
-                                                                                             select-default=""></div>
-                              </td>
-                              <td class="span-11 ng-binding">0.00</td>
-                            </tr>
-                            <tr ng-repeat="data in tableData['reportMap'][navMenu.reportType.index] | orderBy:'subject'"
-                                on-repeat-finished=""
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-if="!showNullData ? true : (data.year.debit != 0 || data.year.credit != 0 || data.end.balance != 0 || data.preYear.balance != 0)"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-16 ng-binding" ng-style="{'padding-left': getPadding(data.subject),
-                        'font-weight': data.subject.length == 4 ? 'bold' : ''}"
-                                  style="padding-left: 5px; font-weight: bold;">
-                                <div class="borderLeft ng-hide"
-                                     ng-show="currency.type == 'balances' &amp;&amp; showBorder(data.subject)"
-                                     ng-style="{'width': (((data.subject.length * 5) - 25) + 'px')}"></div>
-                                1004
-                              </td>
-                              <td ng-class="currency.type != 'balances' ? 'span-28' : 'span-35'"
-                                  class="ng-binding span-35">备用金
-                              </td>
-                              <td ng-class="data.direction == 1 ? '-sizeColor-red span-5' : '-sizeColor-green span-5'"
-                                  class="ng-binding -sizeColor-red span-5"> 借
-                              </td> <!-- ngIf: currency.type != 'balances' -->
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue"
-                                class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"><label
-                                  class="tdLabel ng-binding" for="d-2"> 0.00 </label> <input type="number"
-                                                                                             class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                                                             id="d-2"
-                                                                                             ng-model="data.year.debit"
-                                                                                             ng-change="onChangeBalanceData(data)"
-                                                                                             ng-focus="focusData(data.year, 'debit')"
-                                                                                             ng-blur="blurData(data.year, 'debit')"
-                                                                                             ng-disabled="!isMyAccount"
-                                                                                             ng-keypress="keyPress($event, ('#d-' + $index))"
-                                                                                             select-default=""></div>
-                              </td>
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue"
-                                class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"><label
-                                  class="tdLabel ng-binding" for="c-2"> 0.00 </label> <input type="number"
-                                                                                             class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                                                             id="c-2"
-                                                                                             ng-model="data.year.credit"
-                                                                                             ng-change="onChangeBalanceData(data)"
-                                                                                             ng-focus="focusData(data.year, 'credit')"
-                                                                                             ng-blur="blurData(data.year, 'credit')"
-                                                                                             ng-disabled="!isMyAccount"
-                                                                                             ng-keypress="keyPress($event, ('#c-' + $index))"
-                                                                                             select-default=""></div>
-                              </td>
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue"
-                                class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"><label
-                                  class="tdLabel ng-binding" for="b-2"> 0.00 </label> <input type="number"
-                                                                                             class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                                                             id="b-2"
-                                                                                             ng-model="data.end.balance"
-                                                                                             ng-change="onChangeBalanceData(data)"
-                                                                                             ng-focus="focusData(data.end, 'balance')"
-                                                                                             ng-blur="blurData(data.end, 'balance')"
-                                                                                             ng-disabled="!isMyAccount"
-                                                                                             ng-keypress="keyPress($event, ('#b-' + $index))"
-                                                                                             select-default=""></div>
-                              </td>
-                              <td class="span-11 ng-binding">0.00</td>
-                            </tr>
-                            <tr ng-repeat="data in tableData['reportMap'][navMenu.reportType.index] | orderBy:'subject'"
-                                on-repeat-finished=""
-                                ng-style="{'background': $index === highlight.row ? 'rgba(255, 241, 178, 0.4)' : ''}"
-                                ng-if="!showNullData ? true : (data.year.debit != 0 || data.year.credit != 0 || data.end.balance != 0 || data.preYear.balance != 0)"
-                                ng-click="highlightRow($index)"
-                                ng-class="account.initIssue == account.currentIssue ? 'evenOff' : 'evenOn'"
-                                class="ng-scope evenOff">
-                              <td class="span-16 ng-binding" ng-style="{'padding-left': getPadding(data.subject),
-                        'font-weight': data.subject.length == 4 ? 'bold' : ''}"
-                                  style="padding-left: 5px; font-weight: bold;">
-                                <div class="borderLeft ng-hide"
-                                     ng-show="currency.type == 'balances' &amp;&amp; showBorder(data.subject)"
-                                     ng-style="{'width': (((data.subject.length * 5) - 25) + 'px')}"></div>
-                                1012
-                              </td>
-                              <td ng-class="currency.type != 'balances' ? 'span-28' : 'span-35'"
-                                  class="ng-binding span-35">其他货币资金
-                              </td>
-                              <td ng-class="data.direction == 1 ? '-sizeColor-red span-5' : '-sizeColor-green span-5'"
-                                  class="ng-binding -sizeColor-red span-5"> 借
-                              </td> <!-- ngIf: currency.type != 'balances' -->
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue" class="ng-binding"> 0.00 </span>
+                                <span class="ng-binding"> 0.00 </span>
                                 <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"
-                                     class="ng-hide"><label class="tdLabel ng-binding" for="d-3"> 0.00 </label> <input
-                                  type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty" id="d-3"
-                                  ng-model="data.year.debit" ng-change="onChangeBalanceData(data)"
-                                  ng-focus="focusData(data.year, 'debit')" ng-blur="blurData(data.year, 'debit')"
-                                  ng-disabled="!isMyAccount" ng-keypress="keyPress($event, ('#d-' + $index))"
-                                  select-default=""></div>
-                              </td>
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue" class="ng-binding"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"
-                                     class="ng-hide"><label class="tdLabel ng-binding" for="c-3"> 0.00 </label> <input
-                                  type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty" id="c-3"
-                                  ng-model="data.year.credit" ng-change="onChangeBalanceData(data)"
-                                  ng-focus="focusData(data.year, 'credit')" ng-blur="blurData(data.year, 'credit')"
-                                  ng-disabled="!isMyAccount" ng-keypress="keyPress($event, ('#c-' + $index))"
-                                  select-default=""></div>
-                              </td>
-                              <td class="span-11"><span
-                                ng-show="!data.isLeaf || account.initIssue != account.currentIssue" class="ng-binding"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"
-                                     class="ng-hide"><label class="tdLabel ng-binding" for="b-3"> 0.00 </label> <input
-                                  type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty" id="b-3"
-                                  ng-model="data.end.balance" ng-change="onChangeBalanceData(data)"
-                                  ng-focus="focusData(data.end, 'balance')" ng-blur="blurData(data.end, 'balance')"
-                                  ng-disabled="!isMyAccount" ng-keypress="keyPress($event, ('#b-' + $index))"
-                                  select-default=""></div>
-                              </td>
-                              <td class="span-11 ng-binding">0.00</td>
-                            </tr>
-
-                            <tr class="ng-scope evenOff">
-
-                              <td class="span-16 ng-binding" ng-style="{'padding-left': getPadding(data.subject),
-                        'font-weight': data.subject.length == 4 ? 'bold' : ''}" style="padding-left: 15px;">
-                                <div class="borderLeft"
-                                     ng-show="currency.type == 'balances' &amp;&amp; showBorder(data.subject)"
-                                     ng-style="{'width': (((data.subject.length * 5) - 25) + 'px')}"
-                                     style="width: 10px;"></div>
-                                1012001
-                              </td>
-
-                              <td ng-class="currency.type != 'balances' ? 'span-28' : 'span-35'"
-                                  class="ng-binding span-35">银行汇票
-                              </td>
-
-                              <td ng-class="data.direction == 1 ? '-sizeColor-red span-5' : '-sizeColor-green span-5'"
-                                  class="ng-binding -sizeColor-red span-5"> 借
-                              </td>
-
-                              <td class="span-11">
-                                <span class="ng-binding ng-hide"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue">
-                                  <label class="tdLabel ng-binding" for="d-4"> 0.00 </label>
+                                     class="ng-hide">
+                                  <label class="tdLabel ng-binding" for="d-3"> 0.00 </label>
                                   <input type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                         id="d-4" ng-model="data.year.debit" ng-change="onChangeBalanceData(data)">
+                                         id="d-3" ng-model="data.year.debit" ng-change="onChangeBalanceData(data)"
+                                         ng-keypress="keyPress($event, ('#d-' + $index))">
                                 </div>
                               </td>
 
                               <td class="span-11">
-                                <span class="ng-binding ng-hide"> 0.00 </span>
-                                <div>
-                                  <label class="tdLabel ng-binding" for="c-4"> 0.00 </label>
+                                <span class="ng-binding"> 0.00 </span>
+                                <div class="ng-hide">
+                                  <label class="tdLabel ng-binding" for="c-3"> 0.00 </label>
                                   <input type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                         id="c-4" ng-model="data.year.credit" ng-change="onChangeBalanceData(data)">
+                                         id="c-3" ng-model="data.year.credit" ng-change="onChangeBalanceData(data)"
+                                         ng-keypress="keyPress($event, ('#c-' + $index))">
                                 </div>
                               </td>
 
                               <td class="span-11">
-                                <span class="ng-binding ng-hide"> 0.00 </span>
-                                <div>
-                                  <label class="tdLabel ng-binding" for="b-4"> 0.00 </label>
+                                <span class="ng-binding"> 0.00 </span>
+                                <div class="ng-hide">
+                                  <label class="tdLabel ng-binding" for="b-3"> 0.00 </label>
                                   <input type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                         id="b-4" ng-model="data.end.balance" ng-change="onChangeBalanceData(data)">
+                                         id="b-3" ng-model="data.end.balance" ng-change="onChangeBalanceData(data)"
+                                         ng-keypress="keyPress($event, ('#b-' + $index))">
                                 </div>
                               </td>
                               <td class="span-11 ng-binding">0.00</td>
@@ -1845,6 +1608,8 @@
         profitList: [],
         // 现金流量表
         cashList: [],
+        // 科目余额表
+        subjectBalanceList: []
       }
     },
     methods: {
@@ -2004,10 +1769,17 @@
                 params.courseType = 5;
               }
               console.log("报告入参：", params)
+              api.querySubjectBalances(params).then(res => {
+                console.log("查询科目余额数据结果：", res.body)
+                if (res.body.result == 0) {
+                  this.subjectBalanceList = res.body.data
+                } else {
+                  this.$emit('error', res.body.msg)
+                }
+              })
             }
             break;
         }
-
       },
       // 顶部导航tab
       selectType(opt) {
@@ -2729,7 +2501,24 @@
           // 科目余额表
           case 'subjectBalance':
             console.log("查询科目余额表数据")
-            this.loading("hide")
+            let params = {
+              accountSetId: this.accountId,
+              token: this.token
+            }
+            this.navMenuSubject.forEach(function (el) {
+              if (el.isSelected) {
+                params.courseType = el.index
+              }
+            })
+            api.querySubjectBalances(params).then(res => {
+              console.log("查询科目余额表数据结果：", res.body)
+              if (res.body.result == 0) {
+                this.subjectBalanceList = res.body.data
+              } else {
+                this.$emit('error', res.body.msg)
+              }
+              this.loading("hide")
+            })
             break;
           // 现金流量表
           case 'cashFlow':
