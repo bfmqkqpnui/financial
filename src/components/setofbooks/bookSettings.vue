@@ -433,9 +433,9 @@
                           <!-- 科目余额表 -->
                           <table class="reportTable" v-if="reportMenu.type == 'subjectBalance'">
                             <tbody>
-                            <tr v-for="data in subjectBalanceList" class="ng-scope evenOff">
-                              <td class="span-16 ng-binding" style="padding-left: 5px;"
-                                  :style="{'font-weight': data.course.coding.length == 4 ? 'bold' : ''}">
+                            <tr v-for="(data, index) in subjectBalanceList" class="ng-scope evenOff" :key="index">
+                              <td class="span-16 ng-binding"
+                                  :style="{'font-weight': data.course.coding.length == 4 ? 'bold' : '', 'padding-left': data.course.coding.length == 4 ? '5px' : (data.course.coding.length - 4) * 5 + 'px'}">
                                 <div class="borderLeft" v-if="data.course.coding.length > 4"
                                      :style="{'width': (((data.course.coding.length * 5) - 25) + 'px')}">
                                 </div>
@@ -444,41 +444,48 @@
 
                               <td class="ng-binding span-35" v-text="data.course.courseName"></td>
 
-                              <td ng-class="data.direction == 1 ? '-sizeColor-red span-5' : '-sizeColor-green span-5'"
-                                  class="ng-binding -sizeColor-red span-5"> 借
+                              <td class="ng-binding"
+                                  :class="data.course.debitOrCredit == 0 ? '-sizeColor-red span-5' : '-sizeColor-green span-5'"
+                                  v-text="data.course.debitOrCredit == 1 ? '贷' : '借'">
                               </td>
-
+                              <!-- 借方累计 -->
                               <td class="span-11">
-                                <span class="ng-binding"> 0.00 </span>
-                                <div ng-hide="!data.isLeaf || account.initIssue != account.currentIssue"
-                                     class="ng-hide">
-                                  <label class="tdLabel ng-binding" for="d-3"> 0.00 </label>
+                                <span class="ng-binding" :class="data.insertInput ? 'ng-hide' : ''">{{data.debitTheCumulative | moneyFilter}}</span>
+                                <div :class="data.insertInput ? '' : 'ng-hide'">
+                                  <label class="tdLabel ng-binding" :for="forIdByCashFlow(index, 3)">
+                                    {{data.debitTheCumulative | moneyFilter}}
+                                  </label>
                                   <input type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                         id="d-3" ng-model="data.year.debit" ng-change="onChangeBalanceData(data)"
-                                         ng-keypress="keyPress($event, ('#d-' + $index))">
+                                         :id="forIdByCashFlow(index, 3)" v-model="data.debitTheCumulative"
+                                         @change="onChangeBalanceData(data)" @keyup="onChangeBalanceData(data)">
                                 </div>
                               </td>
-
+                              <!-- 贷方累计 -->
                               <td class="span-11">
-                                <span class="ng-binding"> 0.00 </span>
-                                <div class="ng-hide">
-                                  <label class="tdLabel ng-binding" for="c-3"> 0.00 </label>
+                                <span class="ng-binding" :class="data.insertInput ? 'ng-hide' : ''">{{data.theLenderHas | moneyFilter}}</span>
+                                <div :class="data.insertInput ? '' : 'ng-hide'">
+                                  <label class="tdLabel ng-binding" :for="forIdByCashFlow(index, 4)">
+                                    {{data.theLenderHas | moneyFilter}}
+                                  </label>
                                   <input type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                         id="c-3" ng-model="data.year.credit" ng-change="onChangeBalanceData(data)"
-                                         ng-keypress="keyPress($event, ('#c-' + $index))">
+                                         :id="forIdByCashFlow(index, 4)" v-model="data.theLenderHas"
+                                         @change="onChangeBalanceData(data)" @keyup="onChangeBalanceData(data)">
                                 </div>
                               </td>
-
+                              <!-- 期末余额 -->
                               <td class="span-11">
-                                <span class="ng-binding"> 0.00 </span>
-                                <div class="ng-hide">
-                                  <label class="tdLabel ng-binding" for="b-3"> 0.00 </label>
+                                <span class="ng-binding" :class="data.insertInput ? 'ng-hide' : ''">{{data.theEndingBalance | moneyFilter}}</span>
+                                <div :class="data.insertInput ? '' : 'ng-hide'">
+                                  <label class="tdLabel ng-binding" :for="forIdByCashFlow(index, 5)">
+                                    {{data.theEndingBalance | moneyFilter}}
+                                  </label>
                                   <input type="number" class="tdInput ng-pristine ng-untouched ng-valid ng-not-empty"
-                                         id="b-3" ng-model="data.end.balance" ng-change="onChangeBalanceData(data)"
-                                         ng-keypress="keyPress($event, ('#b-' + $index))">
+                                         :id="forIdByCashFlow(index, 5)" v-model="data.theEndingBalance"
+                                         @change="onChangeBalanceData(data)" @keyup="onChangeBalanceData(data)">
                                 </div>
                               </td>
-                              <td class="span-11 ng-binding">0.00</td>
+                              <!-- 年初余额 -->
+                              <td class="span-11 ng-binding">{{data.atTheBeginningOfTheBalance | moneyFilter}}</td>
                             </tr>
                             </tbody>
                           </table>
@@ -2596,12 +2603,7 @@
       // 取消保存当前变更的数据
       cancelEditCashFlow() {
         console.log("取消保存当前变更的数据")
-
         this.switchReport({type: 'cashFlow'})
-        const that = this
-        setTimeout(function () {
-          that.loading("hide")
-        }, 3000)
       },
       // 保存现金流量表数据
       saveCashFlow() {
@@ -2613,10 +2615,127 @@
       // 取消保存科目余额表数据
       cancelEditSubjectBalance() {
         console.log("取消保存科目余额表数据")
+        this.switchReport({type: 'subjectBalance'})
       },
       // 保存科目余额表数据
       saveSubjectBalance() {
         console.log("保存科目余额表数据")
+        api.updateSubjectBalances({token: this.token, accountBalanceList: this.subjectBalanceList}).then(res => {
+          console.log("保存科目余额表数据结果：", res.body)
+          if (res.body.result == 0) {
+            this.cancelEditSubjectBalance()
+          } else {
+            this.$emit('error', res.body.msg)
+          }
+        })
+      },
+      // 计算科目余额表数据
+      onChangeBalanceData(opt) {
+        console.log("计算科目余额表数据")
+        // 贷方累计
+        opt.theLenderHas = Number(opt.theLenderHas)
+        // 期末余额
+        opt.theEndingBalance = Number(opt.theEndingBalance)
+        // 借方累计
+        opt.debitTheCumulative = Number(opt.debitTheCumulative)
+        if (opt.course.debitOrCredit == 0) { // 借
+          opt.atTheBeginningOfTheBalance = opt.theLenderHas + opt.theEndingBalance - opt.debitTheCumulative
+          if (opt.course.coding.length > 4) {
+            let defaultCoding = opt.course.coding.substring(0, 4)
+            let parentTheLenderHas = 0, parentTheEndingBalance = 0, parentDebitTheCumulative = 0,
+              parentAtTheBeginningOfTheBalance = 0
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding.indexOf(defaultCoding) > -1 && el.course.coding.length == 7) {
+                parentTheLenderHas += el.theLenderHas
+                parentTheEndingBalance += el.theEndingBalance
+                parentDebitTheCumulative += el.debitTheCumulative
+              }else if (el && el.course.coding.indexOf(defaultCoding) > -1 && el.course.coding.length == 9) {
+                let preDefaultCoding = opt.course.coding.substring(0, 7)
+                let preParentTheLenderHas = 0, preParentTheEndingBalance = 0, preParentDebitTheCumulative = 0,
+                  preParentAtTheBeginningOfTheBalance = 0
+                this.subjectBalanceList.forEach(el => {
+                  if (el && el.course.coding.indexOf(preDefaultCoding) > -1 && el.course.coding.length == 9) {
+                    preParentTheLenderHas += el.theLenderHas
+                    preParentTheEndingBalance += el.theEndingBalance
+                    preParentDebitTheCumulative += el.debitTheCumulative
+                  }
+                })
+                preParentAtTheBeginningOfTheBalance = preParentTheLenderHas + preParentTheEndingBalance - preParentDebitTheCumulative
+                this.subjectBalanceList.forEach(el => {
+                  if (el && el.course.coding == preDefaultCoding) {
+                    el.theLenderHas = preParentTheLenderHas
+                    el.theEndingBalance = preParentTheEndingBalance
+                    el.debitTheCumulative = preParentDebitTheCumulative
+                    el.atTheBeginningOfTheBalance = preParentAtTheBeginningOfTheBalance
+                  }
+                })
+              }
+            })
+            parentAtTheBeginningOfTheBalance = parentTheLenderHas + parentTheEndingBalance - parentDebitTheCumulative
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding == defaultCoding) {
+                el.theLenderHas = parentTheLenderHas
+                el.theEndingBalance = parentTheEndingBalance
+                el.debitTheCumulative = parentDebitTheCumulative
+                el.atTheBeginningOfTheBalance = parentAtTheBeginningOfTheBalance
+              }
+            })
+          }
+        } else if (opt.course.debitOrCredit == 1) { // 贷
+          opt.atTheBeginningOfTheBalance = opt.debitTheCumulative + opt.theEndingBalance - opt.theLenderHas
+          if (opt.course.coding.length > 4) {
+            console.log(">>>>>>>>>")
+            let defaultCoding = opt.course.coding.slice(0, 4)
+            console.log(">>>>1>>>>>", defaultCoding)
+            defaultCoding = opt.course.coding.substring(0, 4)
+            console.log(">>>>2>>>>>", defaultCoding)
+            defaultCoding = opt.course.coding.substr(0, 4)
+            console.log(">>>>3>>>>>", defaultCoding)
+            let parentTheLenderHas = 0, parentTheEndingBalance = 0, parentDebitTheCumulative = 0,
+              parentAtTheBeginningOfTheBalance = 0
+            console.log(">>>>>4>>>>>", parentTheLenderHas, parentTheEndingBalance, parentDebitTheCumulative, parentAtTheBeginningOfTheBalance)
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding.indexOf(defaultCoding) > -1 && el.course.coding.length == 7) {
+                debugger
+                parentTheLenderHas += el.theLenderHas
+                parentTheEndingBalance += el.theEndingBalance
+                parentDebitTheCumulative += el.debitTheCumulative
+              }
+              if (el && el.course.coding.indexOf(defaultCoding) > -1 && el.course.coding.length == 9) {
+                let preDefaultCoding = opt.course.coding.substring(0, 7)
+                let preParentTheLenderHas = 0, preParentTheEndingBalance = 0, preParentDebitTheCumulative = 0,
+                  preParentAtTheBeginningOfTheBalance = 0
+                this.subjectBalanceList.forEach(e => {
+                  if (e && e.course.coding.indexOf(preDefaultCoding) > -1 && e.course.coding.length == 9) {
+                    preParentTheLenderHas += e.theLenderHas
+                    preParentTheEndingBalance += e.theEndingBalance
+                    preParentDebitTheCumulative += e.debitTheCumulative
+                  }
+                })
+                preParentAtTheBeginningOfTheBalance = preParentDebitTheCumulative + preParentTheEndingBalance - preParentTheLenderHas
+                this.subjectBalanceList.forEach(e => {
+                  if (e && e.course.coding == preDefaultCoding) {
+                    e.theLenderHas = preParentTheLenderHas
+                    e.theEndingBalance = preParentTheEndingBalance
+                    e.debitTheCumulative = preParentDebitTheCumulative
+                    e.atTheBeginningOfTheBalance = preParentAtTheBeginningOfTheBalance
+                  }
+                })
+              }
+            })
+            console.log(">>>>>5>>>>>", parentTheLenderHas, parentTheEndingBalance, parentDebitTheCumulative, parentAtTheBeginningOfTheBalance)
+            parentAtTheBeginningOfTheBalance = parentDebitTheCumulative + parentTheEndingBalance - parentTheLenderHas
+            console.log(">>>>>6>>>>>", parentTheLenderHas, parentTheEndingBalance, parentDebitTheCumulative, parentAtTheBeginningOfTheBalance)
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding == defaultCoding) {
+                el.theLenderHas = parentTheLenderHas
+                el.theEndingBalance = parentTheEndingBalance
+                el.debitTheCumulative = parentDebitTheCumulative
+                el.atTheBeginningOfTheBalance = parentAtTheBeginningOfTheBalance
+              }
+            })
+          }
+        }
       },
       loading(type) {
         if (type) {
