@@ -1155,7 +1155,7 @@
       </div>
     </div>
 
-    <div class="site-mask anime ng-scope site-mask--shade" ng-class="{'site-mask--shade': on}">
+    <div class="site-mask anime ng-scope site-mask--shade" v-if="showVoucherFlag">
       <div id="ui-ve" class="site-popup popupContainer ng-isolate-scope site-popup--expand"
            style="transform-style: preserve-3d; transition: all 50ms ease 0s;">
         <div class="button popupExit icon-25 g-icon-close" ng-click="close()"></div>
@@ -3241,12 +3241,19 @@
     data() {
       return {
         accountId: '',
+        // 新建凭证弹层
+        showVoucherFlag: false,
       }
     },
     //计算属性
     computed: {},
     //函数集，自己封装，便于开发使用
-    methods: {},
+    methods: {
+      // 关闭新建凭证弹层
+      close() {
+        this.showVoucherFlag = false
+      },
+    },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
 

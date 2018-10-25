@@ -124,5 +124,13 @@ export default {
   // 更新-现金流量数据
   updateCashFlow: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/cashflowstatement/update', params)
+  },
+  // 查询科目余额表数据
+  querySubjectBalances: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountbalance/queryByAccountSetId', params)
+  },
+  // 更新保存科目余额表数据
+  updateSubjectBalances: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountbalance/update', params)
   }
 }
