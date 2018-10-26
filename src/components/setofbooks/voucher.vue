@@ -33,9 +33,7 @@
                    btn-enabled="canAccrue" btn-click="openAccrueReport()">
                 <div><span class="ng-scope"> 自动计提</span></div>
               </div>
-              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow" ng-class="class"
-                   ng-click=";click();" ng-show="canCreateVoucher" ui-button="" btn-type="hollow"
-                   btn-click="createVoucher()">
+              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow" @click.stop="createVoucher">
                 <div><span class="ng-scope"> 新建凭证</span></div>
               </div>
               <div class="button funcBtn30 icon-archive icon-30 ng-hide" title="查看交接文件" ng-show="canCheckArchives"
@@ -3243,6 +3241,11 @@
         accountId: '',
         // 新建凭证弹层
         showVoucherFlag: false,
+        // 新建或者编辑凭证对象
+        defaultvVoucher: {
+          title: ''
+        },
+
       }
     },
     //计算属性
@@ -3253,6 +3256,10 @@
       close() {
         this.showVoucherFlag = false
       },
+      // 创建新的凭证
+      createVoucher() {
+        this.showVoucherFlag = true
+      }
     },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
