@@ -2640,101 +2640,14 @@
         opt.debitTheCumulative = Number(opt.debitTheCumulative)
         if (opt.course.debitOrCredit == 0) { // 借
           opt.atTheBeginningOfTheBalance = opt.theLenderHas + opt.theEndingBalance - opt.debitTheCumulative
-          if (opt.course.coding.length > 4) {
-            let defaultCoding = opt.course.coding.substring(0, 4)
-            let parentTheLenderHas = 0, parentTheEndingBalance = 0, parentDebitTheCumulative = 0,
-              parentAtTheBeginningOfTheBalance = 0
-            this.subjectBalanceList.forEach(el => {
-              if (el && el.course.coding.indexOf(defaultCoding) > -1 && el.course.coding.length == 7) {
-                parentTheLenderHas += el.theLenderHas
-                parentTheEndingBalance += el.theEndingBalance
-                parentDebitTheCumulative += el.debitTheCumulative
-              }else if (el && el.course.coding.indexOf(defaultCoding) > -1 && el.course.coding.length == 9) {
-                let preDefaultCoding = opt.course.coding.substring(0, 7)
-                let preParentTheLenderHas = 0, preParentTheEndingBalance = 0, preParentDebitTheCumulative = 0,
-                  preParentAtTheBeginningOfTheBalance = 0
-                this.subjectBalanceList.forEach(el => {
-                  if (el && el.course.coding.indexOf(preDefaultCoding) > -1 && el.course.coding.length == 9) {
-                    preParentTheLenderHas += el.theLenderHas
-                    preParentTheEndingBalance += el.theEndingBalance
-                    preParentDebitTheCumulative += el.debitTheCumulative
-                  }
-                })
-                preParentAtTheBeginningOfTheBalance = preParentTheLenderHas + preParentTheEndingBalance - preParentDebitTheCumulative
-                this.subjectBalanceList.forEach(el => {
-                  if (el && el.course.coding == preDefaultCoding) {
-                    el.theLenderHas = preParentTheLenderHas
-                    el.theEndingBalance = preParentTheEndingBalance
-                    el.debitTheCumulative = preParentDebitTheCumulative
-                    el.atTheBeginningOfTheBalance = preParentAtTheBeginningOfTheBalance
-                  }
-                })
-              }
-            })
-            parentAtTheBeginningOfTheBalance = parentTheLenderHas + parentTheEndingBalance - parentDebitTheCumulative
-            this.subjectBalanceList.forEach(el => {
-              if (el && el.course.coding == defaultCoding) {
-                el.theLenderHas = parentTheLenderHas
-                el.theEndingBalance = parentTheEndingBalance
-                el.debitTheCumulative = parentDebitTheCumulative
-                el.atTheBeginningOfTheBalance = parentAtTheBeginningOfTheBalance
-              }
-            })
+          if(opt.course.coding > 4){
+            if(opt.hasSon && opt.sonIds && opt.sonIds.length > 0){
+              console.log("aaa")
+            }
           }
+
         } else if (opt.course.debitOrCredit == 1) { // 贷
           opt.atTheBeginningOfTheBalance = opt.debitTheCumulative + opt.theEndingBalance - opt.theLenderHas
-          if (opt.course.coding.length > 4) {
-            console.log(">>>>>>>>>")
-            let defaultCoding = opt.course.coding.slice(0, 4)
-            console.log(">>>>1>>>>>", defaultCoding)
-            defaultCoding = opt.course.coding.substring(0, 4)
-            console.log(">>>>2>>>>>", defaultCoding)
-            defaultCoding = opt.course.coding.substr(0, 4)
-            console.log(">>>>3>>>>>", defaultCoding)
-            let parentTheLenderHas = 0, parentTheEndingBalance = 0, parentDebitTheCumulative = 0,
-              parentAtTheBeginningOfTheBalance = 0
-            console.log(">>>>>4>>>>>", parentTheLenderHas, parentTheEndingBalance, parentDebitTheCumulative, parentAtTheBeginningOfTheBalance)
-            this.subjectBalanceList.forEach(el => {
-              if (el && el.course.coding.indexOf(defaultCoding) > -1 && el.course.coding.length == 7) {
-                debugger
-                parentTheLenderHas += el.theLenderHas
-                parentTheEndingBalance += el.theEndingBalance
-                parentDebitTheCumulative += el.debitTheCumulative
-              }
-              if (el && el.course.coding.indexOf(defaultCoding) > -1 && el.course.coding.length == 9) {
-                let preDefaultCoding = opt.course.coding.substring(0, 7)
-                let preParentTheLenderHas = 0, preParentTheEndingBalance = 0, preParentDebitTheCumulative = 0,
-                  preParentAtTheBeginningOfTheBalance = 0
-                this.subjectBalanceList.forEach(e => {
-                  if (e && e.course.coding.indexOf(preDefaultCoding) > -1 && e.course.coding.length == 9) {
-                    preParentTheLenderHas += e.theLenderHas
-                    preParentTheEndingBalance += e.theEndingBalance
-                    preParentDebitTheCumulative += e.debitTheCumulative
-                  }
-                })
-                preParentAtTheBeginningOfTheBalance = preParentDebitTheCumulative + preParentTheEndingBalance - preParentTheLenderHas
-                this.subjectBalanceList.forEach(e => {
-                  if (e && e.course.coding == preDefaultCoding) {
-                    e.theLenderHas = preParentTheLenderHas
-                    e.theEndingBalance = preParentTheEndingBalance
-                    e.debitTheCumulative = preParentDebitTheCumulative
-                    e.atTheBeginningOfTheBalance = preParentAtTheBeginningOfTheBalance
-                  }
-                })
-              }
-            })
-            console.log(">>>>>5>>>>>", parentTheLenderHas, parentTheEndingBalance, parentDebitTheCumulative, parentAtTheBeginningOfTheBalance)
-            parentAtTheBeginningOfTheBalance = parentDebitTheCumulative + parentTheEndingBalance - parentTheLenderHas
-            console.log(">>>>>6>>>>>", parentTheLenderHas, parentTheEndingBalance, parentDebitTheCumulative, parentAtTheBeginningOfTheBalance)
-            this.subjectBalanceList.forEach(el => {
-              if (el && el.course.coding == defaultCoding) {
-                el.theLenderHas = parentTheLenderHas
-                el.theEndingBalance = parentTheEndingBalance
-                el.debitTheCumulative = parentDebitTheCumulative
-                el.atTheBeginningOfTheBalance = parentAtTheBeginningOfTheBalance
-              }
-            })
-          }
         }
       },
       loading(type) {
