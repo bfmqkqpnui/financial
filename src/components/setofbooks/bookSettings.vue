@@ -2640,14 +2640,136 @@
         opt.debitTheCumulative = Number(opt.debitTheCumulative)
         if (opt.course.debitOrCredit == 0) { // 借
           opt.atTheBeginningOfTheBalance = opt.theLenderHas + opt.theEndingBalance - opt.debitTheCumulative
-          if(opt.course.coding > 4){
-            if(opt.hasSon && opt.sonIds && opt.sonIds.length > 0){
-              console.log("aaa")
-            }
+          if(opt.course.coding.length == 7){
+            let parentCode = opt.course.coding.slice(0, 4)
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding == parentCode) {
+                if(el.hasSon && el.sonIds && el.sonIds.length > 0){
+
+                  el.theLenderHas = this.sumType(el.sonIds, 1)
+                  el.theEndingBalance = this.sumType(el.sonIds, 3)
+                  el.debitTheCumulative = this.sumType(el.sonIds, 2)
+                  console.log("aaa：", el.theLenderHas, el.theEndingBalance, el.debitTheCumulative)
+                  el.atTheBeginningOfTheBalance = Number(el.theLenderHas) + Number(el.theEndingBalance) - Number(el.debitTheCumulative)
+                }
+              }
+            })
+          }else if (opt.course.coding.length == 9) {
+            let rootCode = opt.course.coding.slice(0, 4)
+            let parentCode = opt.course.coding.slice(0, 7)
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding == parentCode) {
+                if(el.hasSon && el.sonIds && el.sonIds.length > 0){
+
+                  el.theLenderHas = this.sumType(el.sonIds, 1)
+                  el.theEndingBalance = this.sumType(el.sonIds, 3)
+                  el.debitTheCumulative = this.sumType(el.sonIds, 2)
+                  console.log("aaa：", el.theLenderHas, el.theEndingBalance, el.debitTheCumulative)
+                  el.atTheBeginningOfTheBalance = Number(el.theLenderHas) + Number(el.theEndingBalance) - Number(el.debitTheCumulative)
+                }
+              }
+            })
+
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding == rootCode) {
+                if(el.hasSon && el.sonIds && el.sonIds.length > 0){
+
+                  el.theLenderHas = this.sumType(el.sonIds, 1)
+                  el.theEndingBalance = this.sumType(el.sonIds, 3)
+                  el.debitTheCumulative = this.sumType(el.sonIds, 2)
+                  console.log("aaa：", el.theLenderHas, el.theEndingBalance, el.debitTheCumulative)
+                  el.atTheBeginningOfTheBalance = Number(el.theLenderHas) + Number(el.theEndingBalance) - Number(el.debitTheCumulative)
+                }
+              }
+            })
           }
 
         } else if (opt.course.debitOrCredit == 1) { // 贷
           opt.atTheBeginningOfTheBalance = opt.debitTheCumulative + opt.theEndingBalance - opt.theLenderHas
+          if(opt.course.coding.length == 7){
+            let parentCode = opt.course.coding.slice(0, 4)
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding == parentCode) {
+                if(el.hasSon && el.sonIds && el.sonIds.length > 0){
+
+                  el.theLenderHas = this.sumType(el.sonIds, 1)
+                  el.theEndingBalance = this.sumType(el.sonIds, 3)
+                  el.debitTheCumulative = this.sumType(el.sonIds, 2)
+                  console.log("bbb：", el.theLenderHas, el.theEndingBalance, el.debitTheCumulative)
+                  el.atTheBeginningOfTheBalance = Number(el.debitTheCumulative) + Number(el.theEndingBalance) - Number(el.theLenderHas)
+                }
+              }
+            })
+          }else if (opt.course.coding.length == 9) {
+            let rootCode = opt.course.coding.slice(0, 4)
+            let parentCode = opt.course.coding.slice(0, 7)
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding == parentCode) {
+                if(el.hasSon && el.sonIds && el.sonIds.length > 0){
+                  el.theLenderHas = this.sumType(el.sonIds, 1)
+                  el.theEndingBalance = this.sumType(el.sonIds, 3)
+                  el.debitTheCumulative = this.sumType(el.sonIds, 2)
+                  console.log("bbb：", el.theLenderHas, el.theEndingBalance, el.debitTheCumulative)
+                  el.atTheBeginningOfTheBalance = Number(el.debitTheCumulative) + Number(el.theEndingBalance) - Number(el.theLenderHas)
+                }
+              }
+            })
+
+            this.subjectBalanceList.forEach(el => {
+              if (el && el.course.coding == rootCode) {
+                if(el.hasSon && el.sonIds && el.sonIds.length > 0){
+                  el.theLenderHas = this.sumType(el.sonIds, 1)
+                  el.theEndingBalance = this.sumType(el.sonIds, 3)
+                  el.debitTheCumulative = this.sumType(el.sonIds, 2)
+                  console.log("bbb：", el.theLenderHas, el.theEndingBalance, el.debitTheCumulative)
+                  el.atTheBeginningOfTheBalance = Number(el.debitTheCumulative) + Number(el.theEndingBalance) - Number(el.theLenderHas)
+                }
+              }
+            })
+          }
+        }
+      },
+      //
+      sumType(sonIds, type){
+        const that = this
+        switch (type) {
+          case 1:
+            // 贷方累计
+            let theLenderHasTotal = 0;
+            for(let id of sonIds){
+              console.log(">>>>>", id)
+              this.subjectBalanceList.forEach(el => {
+                if (el && el.id == id) {
+                  console.log("贷方累计：", el.theLenderHas)
+                  theLenderHasTotal += Number(el.theLenderHas)
+                }
+              })
+            }
+            return theLenderHasTotal
+          case 2:
+            // 借方累计
+            let debitTheCumulativeTotal = 0;
+            for(let id of sonIds){
+              this.subjectBalanceList.forEach(el => {
+                if (el && el.id == id) {
+                  console.log("借方累计：", el.debitTheCumulative)
+                  debitTheCumulativeTotal += Number(el.debitTheCumulative)
+                }
+              })
+            }
+            return debitTheCumulativeTotal
+          case 3:
+            // 期末余额
+            let theEndingBalanceTotal = 0;
+            for(let id of sonIds){
+              this.subjectBalanceList.forEach(el => {
+                if (el && el.id == id) {
+                  console.log("期末余额：", el.theEndingBalance)
+                  theEndingBalanceTotal += Number(el.theEndingBalance)
+                }
+              })
+            }
+            return theEndingBalanceTotal
         }
       },
       loading(type) {
