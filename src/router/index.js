@@ -7,7 +7,7 @@ Vue.use(Router)
 const baseRoute = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/login'
   }
 ]
 

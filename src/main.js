@@ -24,7 +24,7 @@ Vue.http.interceptors.push((request, next) => {
     if (response.body.result == 2) {
       localStorage.removeItem('userInfo')
       // console.log(">>>" + location.origin)
-      location.href = location.origin + "/login"
+      location.href = location.origin
     } else {
       return response
     }
