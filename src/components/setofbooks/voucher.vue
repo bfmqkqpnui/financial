@@ -1158,7 +1158,7 @@
     <div class="site-mask anime ng-scope site-mask--shade" v-if="showVoucherFlag">
       <div id="ui-ve" class="site-popup popupContainer ng-isolate-scope site-popup--expand"
            style="transform-style: preserve-3d; transition: all 50ms ease 0s;">
-        <div class="button popupExit icon-25 g-icon-close" ng-click="close()"></div>
+        <div class="button popupExit icon-25 g-icon-close" @click.stop="close()"></div>
         <p class="popupTitle ng-binding" v-text="cacheEntry.title"></p>
         <div class="disableEditTips ng-hide" ng-show="isAdmin">管理员仅拥有查看权限，无法修改！</div>
         <div class="disableEditTips ng-hide" ng-show="!isAdmin && freeze">凭证已审核，数据不允许编辑！</div>
@@ -1183,7 +1183,7 @@
                         <p class="ng-binding"></p>
                       </label>
                       <input class="tbInput ng-pristine ng-valid ng-empty ng-touched" id="zweirtqs-0-0" type="text"
-                             ng-click="cellFocusOnClick($event)" ng-focus="pointerMgr.onFocus($event)"
+                             @click.stop="cellFocusOnClick($event)" ng-focus="pointerMgr.onFocus($event)"
                              ng-change="entrySummaryOnChanged(e)" ng-model="e.brief"></div>
                     <div class="col-subNum">
                       <label class="tbLabel ng-binding" for="zweirtqs-0-1"></label>
@@ -1193,7 +1193,7 @@
                         <p class="ng-binding"></p>
                       </label>
                     </div>
-                    <div class="col-subject-c">
+                    <div class="col-subject-c" @click.stop="showSelect">
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty"
                              id="zweirtqs-0-1" type="text" ng-model="cacheEntry.origin.subject"
                              ng-focus="entrySubjectOnFocus($index, $event)" ng-change="entrySubjectOnChange($event)">
@@ -1211,18 +1211,18 @@
                         汇率: 0.0000 </label>
                     </div>
 
-                    <div class="col-debit">
+                    <div class="col-debit" @click.self="cellFocusOnClick">
                       <label class="tbLabel ng-binding" for="zweirtqs-0-6"> </label>
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
                              id="zweirtqs-0-6" ng-model="e.debit"
-                             ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'debit')"
+                             ng-change="entryAmountOnChange(e, 'debit')"
                              ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'debit')">
                     </div>
-                    <div class="col-credit">
+                    <div class="col-credit" @click.self="cellFocusOnClick">
                       <label class="tbLabel ng-binding" for="zweirtqs-0-7"> </label>
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
                              id="zweirtqs-0-7" ng-model="e.credit"
-                             ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'credit')">
+                             ng-change="entryAmountOnChange(e, 'credit')">
                     </div>
                     <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
                          ng-click="deleteEntry($index)" ng-if="!freeze"></div>
@@ -1429,12 +1429,13 @@
                       ng-disabled="freeze"></div> <!-- ngIf: !freeze -->
                     <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
                          ng-click="deleteEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze --> </div>
-                  <!-- end ngRepeat: e in entries --> </div>
-                <ui-subselector ng-show="!assistSelector.on" source="subjects" filter="cacheEntry.origin.subject"
-                                output="cacheEntry.out" on="subSelector.on" options="subSelector"
-                                addsub="entrySubjectCreate()" cfmsub="entrySubjectSelected(e)" class="ng-isolate-scope"
-                                id="ui-sub-421765"
-                                style="position: fixed; z-index: 1; top: 0px; left: 0px; width: 0px; height: 0px;">
+                  <!-- end ngRepeat: e in entries -->
+                </div>
+                <div ng-show="!assistSelector.on" source="subjects" filter="cacheEntry.origin.subject"
+                     output="cacheEntry.out" on="subSelector.on" options="subSelector"
+                     addsub="entrySubjectCreate()" cfmsub="entrySubjectSelected(e)" class="ng-isolate-scope"
+                     id="ui-sub-421765"
+                     style="position: fixed; z-index: 1; top: 0px; left: 0px; width: 0px; height: 0px;">
                   <div id="ui-ss-container" click-test="" listen="options.on" onmouselost="ui_close()"
                        class="ng-isolate-scope" mdbuspon=""
                        style="top: 270px; left: 230.375px; width: 507px; height: 59px; display: none;">
@@ -3083,15 +3084,15 @@
                           class="ng-binding ng-scope" style="padding-left: 8px;">5901 以前年度损益调整
                       </li><!-- end ngRepeat: sub in cacheList --> </ul>
                   </div>
-                </ui-subselector>
+                </div>
                 <div click-test="" listen="assistSelector.enableClickTest" onmouselost="assistBoxOnblur()"
                      class="assistBox ng-isolate-scope ng-hide" ng-show="assistSelector.on" id="assistBox-ui-et-807744"
                      mlaajzfx="" style="top: 270px; left: 230.375px; width: 507px;">
-                  <ui-assist-selector source="assistSelector.source" on="assistSelector.on"
-                                      suggestion="assistSelector.suggestion" auto-comfirm="true"
-                                      output="assistSelector.output" enable-click-test="assistSelector.enableClickTest"
-                                      selected="cacheEntry.origin.items" finish="assistSelector.finish"
-                                      callback="entryAssistSelected()" class="ng-isolate-scope">
+                  <div source="assistSelector.source" on="assistSelector.on"
+                       suggestion="assistSelector.suggestion" auto-comfirm="true"
+                       output="assistSelector.output" enable-click-test="assistSelector.enableClickTest"
+                       selected="cacheEntry.origin.items" finish="assistSelector.finish"
+                       callback="entryAssistSelected()" class="ng-isolate-scope">
                     <div class="assistSelector ng-hide" ng-show="on">
                       <div class="content ps-container ps-theme-default"
                            data-ps-id="7a6964c4-2d7c-1227-3fcb-1469400e40fb">
@@ -3155,7 +3156,7 @@
                         </div>
                       </div>
                     </div>
-                  </ui-assist-selector>
+                  </div>
                 </div>
                 <div id="accAttrBox-ui-et-807744" class="accAttrBox ng-isolate-scope" click-test=""
                      listen="options.active" onmouselost="accAttrBoxOnBlur()" ng-style="accAttrBox.on &&{
@@ -3194,17 +3195,9 @@
                     </div>
                   </div>
                 </div>
-                <div id="balanceBox-ui-et-807744" class="balanceBox" ng-style="balanceBox.on && {
-             'pointer-events' : 'painted',
-             'opacity' : '1'
-         }"><p ng-style="isBalanceNegative && {
-            'color' : 'red'
-        }" class="ng-binding">余额：0.00</p></div>
-                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-                  <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                </div>
-                <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
-                  <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                <div id="balanceBox-ui-et-807744" class="balanceBox">
+                  <p ng-style="isBalanceNegative && {'color' : 'red'}" class="ng-binding"
+                     style="left: 738.641px; width: 249px;pointer-events:painted;opacity:1">余额：0.00</p>
                 </div>
               </div>
             </div>
@@ -3256,9 +3249,18 @@
         showVoucherFlag: false,
         // 新建或者编辑凭证对象
         cacheEntry: {
-          title: '新建凭证'
+          title: '新建凭证',
+          // 摘要
+          brief: '',
+          // 科目编号
+          subjectId: '',
+          // 科目名称
+          subjectName: '',
+          // 借方现金
+          debitCash: '',
+          // 贷方现金
+          lenderCash: '',
         },
-
       }
     },
     //计算属性
@@ -3274,9 +3276,17 @@
         this.showVoucherFlag = true
       },
       // 新建或者更新凭证的科目
-      entrySubjectOnClick(){
+      entrySubjectOnClick() {
         console.log("新建或者更新凭证的科目")
       },
+      // 展示下拉框
+      showSelect() {
+        console.log("展示下拉框")
+      },
+      // 借方贷方点击事件
+      cellFocusOnClick() {
+        console.log("借方贷方点击事件")
+      }
     },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
