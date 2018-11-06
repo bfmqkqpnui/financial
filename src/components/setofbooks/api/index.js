@@ -132,5 +132,9 @@ export default {
   // 更新保存科目余额表数据
   updateSubjectBalances: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/accountbalance/update', params)
-  }
+  },
+  // 查询凭证科目数据
+  querySubjectListData: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/course/getVoucherCourse', params)
+  },
 }

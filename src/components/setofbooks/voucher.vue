@@ -1175,25 +1175,24 @@
             <div class="entryBody">
               <div class="ui-et ng-isolate-scope ps-container ps-theme-default" id="ui-et-807744">
                 <div class="entrysContainer">
-                  <div class="entryBar ng-scope" ng-repeat="e in entries" on-repeat-finished="">
+                  <div class="entryBar ng-scope" v-for="(e, index) in entries" :key="index">
                     <div class="button insert icon-16 g-icon-insert-line ng-scope" title="下方插入行"
-                         ng-click="insertEntry($index)"></div>
+                         ng-click="insertEntry(index)"></div>
                     <div class="col-summary">
                       <label class="tbLabel" for="zweirtqs-0-0">
                         <p class="ng-binding"></p>
                       </label>
                       <input class="tbInput ng-pristine ng-valid ng-empty ng-touched" id="zweirtqs-0-0" type="text"
-                             @click.stop="cellFocusOnClick($event)" ng-focus="pointerMgr.onFocus($event)"
                              ng-change="entrySummaryOnChanged(e)" ng-model="e.brief"></div>
-                    <div class="col-subNum">
+                    <div class="col-subNum" v-if="!e.canShowSelectFlag">
                       <label class="tbLabel ng-binding" for="zweirtqs-0-1"></label>
                     </div>
-                    <div class="col-subName-c">
+                    <div class="col-subName-c" v-if="!e.canShowSelectFlag">
                       <label class="tbLabel" for="zweirtqs-0-1">
                         <p class="ng-binding"></p>
                       </label>
                     </div>
-                    <div class="col-subject-c" @click.stop="showSelect">
+                    <div class="col-subject-c" @click.stop="showSelect(e)" v-if="!e.canShowSelectFlag">
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty"
                              id="zweirtqs-0-1" type="text" ng-model="cacheEntry.origin.subject"
                              ng-focus="entrySubjectOnFocus($index, $event)" ng-change="entrySubjectOnChange($event)">
@@ -1228,346 +1227,21 @@
                          ng-click="deleteEntry($index)" ng-if="!freeze"></div>
                   </div>
 
-                  <!-- end ngRepeat: e in entries -->
-                  <div class="entryBar ng-scope" ng-repeat="e in entries" on-repeat-finished=""> <!-- ngIf: !freeze -->
-                    <div class="button insert icon-16 g-icon-insert-line ng-scope" data-toggle="tooltip" title="下方插入行"
-                         ng-click="insertEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze -->
-                    <div class="col-summary">
-                      <label class="tbLabel" for="zweirtqs-1-0">
-                        <p class="ng-binding"></p>
-                      </label>
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty" id="zweirtqs-1-0" type="text"
-                             ng-click="cellFocusOnClick($event)" ng-focus="pointerMgr.onFocus($event)"
-                             ng-change="entrySummaryOnChanged(e)" ng-model="e.brief">
-                    </div>
-                    <div class="col-subNum"><label class="tbLabel ng-binding" for="zweirtqs-1-1"></label></div>
-                    <div class="col-subName-c">
-                      <label class="tbLabel" for="zweirtqs-1-1">
-                        <p class="ng-binding"></p>
-                      </label>
-                    </div>
+                  <!-- 弹层下拉框 Begin -->
+                  <div ng-show="!assistSelector.on" source="subjects" filter="cacheEntry.origin.subject" output="cacheEntry.out" on="subSelector.on" options="subSelector" addsub="entrySubjectCreate()" cfmsub="entrySubjectSelected(e)" class="ng-isolate-scope" id="ui-sub-871971" style="position: fixed; z-index: 1; top: 0px; left: 0px; width: 0px; height: 0px;"> 
+                    <div id="ui-ss-container" click-test="" listen="options.on" onmouselost="ui_close()" class="ng-isolate-scope" gvevawcr="" style="top: 210px; left: 230.225px; width: 507px; height: 59px; display: none;"> 
+                      <ul> 
+                        <li  ng-click="createSub()" class="hide">新建此科目</li> 
+                        <li class="forbidden hide">[无效科目]</li> <!-- ngRepeat: sub in cacheList --> 
+                        <li ng-repeat="sub in cacheList" ng-click="ui_selectSubject($index)" class="ng-binding ng-scope" style="padding-left: 8px;">1004  备用金</li>
+                        <li ng-repeat="sub in cacheList" ng-click="ui_selectSubject($index)" class="ng-binding ng-scope nonLeaf" style="padding-left: 8px;">1012  其他货币资金</li>
+                        <li ng-repeat="sub in cacheList" ng-click="ui_selectSubject($index)" class="ng-binding ng-scope" style="padding-left: 23px;">1012001  其他货币资金 - 银行汇票</li>
+                       </ul>
+                     </div>
+                   </div>
+                  <!-- 弹层下拉框 End -->
 
-                    <div class="col-subject-c">
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty"
-                             id="zweirtqs-1-1" type="text" ng-model="cacheEntry.origin.subject"
-                             ng-disabled="freeze" @click.stop="entrySubjectOnClick"
-                             ng-focus="entrySubjectOnFocus($index, $event)"
-                             ng-blur="entrySubjectOnBlur($index, $event)"
-                             ng-change="entrySubjectOnChange($event)"
-                             ng-class="{'selectAssist': assistSelector.on && cacheEntry.index === $index}">
-                    </div>
-                    <div class="col-currency ng-hide zweirtqs-1-2" ng-class="pointerMgr.getTag($index, 2)"
-                         ng-show="hasForeigns || hasAmount">
-                      <label class="accAttr ng-binding ng-hide"
-                             ng-click="accAttrAmountOnClick($event, $index)"> 数量: 1.00 </label>
-                      <label class="accAttr ng-binding ng-hide"
-                             ng-click="accAttrPriceOnClick($event, $index)"> 单价: 0.00 CNY </label>
-                      <label
-                        class="accAttr ng-binding ng-hide" ng-show="e.isForeign"
-                        ng-click="accAttrCurrencyOnClick($event, $index)"> CNY: 0.00 </label> <label
-                      class="accAttr ng-binding ng-hide" ng-show="e.isForeign && !e.isAmount"
-                      ng-click="accAttrRateOnClick($event, $index)"> 汇率: 0.0000 </label></div>
-                    <div class="col-debit"><label class="tbLabel ng-binding" for="zweirtqs-1-6"> </label> <input
-                      class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" id="zweirtqs-1-6"
-                      ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'debit')"
-                      ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'debit')" ng-model="e.debit"
-                      ng-disabled="freeze"></div>
-                    <div class="col-credit"><label class="tbLabel ng-binding" for="zweirtqs-1-7"> </label> <input
-                      class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" id="zweirtqs-1-7"
-                      ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'credit')"
-                      ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'credit')" ng-model="e.credit"
-                      ng-disabled="freeze"></div> <!-- ngIf: !freeze -->
-                    <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
-                         ng-click="deleteEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze --> </div>
-                  <!-- end ngRepeat: e in entries -->
-                  <div class="entryBar ng-scope" ng-repeat="e in entries" on-repeat-finished=""> <!-- ngIf: !freeze -->
-                    <div class="button insert icon-16 g-icon-insert-line ng-scope" data-toggle="tooltip" title="下方插入行"
-                         ng-click="insertEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze -->
-                    <div class="col-summary"><label class="tbLabel" for="zweirtqs-2-0"><p class="ng-binding"></p>
-                    </label>
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty" id="zweirtqs-2-0" type="text"
-                             ng-click="cellFocusOnClick($event)" ng-focus="pointerMgr.onFocus($event)"
-                             ng-change="entrySummaryOnChanged(e)" ng-model="e.brief" ng-disabled="freeze"></div>
-                    <div class="col-subNum"><label class="tbLabel ng-binding" for="zweirtqs-2-1"></label></div>
-                    <div class="col-subName-c">
-                      <label class="tbLabel" for="zweirtqs-2-1">
-                        <p class="ng-binding"></p>
-                      </label>
-                    </div>
-                    <div class="col-subject-c">
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty"
-                             id="zweirtqs-2-1" type="text" ng-model="cacheEntry.origin.subject"
-                             ng-disabled="freeze" ng-click="entrySubjectOnClick($event)"
-                             ng-focus="entrySubjectOnFocus($index, $event)"
-                             ng-blur="entrySubjectOnBlur($index, $event)"
-                             ng-change="entrySubjectOnChange($event)"
-                             ng-class="{'selectAssist': assistSelector.on && cacheEntry.index === $index}">
-                    </div>
-                    <div class="col-currency ng-hide zweirtqs-2-2">
-                      <label class="accAttr ng-binding ng-hide"
-                             ng-click="accAttrAmountOnClick($event, $index)"> 数量: 1.00 </label>
-                      <label class="accAttr ng-binding ng-hide"
-                             ng-click="accAttrPriceOnClick($event, $index)"> 单价: 0.00 CNY </label>
-                      <label class="accAttr ng-binding ng-hide"
-                             ng-click="accAttrCurrencyOnClick($event, $index)"> CNY: 0.00 </label>
-                      <label class="accAttr ng-binding ng-hide"
-                             ng-click="accAttrRateOnClick($event, $index)"> 汇率: 0.0000 </label></div>
-                    <div class="col-debit"><label class="tbLabel ng-binding" for="zweirtqs-2-6"> </label> <input
-                      class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" id="zweirtqs-2-6"
-                      ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'debit')"
-                      ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'debit')" ng-model="e.debit"
-                      ng-disabled="freeze"></div>
-                    <div class="col-credit"><label class="tbLabel ng-binding" for="zweirtqs-2-7"> </label> <input
-                      class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" id="zweirtqs-2-7"
-                      ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'credit')"
-                      ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'credit')" ng-model="e.credit"
-                      ng-disabled="freeze"></div> <!-- ngIf: !freeze -->
-                    <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
-                         ng-click="deleteEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze --> </div>
-                  <!-- end ngRepeat: e in entries -->
-                  <div class="entryBar ng-scope" ng-repeat="e in entries" on-repeat-finished=""> <!-- ngIf: !freeze -->
-                    <div class="button insert icon-16 g-icon-insert-line ng-scope" data-toggle="tooltip" title="下方插入行"
-                         ng-click="insertEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze -->
-                    <div class="col-summary"><label class="tbLabel" for="zweirtqs-3-0"><p class="ng-binding"></p>
-                    </label>
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty" id="zweirtqs-3-0" type="text"
-                             ng-click="cellFocusOnClick($event)" ng-focus="pointerMgr.onFocus($event)"
-                             ng-change="entrySummaryOnChanged(e)" ng-model="e.brief" ng-disabled="freeze"></div>
-                    <div class="col-subNum"><label class="tbLabel ng-binding" for="zweirtqs-3-1"></label></div>
-                    <div ng-class="{
-                    'col-subName-f' : hasForeigns || hasAmount,
-                    'col-subName-c' : !(hasForeigns || hasAmount)
-                 }" class="col-subName-c"><label class="tbLabel" for="zweirtqs-3-1"><p class="ng-binding"></p></label>
-                    </div>
-                    <div ng-class="{
-                    'col-subject-f' : hasForeigns || hasAmount,
-                    'col-subject-c' : !(hasForeigns || hasAmount),
-                    'col-subject-on' : e.subOnFocus
-                 }" class="col-subject-c">
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty"
-                             id="zweirtqs-3-1" type="text" ng-model="cacheEntry.origin.subject"
-                             ng-disabled="freeze" ng-click="entrySubjectOnClick($event)"
-                             ng-focus="entrySubjectOnFocus($index, $event)"
-                             ng-blur="entrySubjectOnBlur($index, $event)"
-                             ng-change="entrySubjectOnChange($event)"
-                             ng-class="{'selectAssist': assistSelector.on && cacheEntry.index === $index}">
-                    </div>
-                    <div class="col-currency ng-hide zweirtqs-3-2" ng-class="pointerMgr.getTag($index, 2)"
-                         ng-show="hasForeigns || hasAmount">
-                      <label class="accAttr ng-binding ng-hide"
-                             ng-show="e.isAmount"
-                             ng-click="accAttrAmountOnClick($event, $index)"> 数量:
-                        1.00 </label>
-                      <label class="accAttr ng-binding ng-hide" ng-show="e.isAmount"
-                             ng-click="accAttrPriceOnClick($event, $index)"> 单价: 0.00 CNY </label>
-                      <label
-                        class="accAttr ng-binding ng-hide" ng-show="e.isForeign"
-                        ng-click="accAttrCurrencyOnClick($event, $index)"> CNY: 0.00 </label> <label
-                      class="accAttr ng-binding ng-hide" ng-show="e.isForeign && !e.isAmount"
-                      ng-click="accAttrRateOnClick($event, $index)"> 汇率: 0.0000 </label></div>
-                    <div class="col-debit"><label class="tbLabel ng-binding" for="zweirtqs-3-6"> </label> <input
-                      class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" id="zweirtqs-3-6"
-                      ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'debit')"
-                      ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'debit')" ng-model="e.debit"
-                      ng-disabled="freeze"></div>
-                    <div class="col-credit"><label class="tbLabel ng-binding" for="zweirtqs-3-7"> </label> <input
-                      class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" id="zweirtqs-3-7"
-                      ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'credit')"
-                      ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'credit')" ng-model="e.credit"
-                      ng-disabled="freeze"></div> <!-- ngIf: !freeze -->
-                    <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
-                         ng-click="deleteEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze --> </div>
-                  <!-- end ngRepeat: e in entries -->
-                  <div class="entryBar ng-scope" ng-repeat="e in entries" on-repeat-finished=""> <!-- ngIf: !freeze -->
-                    <div class="button insert icon-16 g-icon-insert-line ng-scope" data-toggle="tooltip" title="下方插入行"
-                         ng-click="insertEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze -->
-                    <div class="col-summary"><label class="tbLabel" for="zweirtqs-4-0"><p class="ng-binding"></p>
-                    </label>
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty" id="zweirtqs-4-0" type="text"
-                             ng-click="cellFocusOnClick($event)" ng-focus="pointerMgr.onFocus($event)"
-                             ng-change="entrySummaryOnChanged(e)" ng-model="e.brief" ng-disabled="freeze"></div>
-                    <div class="col-subNum"><label class="tbLabel ng-binding" for="zweirtqs-4-1"></label></div>
-                    <div ng-class="{
-                    'col-subName-f' : hasForeigns || hasAmount,
-                    'col-subName-c' : !(hasForeigns || hasAmount)
-                 }" class="col-subName-c"><label class="tbLabel" for="zweirtqs-4-1"><p class="ng-binding"></p></label>
-                    </div>
-                    <div ng-class="{
-                    'col-subject-f' : hasForeigns || hasAmount,
-                    'col-subject-c' : !(hasForeigns || hasAmount),
-                    'col-subject-on' : e.subOnFocus
-                 }" class="col-subject-c">
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty"
-                             id="zweirtqs-4-1" type="text" ng-model="cacheEntry.origin.subject"
-                             ng-disabled="freeze" ng-click="entrySubjectOnClick($event)"
-                             ng-focus="entrySubjectOnFocus($index, $event)"
-                             ng-blur="entrySubjectOnBlur($index, $event)"
-                             ng-change="entrySubjectOnChange($event)"
-                             ng-class="{'selectAssist': assistSelector.on && cacheEntry.index === $index}">
-                    </div>
-                    <div class="col-currency ng-hide zweirtqs-4-2" ng-class="pointerMgr.getTag($index, 2)"
-                         ng-show="hasForeigns || hasAmount">
-                      <label class="accAttr ng-binding ng-hide"
-                             ng-show="e.isAmount"
-                             ng-click="accAttrAmountOnClick($event, $index)"> 数量:
-                        1.00 </label>
-                      <label class="accAttr ng-binding ng-hide" ng-show="e.isAmount"
-                             ng-click="accAttrPriceOnClick($event, $index)"> 单价: 0.00 CNY </label> <label
-                      class="accAttr ng-binding ng-hide" ng-show="e.isForeign"
-                      ng-click="accAttrCurrencyOnClick($event, $index)"> CNY: 0.00 </label> <label
-                      class="accAttr ng-binding ng-hide" ng-show="e.isForeign && !e.isAmount"
-                      ng-click="accAttrRateOnClick($event, $index)"> 汇率: 0.0000 </label></div>
-                    <div class="col-debit"><label class="tbLabel ng-binding" for="zweirtqs-4-6"> </label> <input
-                      class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" id="zweirtqs-4-6"
-                      ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'debit')"
-                      ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'debit')" ng-model="e.debit"
-                      ng-disabled="freeze"></div>
-                    <div class="col-credit"><label class="tbLabel ng-binding" for="zweirtqs-4-7"> </label> <input
-                      class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" id="zweirtqs-4-7"
-                      ng-click="cellFocusOnClick($event)" ng-change="entryAmountOnChange(e, 'credit')"
-                      ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'credit')" ng-model="e.credit"
-                      ng-disabled="freeze"></div> <!-- ngIf: !freeze -->
-                    <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
-                         ng-click="deleteEntry($index)" ng-if="!freeze"></div><!-- end ngIf: !freeze --> </div>
-                  <!-- end ngRepeat: e in entries -->
-                </div>
-                <div ng-show="!assistSelector.on" source="subjects" filter="cacheEntry.origin.subject"
-                     output="cacheEntry.out" on="subSelector.on" options="subSelector"
-                     addsub="entrySubjectCreate()" cfmsub="entrySubjectSelected(e)" class="ng-isolate-scope"
-                     id="ui-sub-421765"
-                     style="position: fixed; z-index: 1; top: 0px; left: 0px; width: 0px; height: 0px;">
-                  <div id="ui-ss-container" click-test="" listen="options.on" onmouselost="ui_close()"
-                       class="ng-isolate-scope" mdbuspon=""
-                       style="top: 270px; left: 230.375px; width: 507px; height: 59px; display: none;">
-                    <ul>
-                      <li ng-class="{'hide' : (!options.hints.showCreate) || (!subUnknown)}" ng-click="createSub()"
-                          class="hide">新建此科目
-                      </li>
-                      <li class="forbidden hide" ng-class="{'hide' : options.hints.showCreate || (!subUnknown)}">[无效科目]
-                      </li> <!-- ngRepeat: sub in cacheList -->
-                      <li ng-repeat="sub in cacheList" ng-class="{
-                'nonLeaf' : !sub.isLeaf && !options.hints.allowNonLeaf,
-	    		'highlighted' : sub.isHighlighted
-            }" ng-style="options.hints.autoIndent &&
-                {'padding-left' : (sub.level - 1) * 15 + 8 + 'px'}" ng-click="ui_selectSubject($index)"
-                          class="ng-binding ng-scope" style="padding-left: 8px;">1001 库存现金
-                      </li><!-- end ngRepeat: sub in cacheList -->
-                      <li ng-repeat="sub in cacheList" ng-class="{
-                'nonLeaf' : !sub.isLeaf && !options.hints.allowNonLeaf,
-	    		'highlighted' : sub.isHighlighted
-            }" ng-style="options.hints.autoIndent &&
-                {'padding-left' : (sub.level - 1) * 15 + 8 + 'px'}" ng-click="ui_selectSubject($index)"
-                          class="ng-binding ng-scope" style="padding-left: 8px;">1002 银行存款
-                      </li><!-- end ngRepeat: sub in cacheList -->
-                      <li ng-repeat="sub in cacheList" ng-class="{
-                'nonLeaf' : !sub.isLeaf && !options.hints.allowNonLeaf,
-	    		'highlighted' : sub.isHighlighted
-            }" ng-style="options.hints.autoIndent &&
-                {'padding-left' : (sub.level - 1) * 15 + 8 + 'px'}" ng-click="ui_selectSubject($index)"
-                          class="ng-binding ng-scope" style="padding-left: 8px;">1004 备用金
-                      </li><!-- end ngRepeat: sub in cacheList -->
-                      <li ng-repeat="sub in cacheList" ng-class="{
-                'nonLeaf' : !sub.isLeaf && !options.hints.allowNonLeaf,
-	    		'highlighted' : sub.isHighlighted
-            }" ng-style="options.hints.autoIndent &&
-                {'padding-left' : (sub.level - 1) * 15 + 8 + 'px'}" ng-click="ui_selectSubject($index)"
-                          class="ng-binding ng-scope nonLeaf" style="padding-left: 8px;">1012 其他货币资金
-                      </li><!-- end ngRepeat: sub in cacheList -->
-                      <li ng-repeat="sub in cacheList" ng-class="{
-                'nonLeaf' : !sub.isLeaf && !options.hints.allowNonLeaf,
-	    		'highlighted' : sub.isHighlighted
-            }" ng-style="options.hints.autoIndent &&
-                {'padding-left' : (sub.level - 1) * 15 + 8 + 'px'}" ng-click="ui_selectSubject($index)"
-                          class="ng-binding ng-scope" style="padding-left: 23px;">1012001 其他货币资金 - 银行汇票
-                      </li><!-- end ngRepeat: sub in cacheList -->
-                      <li ng-repeat="sub in cacheList" ng-class="{
-                'nonLeaf' : !sub.isLeaf && !options.hints.allowNonLeaf,
-	    		'highlighted' : sub.isHighlighted
-            }" ng-style="options.hints.autoIndent &&
-                {'padding-left' : (sub.level - 1) * 15 + 8 + 'px'}" ng-click="ui_selectSubject($index)"
-                          class="ng-binding ng-scope" style="padding-left: 23px;">1012002 其他货币资金 - 银行本票
-                      </li>
-                     </ul>
-                  </div>
-                </div>
-                <div click-test="" listen="assistSelector.enableClickTest" onmouselost="assistBoxOnblur()"
-                     class="assistBox ng-isolate-scope ng-hide" ng-show="assistSelector.on" id="assistBox-ui-et-807744"
-                     mlaajzfx="" style="top: 270px; left: 230.375px; width: 507px;">
-                  <div source="assistSelector.source" on="assistSelector.on"
-                       suggestion="assistSelector.suggestion" auto-comfirm="true"
-                       output="assistSelector.output" enable-click-test="assistSelector.enableClickTest"
-                       selected="cacheEntry.origin.items" finish="assistSelector.finish"
-                       callback="entryAssistSelected()" class="ng-isolate-scope">
-                    <div class="assistSelector ng-hide" ng-show="on">
-                      <div class="content ps-container ps-theme-default"
-                           data-ps-id="7a6964c4-2d7c-1227-3fcb-1469400e40fb">
-                        <!-- ngRepeat: (type, select) in selector -->
-                        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-                          <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                        </div>
-                        <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
-                          <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                        </div>
-                      </div>
-                      <div class="footer ng-hide" ng-show="!autoComfirm">
-                        <div class="btnBox">
-                          <div class="btn-confirm solidBtn" ng-click="confirm()"> 确认</div>
-                          <div class="btn-more solidBtn" ng-click="more()"> 确认并继续</div>
-                        </div>
-                      </div>
-                      <div on="creator.on" source="creator.source" output="suggestion"
-                           callback="created()"
-                           class="ng-isolate-scope">
-                        <div class="site-mask anime" ng-class="{'site-mask--shade': on}">
-                          <div class="pop-container site-popup anime assistCreator"
-                               ng-class="{'site-popup--expand' : on}"><p class="title"> 添加辅助核算项 </p>
-                            <div class="icon-close" ng-click="close()"></div>
-                            <div class="content ps-container ps-theme-default"
-                                 data-ps-id="91f90cf4-8fbf-b56e-1070-61ab84ac571e">
-                              <div class="item"><label for="assistCreator-code-mewjieip">编码</label>
-                                <div class="inputBox">
-                                  <input type="text" id="assistCreator-code-mewjieip"
-                                         ng-model="creator.code"
-                                         class="ng-pristine ng-untouched ng-valid ng-empty"></div>
-                              </div>
-                              <div class="item">
-                                <label for="assistCreator-name-mewjieip">名称</label>
-                                <div class="inputBox">
-                                  <input type="text" id="assistCreator-name-mewjieip"
-                                         ng-model="creator.name"
-                                         class="ng-pristine ng-untouched ng-valid ng-empty"></div>
-                              </div>
-                              <div class="item ng-hide" ng-show="creator.type === 'inventory'"><label
-                                for="assistCreator-unit-mewjieip">单位</label>
-                                <div class="inputBox">
-                                  <input type="text" id="assistCreator-unit-mewjieip"
-                                         ng-model="creator.unit"
-                                         class="ng-pristine ng-untouched ng-valid ng-empty"></div>
-                              </div>
-                              <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-                                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                              </div>
-                              <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
-                                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                              </div>
-                            </div>
-                            <div class="footer">
-                              <div class="btn-cancel solidBtn" ng-click="cancel()"> 取消</div>
-                              <div class="right">
-                                <div class="btn-save solidBtn" ng-click="save()"> 保存</div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div id="accAttrBox-ui-et-807744" class="accAttrBox ng-isolate-scope" click-test=""
-                     listen="options.active" onmouselost="accAttrBoxOnBlur()" ng-style="accAttrBox.on &&{
-             'pointer-events' : 'painted',
-             'opacity' : '1'
-         }" mryezilm="">
+
                   <div class="accAttrContainer">
                     <div class="accRow ng-hide" ng-show="cacheEntry.isAmount"><p class="accTag">数量:</p> <input
                       class="accInput ng-pristine ng-untouched ng-valid ng-empty" type="text"
@@ -1587,17 +1261,6 @@
                       class="accInput ng-pristine ng-untouched ng-valid ng-empty" type="text" ng-model="cacheEntry.rate"
                       ng-disabled="freeze" ng-focus="accAttrRateOnFocus($event)" ng-blur="accAttrRateOnBlur()"
                       ng-change="accAttrRateOnChange()"></div>
-                    <div class="accFooter">
-                      <div class="boxButton accCancel com-button anime ng-isolate-scope com-button--cancel"
-                           ng-class="class" ng-click=";click();" ui-button="" btn-type="cancel"
-                           btn-click="accAttrBoxCancel()">
-                        <div><span class="ng-scope">取消</span></div>
-                      </div>
-                      <div class="boxButton accSave com-button anime ng-isolate-scope com-button--ok" ng-class="class"
-                           ng-click=";click();" ui-button="" btn-click="accAttrBoxOk(cacheEntry)">
-                        <div><span class="ng-scope">保存</span></div>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 <div id="balanceBox-ui-et-807744" class="balanceBox">
@@ -1643,13 +1306,16 @@
 </template>
 
 <script>
+  import api from './api/index'
   import utils from '../../utils'
   //Js部分尽量采用ES6语法，webpack babel插件会转义兼容
   export default {
     //组件私有数据（必须是function，而且要return对象类型）
     data() {
       return {
-        accountId: '',
+        token: utils.dbGet("userInfo").token,
+        adminId: utils.dbGet("userInfo").id,
+        accountId: utils.dbGet("account").id,
         // 新建凭证弹层
         showVoucherFlag: false,
         // 新建或者编辑凭证对象
@@ -1666,6 +1332,16 @@
           // 贷方现金
           lenderCash: '',
         },
+        // 科目
+        subjectList: [],
+        // 凭证列表模板数据
+        entries: [
+          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false},
+          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false},
+          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false},
+          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false},
+          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false}
+        ],
       }
     },
     //计算属性
@@ -1685,13 +1361,26 @@
         console.log("新建或者更新凭证的科目")
       },
       // 展示下拉框
-      showSelect() {
-        console.log("展示下拉框")
+      showSelect(opt) {
+        console.log("展示下拉框", opt)
       },
       // 借方贷方点击事件
       cellFocusOnClick() {
         console.log("借方贷方点击事件")
-      }
+      },
+      // 查询科目列表数据
+      querySubject() {
+        console.log("查询科目列表数据")
+        api.querySubjectListData({
+          accountSetId: this.accountId,
+          token: this.token
+        }).then(res => {
+          console.log("查询科目列表数据结果：", res.body)
+          if (res.body.result == 0) {
+            this.subjectList = res.body.data
+          }
+        })
+      },
     },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
@@ -1705,6 +1394,8 @@
       } else {
         // this.$router.push({path: '/login'})
       }
+      // 查询科目列表
+      this.querySubject()
     },
     //要用到哪些子组件（如果组件已是最小粒度，那么可省略该属性）
     components: {},
@@ -2303,4 +1994,13 @@
   .icon-unaudited {
     background-image: url(./i/unaudited.png);
   }
+
+  #ui-ss-container{position:absolute;z-index:1000;width:100%;height:100%;min-height:150px;background-color:#fff}
+  #ui-ss-container ul{width:100%;height:100%;margin:0;padding:0;overflow-x:hidden;overflow-y:auto;font-weight:100;border:1px solid #ddd;border-radius:3px;box-shadow:5px 5px 20px #adadad}
+  #ui-ss-container li{padding:0 0 0 10px;width:100%;line-height:30px;list-style:none;white-space:nowrap;text-overflow:ellipsis;color:#2da8ff;cursor:pointer}
+  #ui-ss-container li:hover{background-color:#f5f5f5;color:#2da8ff}
+  #ui-ss-container .nonLeaf{color:#d3d3d3;cursor:not-allowed}
+  #ui-ss-container .highlighted{color:#fff;background-color:#2da8ff}
+  #ui-ss-container .forbidden{cursor:not-allowed}
+  #ui-ss-container .hide{display:none}
 </style>

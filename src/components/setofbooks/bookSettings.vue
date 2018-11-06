@@ -1254,7 +1254,7 @@
               <p class="grid-label popup-label">入账科目</p>
               <select class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty"
                       v-model="asset.courseId">
-                <option v-for="sub in accountingCourselist" :value="sub.id" class="ng-binding ng-scope">
+                <option v-for="sub in accountingCourselist" :value="sub.id" class="ng-binding ng-scope" :key="sub.coding + '' + sub.courseName">
                   {{sub.coding}} - {{sub.courseName}}
                 </option>
               </select>
@@ -1263,7 +1263,7 @@
               <p class="grid-label popup-label">折旧方法</p>
               <select class="grid-content ng-pristine ng-untouched ng-valid ng-not-empty"
                       v-model="asset.depreciationMethod">
-                <option v-for="a in fixedAssetModel" class="ng-binding ng-scope" :value="a.value"
+                <option v-for="a in fixedAssetModel" class="ng-binding ng-scope" :value="a.value" :key="a.name + '_' + a.value"
                         v-text="a.name"></option>
               </select>
             </div>
