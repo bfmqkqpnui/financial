@@ -1175,30 +1175,35 @@
             <div class="entryBody">
               <div class="ui-et ng-isolate-scope ps-container ps-theme-default" id="ui-et-807744">
                 <div class="entrysContainer">
-                  <div class="entryBar ng-scope" v-for="(e, index) in entries" :key="index">
+                  <div class="entryBar ng-scope" v-for="(e, index) in entries.list" :key="index">
                     <div class="button insert icon-16 g-icon-insert-line ng-scope" title="下方插入行"
                          ng-click="insertEntry(index)"></div>
-                    <div class="col-summary">
-                      <label class="tbLabel" for="zweirtqs-0-0">
+                     <!-- 摘要 -->     
+                     <div class="col-summary">
+                      <label class="tbLabel" :for="forId(index, 0)">
                         <p class="ng-binding"></p>
                       </label>
-                      <input class="tbInput ng-pristine ng-valid ng-empty ng-touched" id="zweirtqs-0-0" type="text"
-                             ng-change="entrySummaryOnChanged(e)" ng-model="e.brief"></div>
-                    <div class="col-subNum" v-if="!e.canShowSelectFlag">
-                      <label class="tbLabel ng-binding" for="zweirtqs-0-1"></label>
+                      <input class="tbInput ng-pristine ng-valid ng-empty ng-touched" :id="forId(index, 0)" type="text"
+                             ng-change="entrySummaryOnChanged(e)" ng-model="e.brief" />
+                     </div>
+                    <!-- 科目编号 -->
+                    <div class="col-subNum">
+                      <label class="tbLabel ng-binding" :for="forId(index, 1)" v-text="e.subjectId"></label>
                     </div>
-                    <div class="col-subName-c" v-if="!e.canShowSelectFlag">
-                      <label class="tbLabel" for="zweirtqs-0-1">
-                        <p class="ng-binding"></p>
+                    <!-- 科目名称 -->
+                    <div class="col-subName-c">
+                      <label class="tbLabel" :for="forId(index, 1)">
+                        <p class="ng-binding" v-text="e.subjectName"></p>
                       </label>
                     </div>
-                    <div class="col-subject-c" @click.stop="showSelect(e)" v-if="!e.canShowSelectFlag">
+                    <!-- 科目下拉选项 -->
+                    <div class="col-subject-c" :class="e.canShowSelectFlag?'col-subject-on' : ''">
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty"
-                             id="zweirtqs-0-1" type="text" ng-model="cacheEntry.origin.subject"
-                             ng-focus="entrySubjectOnFocus($index, $event)" ng-change="entrySubjectOnChange($event)">
+                             type="text" v-model="e.subjectId" :id="forId(index, 1)"
+                             @focus="inputFocus(index)" @blur="inputBlur(index)" ng-change="entrySubjectOnChange($event)">
                     </div>
 
-                    <div class="col-currency ng-hide zweirtqs-0-2">
+                    <div class="col-currency ng-hide zweirtqs-0-2" v-if="1 != 1">
                       <label class="accAttr ng-binding ng-hide" ng-click="accAttrAmountOnClick($event, $index)"> 数量:
                         1.00 </label>
                       <label class="accAttr ng-binding ng-hide" ng-click="accAttrPriceOnClick($event, $index)">
@@ -1210,17 +1215,17 @@
                         汇率: 0.0000 </label>
                     </div>
 
-                    <div class="col-debit" @click.self="cellFocusOnClick">
-                      <label class="tbLabel ng-binding" for="zweirtqs-0-6"> </label>
+                    <div class="col-debit" @click.stop="cellFocusOnClick">
+                      <label class="tbLabel ng-binding" :for="forId(index, 6)"> </label>
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-                             id="zweirtqs-0-6" ng-model="e.debit"
+                             :id="forId(index, 6)" v-model="e.debitCash"
                              ng-change="entryAmountOnChange(e, 'debit')"
                              ng-focus="entryAmountOnFocus($event)" ng-blur="entryAmountOnBlur(e, 'debit')">
                     </div>
-                    <div class="col-credit" @click.self="cellFocusOnClick">
-                      <label class="tbLabel ng-binding" for="zweirtqs-0-7"> </label>
+                    <div class="col-credit" @click.stop="cellFocusOnClick">
+                      <label class="tbLabel ng-binding" :for="forId(index, 7)"> </label>
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-                             id="zweirtqs-0-7" ng-model="e.credit"
+                             :id="forId(index, 7)" v-model="e.lenderCash"
                              ng-change="entryAmountOnChange(e, 'credit')">
                     </div>
                     <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
@@ -1228,21 +1233,22 @@
                   </div>
 
                   <!-- 弹层下拉框 Begin -->
-                  <div ng-show="!assistSelector.on" source="subjects" filter="cacheEntry.origin.subject" output="cacheEntry.out" on="subSelector.on" options="subSelector" addsub="entrySubjectCreate()" cfmsub="entrySubjectSelected(e)" class="ng-isolate-scope" id="ui-sub-871971" style="position: fixed; z-index: 1; top: 0px; left: 0px; width: 0px; height: 0px;"> 
-                    <div id="ui-ss-container" click-test="" listen="options.on" onmouselost="ui_close()" class="ng-isolate-scope" gvevawcr="" style="top: 210px; left: 230.225px; width: 507px; height: 59px; display: none;"> 
+                  <div v-if="cacheEntry.on" class="ng-isolate-scope" id="ui-sub-871971" style="position: fixed; z-index: 1; top: 0px; left: 0px; width: 0px; height: 0px;"> 
+                    <div id="ui-ss-container" class="ng-isolate-scope" style="left: 230.225px; width: 507px; height: 59px;" :style="{'top': (cacheEntry.index * 60 + 210) + 'px'}"> 
                       <ul> 
                         <li  ng-click="createSub()" class="hide">新建此科目</li> 
                         <li class="forbidden hide">[无效科目]</li> <!-- ngRepeat: sub in cacheList --> 
                         <li ng-repeat="sub in cacheList" ng-click="ui_selectSubject($index)" class="ng-binding ng-scope" style="padding-left: 8px;">1004  备用金</li>
                         <li ng-repeat="sub in cacheList" ng-click="ui_selectSubject($index)" class="ng-binding ng-scope nonLeaf" style="padding-left: 8px;">1012  其他货币资金</li>
                         <li ng-repeat="sub in cacheList" ng-click="ui_selectSubject($index)" class="ng-binding ng-scope" style="padding-left: 23px;">1012001  其他货币资金 - 银行汇票</li>
+                        <li v-for="(sub, idx) in subjectList" ng-click="ui_selectSubject(sub)" class="ng-binding ng-scope" style="padding-left: 23px;" :key="idx">{{sub.codingName}}</li>
                        </ul>
                      </div>
                    </div>
                   <!-- 弹层下拉框 End -->
 
 
-                  <div class="accAttrContainer">
+                  <div class="accAttrContainer" v-if="1 != 1">
                     <div class="accRow ng-hide" ng-show="cacheEntry.isAmount"><p class="accTag">数量:</p> <input
                       class="accInput ng-pristine ng-untouched ng-valid ng-empty" type="text"
                       ng-model="cacheEntry.amount"
@@ -1272,10 +1278,10 @@
             <div class="entryFooter">
               <div class="tbRow"><p class="f-summary">合计</p>
                 <p class="f-subject">差值： <span ng-class="{'span-nb' : voucher.vDiff != 0}"
-                                               class="ng-binding">0.00</span>
+                                               class="ng-binding">{{entries.diff.total | moneyFilter}}</span>
                 </p>
-                <p class="f-debit ng-binding">0.00</p>
-                <p class="f-credit ng-binding">0.00</p></div>
+                <p class="f-debit ng-binding">{{entries.diff.debit | moneyFilter}}</p>
+                <p class="f-credit ng-binding">{{entries.diff.lender | moneyFilter}}</p></div>
             </div>
           </div>
         </div>
@@ -1321,27 +1327,26 @@
         // 新建或者编辑凭证对象
         cacheEntry: {
           title: '新建凭证',
-          // 摘要
-          brief: '',
-          // 科目编号
-          subjectId: '',
-          // 科目名称
-          subjectName: '',
-          // 借方现金
-          debitCash: '',
-          // 贷方现金
-          lenderCash: '',
+          on: false,
+          index: 1
         },
         // 科目
         subjectList: [],
         // 凭证列表模板数据
-        entries: [
-          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false},
-          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false},
-          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false},
-          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false},
-          {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: false}
-        ],
+        entries: {
+          list: [
+            {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: true, balance: 0},
+            {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: true, balance: 0},
+            {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: true, balance: 0},
+            {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: true, balance: 0},
+            {brief: '',subjectId: '',subjectName: '' ,debitCash: '', lenderCash: '',canShowSelectFlag: true, balance: 0}
+          ],
+          diff: {
+            total: 0,
+            debit: 0,
+            lender: 0
+          }
+        },
       }
     },
     //计算属性
@@ -1363,6 +1368,7 @@
       // 展示下拉框
       showSelect(opt) {
         console.log("展示下拉框", opt)
+        // opt.canShowSelectFlag = true
       },
       // 借方贷方点击事件
       cellFocusOnClick() {
@@ -1381,6 +1387,19 @@
           }
         })
       },
+      // 获取id
+      forId(index, value) {
+        return 'zweirtqs_' + index + '_' + value
+      },
+      inputFocus(index) {
+        console.log("inputFocus:", index)
+        this.cacheEntry.on = true
+        this.cacheEntry.index = index
+      },
+      inputBlur(index) {
+        console.log("inputBlur:", index)
+        this.cacheEntry.on = false
+      }
     },
     //生命周期钩子：组件实例渲染完成时调用
     mounted() {
@@ -1402,7 +1421,7 @@
     filters: {
       moneyFilter(value) {
         if (utils.isExist(value)) {
-          let hasPoint = value.split(".")
+          let hasPoint = value.toString().split(".")
           if (hasPoint.length == 1) {
             return value + ".00";
           } else if (hasPoint.length > 1) {
@@ -1412,6 +1431,15 @@
               return value;
             }
           }
+        }
+      }
+    },
+    directives: {
+      focus: {
+        // 指令的定义
+        inserted: function (el) {
+          console.log("指令的定义")
+          el.focus()
         }
       }
     }
