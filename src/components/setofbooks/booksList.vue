@@ -49,10 +49,6 @@
                     <div ng-class="tableInfo[user.type].body.index" class="ng-binding span-5" v-text="index+1"></div>
                     <div ng-class="tableInfo[user.type].body.name" :title="item.companyName" style="text-align:left"
                          class="ng-binding span-32" v-text="item.companyName">
-                      <!--<div class="icon-tags">
-                        <div class="icon-tag icon-zero ng-hide" ng-show="x.automaticType"></div>
-                        <div class="icon-tag icon-specialIndustry ng-hide" ng-show="x.isSpecialIndustry"></div>
-                      </div>-->
                       <div class="remarkTag ng-hide" ng-show="(x.vouStat.remarked || 0) !== 0"></div>
                     </div>
                     <div class="ng-binding span-10" v-text="item.taxTypesEnum"></div>
@@ -106,7 +102,7 @@
           <div class="message-input">
             <select v-model="submitAddAccInfo.taxTypes"
                     class="ng-pristine ng-valid ng-not-empty ng-touched">
-              <option :label="item.value" v-for="item in accountOptions" v-text="item.value" :value="item.key"></option>
+              <option :label="item.value" v-for="(item, index) in accountOptions" v-text="item.value" :value="item.key" :key="index"></option>
             </select>
           </div>
         </div>
@@ -436,4 +432,25 @@
   .module-content.booksList {
     top: 50px;
   }
+
+  .accTabBody .remarkTag:before {
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 0;
+    right: 0;
+    border-top: 25px solid #ff8a52;
+    border-left: 25px solid transparent;
+}
+
+.accTabBody .remarkTag:after {
+    content: "批";
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    line-height: 12px;
+    font-size: 12px;
+    color: #fff;
+    z-index: 1;
+}
 </style>

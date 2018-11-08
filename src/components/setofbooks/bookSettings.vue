@@ -9,7 +9,7 @@
                 <li v-for="(menu,index) in setMenu.list"
                     :class="setMenu.type == menu.type ? 'menuOn' : ''" @click="selectType(menu)"
                     @mouseover="changeActive(menu)" @mouseout="removeActive(menu)"
-                    v-text="menu.value">
+                    v-text="menu.value" :key="index">
                 </li>
                 <span :class="setTitleClass"></span>
               </ul>
