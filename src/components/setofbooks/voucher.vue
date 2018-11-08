@@ -60,7 +60,7 @@
                   </div>
                 </div>
               </div>
-              <div class="toolTitle" ng-show="vouchers.length !== 0">
+              <div class="toolTitle" v-if="voucherList.length !== 0">
                 <ul class="voucherTypes">
                   <li><span class="circle cir-types vou-gather"></span>收</li>
                   <li><span class="circle cir-types vou-payment"></span>付</li>
@@ -90,12 +90,11 @@
                   <div class="anime icon-expand expand" ng-class="{'expand-s' : isAllFolded}"></div>
                 </div>
               </div>
+              <!-- 表单主体 -->
               <div class="contentPage ps-theme-default" id="voucherListComponent" style="overflow-y: auto;">
                 <div class="pageWrapper">
-                  <div class="anime entryContainer ng-scope entryContainer--unremarked"
-                       ng-show="showVoucherList"
-                       ng-repeat="v in vouchers | filter: voucherFilter | orderBy: voucherListOrder"
-                       ng-class="v.hasRemark ? 'entryContainer--remarked' : 'entryContainer--unremarked'">
+                  <div class="anime entryContainer ng-scope" v-for="(v, index) in voucherList" :key="index"
+                       :class="v.hasRemark ? 'entryContainer--remarked' : 'entryContainer--unremarked'">
                     <div class="anime containerBorder"></div>
                     <div class="v-col-type">
                       <div class="circle cir-vouList vou-payment" ng-class="{'vou-gather':v.transaction == '1',
@@ -104,15 +103,15 @@
                     <div class="v-col-content">
                       <div class="entryTitlebar" ng-click="switchFolded(v)">
                         <div class="col-index">
-                          <label for="vl0" class="ng-binding">记-001</label>
-                          <input id="vl0" type="text" ng-model="v.vSeq" ng-if="!v.vAudited"
+                          <label for="vl0" class="ng-binding" v-text="v.vid"></label>
+                          <input id="vl0" type="text" v-model="v.vid" ng-if="!v.vAudited"
                                 ng-focus="seqInputOnfocus($event)" ng-blur="changeVoucherSeq(v)"
                                 ng-click="$event.stopPropagation();" ng-keydown="seqInputKeydown($event)"
                                 class="ng-pristine ng-untouched ng-valid ng-scope">
                         </div>
                         <p class="col-summary ng-binding">缴税</p>
                         <p class="col-source ng-binding"> 数据来源： 
-                          <span class="span-source ng-binding">手动新建</span>
+                          <span class="span-source ng-binding" v-text="v.comesFrom"></span>
                         </p>
                         <div class="entryOptsBox">
                           <div class="button entryOpt ng-scope" ng-if="!v.vAudited && canDeleteVoucher(v)"
@@ -148,8 +147,8 @@
                         <div class="sumIcon icon-sum"></div>
                         <p class="col-name">总借贷</p>
                         <p class="col-subject"></p>
-                        <p class="col-debit ng-binding">0.00</p>
-                        <p class="col-credit ng-binding">100.00</p>
+                        <p class="col-debit ng-binding">{{v.totalBorrow | moneyFilter}}</p>
+                        <p class="col-credit ng-binding">{{v.totalLoan | moneyFilter}}</p>
                       </div>
                       <div class="remarkBar" ng-show="v.hasRemark || v.vRemarkOnEdit" @click.stop="editVoucherRemark" v-if="1 != 1">
                         <p class="remark-label">批注：</p>
@@ -182,7 +181,7 @@
               </div>
             </div>
             <div class="page-content">
-              <div class="contentPage ps-container ps-theme-default" scroll="" scroll-behavior="top"
+              <div class="contentPage ps-container ps-theme-default" 
                    data-ps-id="53852e84-2079-40e0-14bd-c1dde3f13c87">
                 <div class="pageWrapper vouchersConfig">
                   <div class="ui-accrue ng-isolate-scope" type="page"></div>
@@ -211,7 +210,8 @@
               </div>
             </div>
           </div>
-          <div class="page-tab ng-isolate-scope ng-hide" ng-show="on" ui-vouchers-adjust="" by="tab">
+
+          <div class="page-tab ng-isolate-scope ng-hide">
             <div class="page-tools" style="margin-right:30px">
               <div class="title-gap"></div>
               <div class="searchInput">
@@ -624,7 +624,7 @@ export default {
       // console.log("inputFocus:", index)
       this.cacheEntry.on = true;
       this.cacheEntry.index = Number(index) + 1;
-      this.voucher.voucherEntryList[index].hasFocus = true;
+      this.voucher.voucherEntryList[this.cacheEntry.index - 1].hasFocus = true;
       event.currentTarget.select();
     },
     inputBlur(index) {
@@ -688,6 +688,7 @@ export default {
     // 新增实现
     realSave() {
       this.close()
+      this.hideMask()
       let params = this.voucher.voucherEntryList;
       for (let i = params.length - 1; i >= 0; i--) {
         if (
@@ -702,6 +703,7 @@ export default {
       }
       this.voucher.token = this.token;
       this.voucher.accountSetId = this.accountId;
+      console.log("保存信息参数：", JSON.stringify(this.voucher))
       api.addSubjectData(this.voucher).then(res => {
         console.log("保存信息结果：", res.body);
       });
@@ -755,7 +757,8 @@ export default {
     },
     // 隐藏蒙层
     hideMask() {
-      (this.waringMsgFlag = false), (this.errorMsgFlag = false);
+      this.waringMsgFlag = false
+      this.errorMsgFlag = false
     },
     // 初始化
     entriesConfig() {
@@ -844,6 +847,19 @@ export default {
     // 显示列表 批注
     editVoucherRemark(opt) {
       console.log("显示列表 批注")
+    },
+    // 查询凭证列表
+    queryVoucherList() {
+      api.queryVoucher({
+        accountSetId: this.accountId,
+        token: this.token
+      }).then(res => {
+        console.log("查询凭证列表结果：", res.body)
+        if (res.body.result == 0) {
+          this.voucherList = res.body.data
+          console.log("显示list:", this.voucherList)
+        }
+      })
     }
   },
   //生命周期钩子：组件实例渲染完成时调用
@@ -856,6 +872,8 @@ export default {
     } else {
       // this.$router.push({path: '/login'})
     }
+    // 查询列表数据
+    this.queryVoucherList()
     // 查询科目列表
     this.querySubject();
   },
