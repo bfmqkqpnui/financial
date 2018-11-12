@@ -205,7 +205,7 @@
                                                  ng-click="showSubjectPop(data, 'addSameLevel', $event)"> 新增同级科目
                                             </div>
                                             <div class="merge operate ng-hide" ng-click="mergeSubject(data, $event)"
-                                                 ng-show="data.isLeaf &amp;&amp; !data.system"> 科目合并
+                                                 ng-show="data.isLeaf && !data.system"> 科目合并
                                             </div>
                                           </div>
                                         </div>
@@ -219,7 +219,7 @@
                                     <div class="tableTd span-10 ng-binding" v-text="itemC.currency"></div>
                                     <span class="icon-delete ng-hide"
                                           ng-click="deleteSubject(data);$event.stopPropagation();"
-                                          ng-show="isMyAccount &amp;&amp; !data.system"></span>
+                                          ng-show="isMyAccount && !data.system"></span>
                                   </div>
                                 </div>
                               </div>
@@ -253,8 +253,8 @@
                           <th class="span-20 ng-binding">{{menu.name}}编码</th>
                           <th class="span-50 ng-binding" :class="{'span-70':menu.type != 'profitAndLoss'}">
                             {{menu.name}}名称
-                          <th class="span-20 ng-scope" v-if="menu.type == 'profitAndLoss'">单位</th>
                           </th>
+                          <th class="span-20 ng-scope" v-if="menu.type == 'profitAndLoss'">单位</th>
                         </tr>
                         </thead>
                       </table>
@@ -378,8 +378,8 @@
                             <div class="viewInfoSize ng-binding"></div>
                           </div>
                           <div class="reportTable-right">
-                            <div v-for="menu in reportMenu.list" @click.stop="switchReport(menu)"
-                                 v-if="menu.type != 'auxiliaryBalance'"
+                            <div v-for="(menu, idx) in reportMenu.list" @click.stop="switchReport(menu)"
+                                 v-if="menu.type != 'auxiliaryBalance'" :key="idx"
                                  class="ng-binding ng-scope" v-text="menu.name"
                                  :class="menu.isSelected ? 'menuOn' : ''">
                             </div>
@@ -561,7 +561,7 @@
                           <!-- 现金流量表 -->
                           <table class="cashTable" v-if="reportMenu.type == 'cashFlow'">
                             <tbody>
-                            <tr v-for="(row,index) in cashList" class="ng-scope evenOff">
+                            <tr v-for="(row,index) in cashList" class="ng-scope evenOff" :key="index">
                               <!-- 第一列 -->
                               <td class="span-55 ng-binding" :style="{'font-weight': row.bold ? 'bold' : ''}"
                                   v-html="row.project">
@@ -599,7 +599,7 @@
                           <!-- 利润表 -->
                           <table class="incomeTable" v-if="reportMenu.type == 'profit'">
                             <tbody>
-                            <tr v-for="row in profitList" class="ng-scope"
+                            <tr v-for="(row, index) in profitList" class="ng-scope" :key="index"
                                 :style="{'font-weight': row.bold ? 'bold' : ''}">
                               <td class="span-55 ng-binding" v-html="row.project"></td>
                               <td class="span-5 ng-binding" v-text="row.lineTime"></td>
@@ -1376,7 +1376,7 @@
               <select class="grid-content grid-content--lock ng-pristine ng-untouched ng-valid ng-not-empty"
                       :disabled="amortise.show" v-model="amortise.courseId"
                       :class="amortise.show? 'grid-content--lock' : ''">
-                <option v-for="sub in accountingAmortiseCourselist" :value="sub.id" class="ng-binding ng-scope">
+                <option v-for="(sub, index) in accountingAmortiseCourselist" :value="sub.id" class="ng-binding ng-scope" :key="index">
                   {{sub.coding}} - {{sub.courseName}}
                 </option>
               </select>
