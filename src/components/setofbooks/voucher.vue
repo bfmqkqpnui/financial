@@ -4,15 +4,16 @@
     <div class="module-content ng-scope">
       <div class="module-content_wrapper">
         <div class="module-content_page page-vouchers">
-          <div class="page-title"><p class="title title--on" ng-class="{'title--on': tab === 'list'}"
-                                     ng-click="selectTab('list')">凭证列表</p>
-            <p class="title ng-hide" ng-class="{'title--on': tab === 'report'}" ng-click="selectTab('report')"
+          <div class="page-title">
+            <p class="title" :class="{'title--on': tabType === 'list'}" @click="chooseTabType('list')">凭证列表</p>
+            <p class="title ng-hide" :class="{'title--on': tabType === 'report'}" ng-click="chooseTabType('report')"
                ng-show="!isCurrentIssue">结账报告</p>
-            <p class="title" ng-class="{'title--on': tab === 'accrue'}" ng-click="selectTab('accrue')">计提配置</p>
-            <p class="title" ng-class="{'title--on': tab === 'adjust'}" ng-click="selectTab('adjust')">往来调账</p>
+            <p class="title ng-hide" :class="{'title--on': tabType === 'accrue'}" ng-click="chooseTabType('accrue')">计提配置</p>
+            <p class="title ng-hide" :class="{'title--on': tabType === 'adjust'}" ng-click="chooseTabType('adjust')">往来调账</p>
             <div class="title-gap"></div>
           </div>
-          <div class="page-tab ng-isolate-scope" ng-show="on" ui-vouchers-list="" by="tab">
+          <!-- 列表-->
+          <div class="page-tab ng-isolate-scope" v-if="tabType == 'list'">
             <!-- 页面工具 -->
             <div class="page-tools">
               <div class="title-gap"></div>
@@ -150,10 +151,10 @@
                         <p class="col-debit ng-binding">{{v.totalBorrow | moneyFilter}}</p>
                         <p class="col-credit ng-binding">{{v.totalLoan | moneyFilter}}</p>
                       </div>
-                      <div class="remarkBar" ng-show="v.hasRemark || v.vRemarkOnEdit" @click.stop="editVoucherRemark" v-if="1 != 1">
+                      <div class="remarkBar" @click.stop="editVoucherRemark" v-if="v.isStartPostil == 1">
                         <p class="remark-label">批注：</p>
                         <div class="remark-content ng-binding" title="">
-                          <input type="text" class="ng-pristine ng-untouched ng-valid ng-scope">
+                          <input type="text" class="ng-pristine ng-untouched ng-valid ng-scope" v-model="v.postil">
                         </div>
                       </div>
                     </div>
@@ -168,28 +169,9 @@
               </div>
             </div>
           </div>
-          <div class="page-tab ng-isolate-scope ng-hide" ng-show="on" ui-vouchers-config="" by="tab">
-            <div class="page-tools">
-              <div class="title-gap"></div>
-              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow ng-hide" ng-class="class"
-                   ng-click=";click();" ng-show="hasChange" btn-click="cancel()" ui-button="" btn-type="hollow">
-                <div><span class="ng-scope">取消</span></div>
-              </div>
-              <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow ng-hide" ng-class="class"
-                   ng-click=";click();" ng-show="hasChange" btn-click="save()" ui-button="" btn-type="hollow">
-                <div><span class="ng-scope">保存</span></div>
-              </div>
-            </div>
-            <div class="page-content">
-              <div class="contentPage ps-container ps-theme-default" 
-                   data-ps-id="53852e84-2079-40e0-14bd-c1dde3f13c87">
-                <div class="pageWrapper vouchersConfig">
-                  <div class="ui-accrue ng-isolate-scope" type="page"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="page-tab ng-isolate-scope ng-hide" ng-show="on" ui-vouchers-report="" by="tab">
+          <!-- 计提配置 -->
+          <div class="page-tab ng-isolate-scope" v-if="tabType == 'accrue'"></div>
+          <!-- <div class="page-tab ng-isolate-scope" ng-show="on" ui-vouchers-report="" by="tab">
             <div class="page-tools">
               <div class="title-gap"></div>
               <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow ng-hide" ng-class="class"
@@ -209,9 +191,9 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="page-tab ng-isolate-scope ng-hide">
+          </div> -->
+          <!-- 往来调账 -->
+          <div class="page-tab ng-isolate-scope" v-if="tabType == 'adjust'">
             <div class="page-tools" style="margin-right:30px">
               <div class="title-gap"></div>
               <div class="searchInput">
@@ -473,6 +455,8 @@ export default {
   //组件私有数据（必须是function，而且要return对象类型）
   data() {
     return {
+      // 当前tab
+      tabType: "list",
       token: utils.dbGet("userInfo").token,
       adminId: utils.dbGet("userInfo").id,
       accountId: utils.dbGet("account").id,
@@ -566,11 +550,11 @@ export default {
       // 失败弹层标识
       errorMsgFlag: false,
       // 搜索关键词
-      voucherFilter: '',
+      voucherFilter: "",
       // 凭证列表数据
       voucherList: [],
       // 取消所有审核标识
-      isAllAudited: true,
+      isAllAudited: true
     };
   },
   //计算属性
@@ -642,7 +626,8 @@ export default {
         this.voucher.voucherEntryList[
           this.cacheEntry.index - 1
         ].course.courseName = opt.courseName;
-        this.voucher.voucherEntryList[this.cacheEntry.index - 1].courseId = opt.id
+        this.voucher.voucherEntryList[this.cacheEntry.index - 1].courseId =
+          opt.id;
       }
     },
     // 借贷方金额变更
@@ -687,8 +672,8 @@ export default {
     },
     // 新增实现
     realSave() {
-      this.close()
-      this.hideMask()
+      this.close();
+      this.hideMask();
       let params = this.voucher.voucherEntryList;
       for (let i = params.length - 1; i >= 0; i--) {
         if (
@@ -703,14 +688,26 @@ export default {
       }
       this.voucher.token = this.token;
       this.voucher.accountSetId = this.accountId;
-      console.log("保存信息参数：", JSON.stringify(this.voucher))
+      console.log("保存信息参数：", JSON.stringify(this.voucher));
       api.addSubjectData(this.voucher).then(res => {
         console.log("保存信息结果：", res.body);
+        if (res.body.result == 0) {
+          this.queryVoucherList()
+        } else {
+          this.$emit('error', res.body.msg)
+        }
       });
     },
     // 保存并新增
     saveAndCreate() {
       console.log("保存并新增");
+      if (this.beforeSave()) {
+          console.log("可以保存");
+          this.realSave();
+          this.createVoucher()
+        } else {
+          console.log("不可以保存");
+        }
     },
     // 保存前置
     beforeSave() {
@@ -737,17 +734,20 @@ export default {
       console.log("保存前置结果：", params);
       if (length != params.length && params.length > 0) {
         for (let i = 0; i < params.length - 1; i++) {
-          if (!params[i].course.coding && (params[i].digest || params[i].borrow != 0 || params[i].loan != 0)) {
+          if (
+            !params[i].course.coding &&
+            (params[i].digest || params[i].borrow != 0 || params[i].loan != 0)
+          ) {
             flag = false;
-            that.waringMsg = "第" + (i + 1) + "行科目为空,是否继续保存?"
+            that.waringMsg = "第" + (i + 1) + "行科目为空,是否继续保存?";
             that.waringMsgFlag = true;
             break;
           }
         }
         if (this.voucher.interpolation != 0) {
-            flag = false;
-            that.waringMsg = "借贷尚未平衡,是否继续保存?"
-            that.waringMsgFlag = true;
+          flag = false;
+          that.waringMsg = "借贷尚未平衡,是否继续保存?";
+          that.waringMsgFlag = true;
         }
       } else {
         this.errorMsgFlag = true;
@@ -757,8 +757,8 @@ export default {
     },
     // 隐藏蒙层
     hideMask() {
-      this.waringMsgFlag = false
-      this.errorMsgFlag = false
+      this.waringMsgFlag = false;
+      this.errorMsgFlag = false;
     },
     // 初始化
     entriesConfig() {
@@ -837,29 +837,38 @@ export default {
     },
     // 刷新列表
     initialize() {
-      console.log("刷新列表")
+      console.log("刷新列表");
     },
     // 清除搜索关键词
     clearFilter() {
-      console.log("清除搜索关键词")
-      this.voucherFilter = ''
+      console.log("清除搜索关键词");
+      this.voucherFilter = "";
     },
     // 显示列表 批注
     editVoucherRemark(opt) {
-      console.log("显示列表 批注")
+      console.log("显示列表 批注");
     },
     // 查询凭证列表
     queryVoucherList() {
-      api.queryVoucher({
-        accountSetId: this.accountId,
-        token: this.token
-      }).then(res => {
-        console.log("查询凭证列表结果：", res.body)
-        if (res.body.result == 0) {
-          this.voucherList = res.body.data
-          console.log("显示list:", this.voucherList)
-        }
-      })
+      api
+        .queryVoucher({
+          accountSetId: this.accountId,
+          token: this.token
+        })
+        .then(res => {
+          console.log("查询凭证列表结果：", res.body);
+          if (res.body.result == 0) {
+            this.voucherList = res.body.data;
+            console.log("显示list:", this.voucherList);
+          }
+        });
+    },
+    chooseTabType(type) {
+      if (type) {
+        this.tabType = type;
+      } else {
+        this.tabType = "list";
+      }
     }
   },
   //生命周期钩子：组件实例渲染完成时调用
@@ -873,7 +882,7 @@ export default {
       // this.$router.push({path: '/login'})
     }
     // 查询列表数据
-    this.queryVoucherList()
+    this.queryVoucherList();
     // 查询科目列表
     this.querySubject();
   },
@@ -1552,23 +1561,28 @@ export default {
   display: none;
 }
 /**隐藏滚动条*/
-#voucherListComponent::-webkit-scrollbar { width: 0 !important }
-#voucherListComponent { -ms-overflow-style: none !important; }
-#voucherListComponent { overflow: -moz-scrollbars-none !important; }
-
-.page-vouchers .remarkBar input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    font-size: 14px;
-    padding: 0;
-    border: none;
-    background-color: #fff;
+#voucherListComponent::-webkit-scrollbar {
+  width: 0 !important;
+}
+#voucherListComponent {
+  -ms-overflow-style: none !important;
+}
+#voucherListComponent {
+  overflow: -moz-scrollbars-none !important;
 }
 
+.page-vouchers .remarkBar input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-size: 14px;
+  padding: 0;
+  border: none;
+  background-color: #fff;
+}
 
 .page-vouchers .entryContainer--remarked {
-    box-shadow: 0 0 3px #ff8a52;
+  box-shadow: 0 0 3px #ff8a52;
 }
 </style>

@@ -16,72 +16,6 @@
         </div>
         <div class="com-issue_container anime com-issue_container--hidden">
           <div class="ng-isolate-scope">
-            <div class="year">
-              <div class="year_btn--last ng-hide" ng-show="isLastYearValid()" ng-click="lastYear()"></div>
-              <div class="year_tag ng-binding">2018</div>
-              <div class="year_btn--next ng-hide" ng-show="isNextYearValid()" ng-click="nextYear()"></div>
-            </div>
-            <div class="month"> <!-- ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 1
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 2
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 3
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 4
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 5
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 6
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 7
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope month_box--valid month_box--focus" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 8
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 9
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 10
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 11
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] -->
-              <div class="month_box anime ng-binding ng-scope" ng-class="{
-               'month_box--valid': isMonthValid(month),
-               'month_box--focus': isCurrentMonth(month)
-             }" ng-repeat="month in [1,2,3,4,5,6,7,8,9,10,11,12]" ng-click="selectMonth(month)"> 12
-              </div><!-- end ngRepeat: month in [1,2,3,4,5,6,7,8,9,10,11,12] --> </div>
           </div>
         </div>
       </div>
@@ -194,7 +128,7 @@
               this.$router.push({name: 'voucher'})
               break;
             case 3:
-              this.$router.push("/home")
+              this.$router.push({name: 'books'})
               break;
             case 4:
               this.$router.push("/home")
@@ -206,7 +140,7 @@
               this.$router.push("/home")
               break;
             case 7:
-              this.$router.push("/home")
+              this.$router.push({name: 'histories'})
               break;
             case 8:
               this.$router.push("/home")
