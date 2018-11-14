@@ -141,8 +141,12 @@ export default {
   addSubjectData: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/insert', params)
   },
-  // 查询
+  // 查询凭证列表信息
   queryVoucher: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/queryAllByAccountSetId', params)
+  },
+  // 更新凭证列表信息数据
+  updateVoucher: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/update', params)
   }
 }

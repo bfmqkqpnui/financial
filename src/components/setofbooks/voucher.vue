@@ -57,92 +57,94 @@
                     <p class="h-credit">贷方金额</p>
                   </div>
                   <div class="v-col-audit">
-                    <div class="button icon-25 fullAuditIndicator" :title="isAllAudited?'取消全部审核':'全部审核'" :class="isAllAudited ? 'icon-audited' : 'icon-unaudited'" ng-click="switchVouchersState()"></div>
+                    <div class="button icon-25 fullAuditIndicator" :title="isAllAudited?'取消全部审核':'全部审核'" :class="isAllAudited ? 'icon-audited' : 'icon-unaudited'" @click.stop="switchVouchersState"></div>
                   </div>
                 </div>
               </div>
-              <div class="toolTitle" v-if="voucherList.length !== 0">
+              <div class="toolTitle" v-if="voucherData.voucherList.length !== 0">
                 <ul class="voucherTypes">
                   <li><span class="circle cir-types vou-gather"></span>收</li>
                   <li><span class="circle cir-types vou-payment"></span>付</li>
                   <li><span class="circle cir-types vou-transfer"></span>转</li>
                 </ul>
-                <div class="button sortSwitcher" ng-click="switchListOrder()">
-                  <p class="ng-binding">降序排列</p>
-                  <div class="icon-sort icon-20 sort"></div>
-                </div>
-                <div class="button sortSwitcher" ng-click="sortByTransaction()" ng-show="isCurrentIssue">
-                  <p>按收付转排序</p>
-                  <div class="icon-sort icon-20 sort"></div>
-                </div>
-                <div class="button sortSwitcher" ng-click="sortByCatagory()" ng-show="isCurrentIssue">
-                  <p>按业务类型排序</p>
-                  <div class="icon-sort icon-20 sort"></div>
-                </div>
-                <div class="button vouOprSwitcher" ng-click="splitVouchers()" ng-show="isCurrentIssue">
-                  <p>拆分凭证</p>
-                </div>
-                <div class="button vouOprSwitcher" ng-click="integrationVouchers()" ng-show="isCurrentIssue">
-                  <p>汇总凭证</p>
-                </div>
+                <template v-if="1 != 1">
+                  <div class="button sortSwitcher" ng-click="switchListOrder()">
+                    <p class="ng-binding">降序排列</p>
+                    <div class="icon-sort icon-20 sort"></div>
+                  </div>
+                  <div class="button sortSwitcher" ng-click="sortByTransaction()" ng-show="isCurrentIssue">
+                    <p>按收付转排序</p>
+                    <div class="icon-sort icon-20 sort"></div>
+                  </div>
+                  <div class="button sortSwitcher" ng-click="sortByCatagory()" ng-show="isCurrentIssue">
+                    <p>按业务类型排序</p>
+                    <div class="icon-sort icon-20 sort"></div>
+                  </div>
+                  <div class="button vouOprSwitcher" ng-click="splitVouchers()" ng-show="isCurrentIssue">
+                    <p>拆分凭证</p>
+                  </div>
+                  <div class="button vouOprSwitcher" ng-click="integrationVouchers()" ng-show="isCurrentIssue">
+                    <p>汇总凭证</p>
+                  </div>
+                </template> 
                 <div class="gap"></div>
-                <p class="button subTitle ng-binding" title="全部收缩" ng-click="switchFoldeds()"> 共有3张凭证，已审核2张 </p>
+                <p class="button subTitle ng-binding" title="全部收缩" ng-click="switchFoldeds" v-if="voucherData"> 共有{{voucherData.totalCount}}张凭证，已审核{{voucherData.checkedCount}}张 </p>
                 <div class="vouSwitcher">
-                  <div class="anime icon-expand expand" ng-class="{'expand-s' : isAllFolded}"></div>
+                  <div class="anime icon-expand expand" :class="{'expand-s' : !voucherData.allShowDetails}"></div>
                 </div>
               </div>
               <!-- 表单主体 -->
               <div class="contentPage ps-theme-default" id="voucherListComponent" style="overflow-y: auto;">
                 <div class="pageWrapper">
-                  <div class="anime entryContainer ng-scope" v-for="(v, index) in voucherList" :key="index"
-                       :class="v.hasRemark ? 'entryContainer--remarked' : 'entryContainer--unremarked'">
+                  <div class="anime entryContainer ng-scope" v-for="(v, index) in voucherData.voucherList" :key="index"
+                       :class="v.isStartPostil == 1 ? 'entryContainer--remarked' : 'entryContainer--unremarked'"
+                       v-if="voucherData && voucherData.voucherList">
                     <div class="anime containerBorder"></div>
                     <div class="v-col-type">
-                      <div class="circle cir-vouList vou-payment" ng-class="{'vou-gather':v.transaction == '1',
-              'vou-payment':v.transaction == '2','vou-transfer':v.transaction == '3'}" title="付款凭证"></div>
+                      <div class="circle cir-vouList" :class="{'vou-gather':v.vType == '1', 'vou-payment':v.vType == '2','vou-transfer':v.vType == '3'}" :title="v.vName"></div>
                     </div>
                     <div class="v-col-content">
-                      <div class="entryTitlebar" ng-click="switchFolded(v)">
+                      <div class="entryTitlebar" @click.stop="switchFolded(v, index)">
                         <div class="col-index">
-                          <label for="vl0" class="ng-binding" v-text="v.vid"></label>
-                          <input id="vl0" type="text" v-model="v.vid" ng-if="!v.vAudited"
+                          <label for="vl0" class="ng-binding" v-text="v.vId"></label>
+                          <input id="vl0" type="text" v-model="v.vId" ng-if="!v.vAudited"
                                 ng-focus="seqInputOnfocus($event)" ng-blur="changeVoucherSeq(v)"
                                 ng-click="$event.stopPropagation();" ng-keydown="seqInputKeydown($event)"
                                 class="ng-pristine ng-untouched ng-valid ng-scope">
                         </div>
-                        <p class="col-summary ng-binding">缴税</p>
+                        <p class="col-summary ng-binding"></p>
                         <p class="col-source ng-binding"> 数据来源： 
                           <span class="span-source ng-binding" v-text="v.comesFrom"></span>
                         </p>
                         <div class="entryOptsBox">
                           <div class="button entryOpt ng-scope" ng-if="!v.vAudited && canDeleteVoucher(v)"
-                               ng-click="deleteVoucher(v, $event)">
+                               @click.stop="deleteVoucher(v)">
                             <div class="optIcon icon-40 icon-voucher-delete"></div>
                             <p class="optTag optTag--orange">删除</p></div>
                           <div class="button entryOpt ng-scope" ng-if="!v.vAudited && canEditVoucher(v)"
-                               ng-click="showVoucherEditor(v, $event)">
+                               @click.stop="showVoucherEditor(v)">
                             <div class="optIcon icon-40 icon-voucher-edit"></div>
                             <p class="optTag optTag--blue">编辑</p></div>
                           <div class="button entryOpt ng-scope" ng-if="canEditRemark"
-                               @click.stop="editVoucherRemark">
+                               @click.stop="editVoucherRemark(v)">
                             <div class="optIcon icon-40 icon-voucher-remark"></div>
                             <p class="optTag optTag--blue">批注</p>
                           </div>
                         </div>
                       </div>
-                      <div class="entryBar ng-scope" ng-repeat="e in v.entries" ng-show="!v.vFold"
-                           ng-click="showVoucherEditor(v, $event)"><p class="col-name ng-binding">1111</p>
-                        <p class="col-subNum ng-binding">1001</p>
+                      <div class="entryBar ng-scope" v-for="(e, idx) in v.voucherEntryList" v-if="v.showDetails"
+                           @click.stop="showVoucherEditor(v)" :key="idx"><p class="col-name ng-binding" v-text="e.digest"></p>
+                        <p class="col-subNum ng-binding" v-text="e.course.coding"></p>
                         <p class="col- ng-binding col-subName"
-                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'">库存现金</p>
+                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'" v-text="e.course.courseName"></p>
                         <div class="col-cur ng-hide" ng-show="e.isForeign || e.isAmount">
                           <p ng-show="e.isAmount" class="ng-binding ng-hide">数量: 1.00</p>
                           <p ng-show="e.isAmount" class="ng-binding ng-hide">单价: 0.00CNY</p>
                           <p ng-show="e.isForeign && !e.isAmount" class="ng-binding ng-hide">CNY: 0.00</p>
                           <p ng-show="e.isForeign" class="ng-binding ng-hide">汇率: 0.0000</p>
                         </div>
-                        <p class="col-debit ng-binding"></p>
-                        <p class="col-credit ng-binding">100.00</p>
+                        <p class="col-debit ng-binding">{{e.borrow == 0 ? '' : e.borrow | moneyFilter}}</p>
+                        <p class="col-credit ng-binding">{{e.loan == 0 ? '' : e.loan | moneyFilter}}</p>
                       </div>
                       <div class="sumBar">
                         <div class="sumIcon icon-sum"></div>
@@ -151,17 +153,17 @@
                         <p class="col-debit ng-binding">{{v.totalBorrow | moneyFilter}}</p>
                         <p class="col-credit ng-binding">{{v.totalLoan | moneyFilter}}</p>
                       </div>
-                      <div class="remarkBar" @click.stop="editVoucherRemark" v-if="v.isStartPostil == 1">
+                      <div class="remarkBar" v-if="v.isStartPostil == 1">
                         <p class="remark-label">批注：</p>
                         <div class="remark-content ng-binding" title="">
-                          <input type="text" class="ng-pristine ng-untouched ng-valid ng-scope" v-model="v.postil">
+                          <input type="text" class="ng-pristine ng-untouched ng-valid ng-scope" v-model="e.postil" @blur="updateVoucherDataByStatusAndRemark(v, 'remark')">
                         </div>
                       </div>
                     </div>
                     <div class="v-col-audit">
                       <div class="button icon-25 icon-audited auditIndicator icon-unaudited" data-toggle="tooltip"
-                           title="确认审核" ng-class="{true: 'icon-audited', false:'icon-unaudited'}[v.vAudited]"
-                           ng-click="switchVoucherState(v, $event)">
+                           :title="v.status == 0 ? '确认审核' : '取消审核'" :class="v.status == 0 ? 'icon-unaudited' : 'icon-audited'"
+                           @click.stop="updateVoucherDataByStatusAndRemark(v, 'examine')">
                         </div>
                     </div>
                   </div>
@@ -267,7 +269,7 @@
       <div id="ui-ve" class="site-popup popupContainer ng-isolate-scope site-popup--expand"
            style="transform-style: preserve-3d; transition: all 50ms ease 0s;">
         <div class="button popupExit icon-25 g-icon-close" @click.stop="close"></div>
-        <p class="popupTitle ng-binding" v-text="cacheEntry.title"></p>
+        <p class="popupTitle ng-binding" v-text="cacheEntry.status == 'create' ? '新建凭证' : '编辑凭证'"></p>
         <div class="disableEditTips ng-hide" ng-show="isAdmin">管理员仅拥有查看权限，无法修改！</div>
         <div class="disableEditTips ng-hide" ng-show="!isAdmin && freeze">凭证已审核，数据不允许编辑！</div>
         <div class="popupContent">
@@ -281,11 +283,11 @@
                 <p class="h-credit">贷方金额</p></div>
             </div>
             <div class="entryBody">
-              <div class="ui-et ng-isolate-scope ps-container ps-theme-default" id="ui-et-807744">
+              <div class="ui-et ng-isolate-scope ps-theme-default" id="ui-et-807744" style="overflow-y: auto;">
                 <div class="entrysContainer">
                   <div class="entryBar ng-scope" v-for="(e, index) in voucher.voucherEntryList" :key="index">
                     <div class="button insert icon-16 g-icon-insert-line ng-scope" title="下方插入行"
-                         ng-click="insertEntry(index)"></div>
+                         @click.stop="insertEntry(index)"></div>
                      <!-- 摘要 -->     
                      <div class="col-summary">
                       <label class="tbLabel" :for="forId(index, 0)">
@@ -337,7 +339,7 @@
                              @change="entryAmountOnChange(e, 'lender')">
                     </div>
                     <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
-                         ng-click="deleteEntry($index)" ng-if="!freeze"></div>
+                         @click.stop="deleteEntry(index)" ng-if="!freeze"></div>
                   </div>
 
                   <div class="accAttrContainer" v-if="1 != 1">
@@ -466,7 +468,9 @@ export default {
       cacheEntry: {
         title: "新建凭证",
         on: false,
-        index: 1
+        index: 1,
+        status: 'create',
+        saveType: ''
       },
       // 科目
       subjectList: [],
@@ -552,9 +556,12 @@ export default {
       // 搜索关键词
       voucherFilter: "",
       // 凭证列表数据
-      voucherList: [],
+      voucherData: {
+        voucherList: []
+      },
       // 取消所有审核标识
-      isAllAudited: true
+      isAllAudited: false,
+      isSelectAll: [],
     };
   },
   //计算属性
@@ -565,10 +572,14 @@ export default {
     close() {
       this.showVoucherFlag = false;
       this.inputBlur(this.cacheEntry.index - 1);
+      if (this.cacheEntry.status != 'create') {
+        this.queryVoucherList()
+      }
     },
     // 创建新的凭证
     createVoucher() {
       this.showVoucherFlag = true;
+      this.cacheEntry.status = 'create'
       this.entriesConfig();
     },
     // 新建或者更新凭证的科目
@@ -658,16 +669,25 @@ export default {
     },
     // 保存
     saveVoucher(type) {
-      console.log("保存凭证");
-      if (type && type == "again") {
-        this.realSave();
-      } else {
-        if (this.beforeSave()) {
-          console.log("可以保存");
+      console.log(9572, type, this.cacheEntry)
+      if (this.cacheEntry.status == 'create') {
+        this.cacheEntry.saveType = 'save'
+        console.log("保存凭证");
+        if (type && type == "again") {
           this.realSave();
+          if (this.cacheEntry.saveType == 'saveAndCreate') {
+            this.createVoucher()
+          }
         } else {
-          console.log("不可以保存");
+          if (this.beforeSave()) {
+            console.log("可以保存");
+            this.realSave();
+          }
         }
+      } else {
+        // 更新
+        this.cacheEntry.saveType = 'save'
+        this.updateVoucherData(type)
       }
     },
     // 新增实现
@@ -698,16 +718,54 @@ export default {
         }
       });
     },
+    // realUpdate
+    realUpdate() {
+      this.close();
+      this.hideMask();
+      let params = this.voucher.voucherEntryList;
+      for (let i = params.length - 1; i >= 0; i--) {
+        if (
+          !params[i].digest &&
+          !params[i].course.coding &&
+          !params[i].course.courseName &&
+          params[i].borrow == 0 &&
+          params[i].loan == 0
+        ) {
+          params.splice(i, 1);
+        }
+      }
+      this.voucher.token = this.token;
+      this.voucher.accountSetId = this.accountId;
+      console.log("更新信息参数：", JSON.stringify(this.voucher));
+      api.updateVoucher(this.voucher).then(res => {
+        console.log("更新信息结果：", res.body)
+        if (res.body.result == 0) {
+          this.queryVoucherList()
+        } else {
+          this.$emit('error', res.body.msg)
+        }
+      })
+    },
     // 保存并新增
     saveAndCreate() {
-      console.log("保存并新增");
-      if (this.beforeSave()) {
+      if (this.cacheEntry.status == 'create') {
+        console.log("保存并新增");
+        this.cacheEntry.saveType = 'saveAndCreate'
+        if (this.beforeSave()) {
           console.log("可以保存");
           this.realSave();
           this.createVoucher()
-        } else {
-          console.log("不可以保存");
         }
+      } else {
+        console.log("更新并新增");
+        this.cacheEntry.saveType = 'saveAndCreate'
+        if (this.beforeSave()) {
+          console.log("可以更新");
+          this.updateVoucherData();
+          this.createVoucher()
+        }
+      }
+      
     },
     // 保存前置
     beforeSave() {
@@ -846,7 +904,8 @@ export default {
     },
     // 显示列表 批注
     editVoucherRemark(opt) {
-      console.log("显示列表 批注");
+      console.log("显示列表 批注", opt);
+      opt.isStartPostil = 1
     },
     // 查询凭证列表
     queryVoucherList() {
@@ -858,8 +917,22 @@ export default {
         .then(res => {
           console.log("查询凭证列表结果：", res.body);
           if (res.body.result == 0) {
-            this.voucherList = res.body.data;
-            console.log("显示list:", this.voucherList);
+            let array = res.body.data
+            if (array && array.voucherList && array.voucherList.length > 0) {
+              array.voucherList.forEach(el => {
+                if (el) {
+                  el.showDetails = true
+                  this.isSelectAll.push(el.id)
+                }
+              })
+            }
+            array.allShowDetails = true
+            array.unAllShowDetails = false
+            this.voucherData = array
+            if (this.voucherData.totalCount && this.voucherData.totalCount > 0 && this.voucherData.totalCount == this.voucherData.checkedCount) {
+              this.isAllAudited = true
+            }
+            console.log("显示list:", this.voucherData);
           }
         });
     },
@@ -869,7 +942,134 @@ export default {
       } else {
         this.tabType = "list";
       }
-    }
+    },
+    switchFolded(opt) {
+      opt.showDetails = !opt.showDetails
+      /* if (opt.showDetails) {
+        this.isSelectAll.push(opt.id)
+        if (this.voucherData.voucherList.length == this.isSelectAll.length) {
+          this.voucherData.allShowDetails = true
+          this.voucherData.unAllShowDetails = false
+        } 
+      } else {
+        let index = this.voucherData.voucherList.indexOf(opt.id)
+        console.log(8888, index)
+        if (index >= 0) {
+          this.isSelectAll.splice(index, 1)
+          if (this.isSelectAll.length == 0) {
+            this.voucherData.allShowDetails = false
+            this.voucherData.unAllShowDetails = true
+          }
+        }
+      } */
+      // console.log(9999, this.isSelectAll)
+    },
+    switchFoldeds() {
+      this.voucherData.allShowDetails = !this.voucherData.allShowDetails
+      this.voucherData.unAllShowDetails = !this.voucherData.unAllShowDetails
+      if (this.voucherData.allShowDetails) {
+        this.isSelectAll = []
+        this.voucherData.voucherList.forEach(el => {
+          if (el) {
+            el.showDetails = true
+            this.isSelectAll.push(el.id)
+          }
+        })
+      } else {
+        this.voucherData.voucherList.forEach(el => {
+          if (el) {
+            el.showDetails = false
+          }
+        })
+        this.isSelectAll = []
+      }
+    },
+    // 显示更新凭证弹层
+    showVoucherEditor(v) {
+      this.voucher.voucherEntryList = v.voucherEntryList
+      if (this.voucher.voucherEntryList.length < 5) {
+        let length = 5 - this.voucher.voucherEntryList.length
+        console.log("显示更新凭证弹层", v, length)
+        for (let i = 0; i < length; i++) {
+          this.createVoucherEntryList()
+        }
+      }
+      this.cacheEntry.status = 'edit'
+      this.showVoucherFlag = true
+    },
+    createVoucherEntryList() {
+      this.voucher.voucherEntryList.push({
+            digest: "",
+            courseId: "",
+            course: {
+              coding: "",
+              courseName: ""
+            },
+            borrow: 0,
+            loan: 0,
+            canShowSelectFlag: true,
+            balance: 0,
+            hasFocus: false
+          })
+    },
+    updateVoucherData(type) {
+      console.log("更新111：", type, this.cacheEntry)
+      if (type && type == "again") {
+        this.realUpdate();
+        if (this.cacheEntry.saveType == 'saveAndCreate') {
+          this.createVoucher()
+        }
+      } else {
+        console.log("可以更新前缀");
+        if (this.beforeSave()) {
+          console.log("可以更新");
+          this.realUpdate();
+        }
+      }
+    },
+    deleteVoucher(opt) {
+      console.log("删除：", opt)
+    },
+    insertEntry(index) {
+      let array = this.voucher.voucherEntryList
+      let defaultOrigin = {
+            digest: "",
+            courseId: "",
+            course: {
+              coding: "",
+              courseName: ""
+            },
+            borrow: 0,
+            loan: 0,
+            canShowSelectFlag: true,
+            balance: 0,
+            hasFocus: false
+          }
+      array.splice(index + 1, 0, defaultOrigin)
+      console.log(88888888, index, array.length)
+    },
+    deleteEntry(index) {
+      if (this.voucher.voucherEntryList.length > 5) {
+        this.voucher.voucherEntryList.splice(index, 1)
+      }
+    },
+    //
+    switchVouchersState() {
+      if (this.isAllAudited) {
+        console.log("批量审核")
+      }
+    },
+    updateVoucherDataByStatusAndRemark(opt, type){
+      if (type == 'remark') {
+      } else if (type == 'examine') {
+        if (opt.status == 0) {
+          opt.status = 1
+        } else if (opt.status == 1) {
+          opt.status = 0
+        }
+      }
+      this.realUpdate()
+    },
   },
   //生命周期钩子：组件实例渲染完成时调用
   mounted() {},
@@ -1561,13 +1761,13 @@ export default {
   display: none;
 }
 /**隐藏滚动条*/
-#voucherListComponent::-webkit-scrollbar {
+#voucherListComponent::-webkit-scrollbar, #ui-et-807744::-webkit-scrollbar {
   width: 0 !important;
 }
-#voucherListComponent {
+#voucherListComponent, #ui-et-807744 {
   -ms-overflow-style: none !important;
 }
-#voucherListComponent {
+#voucherListComponent, #ui-et-807744 {
   overflow: -moz-scrollbars-none !important;
 }
 
