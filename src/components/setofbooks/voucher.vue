@@ -117,7 +117,8 @@
                           <span class="span-source ng-binding" v-text="v.comesFrom"></span>
                         </p>
                         <div class="entryOptsBox">
-                          <div class="button entryOpt ng-scope" ng-if="!v.vAudited && canDeleteVoucher(v)"
+                          <template v-if="v.status == 0">
+                            <div class="button entryOpt ng-scope" ng-if="!v.vAudited && canDeleteVoucher(v)"
                                @click.stop="deleteVoucher(v)">
                             <div class="optIcon icon-40 icon-voucher-delete"></div>
                             <p class="optTag optTag--orange">删除</p></div>
@@ -125,6 +126,13 @@
                                @click.stop="showVoucherEditor(v)">
                             <div class="optIcon icon-40 icon-voucher-edit"></div>
                             <p class="optTag optTag--blue">编辑</p></div>
+                          </template>
+                          <template v-if="v.status == 1">
+                            <div class="button entryOpt ng-scope" @click.stop="showVoucherEditor(v)">
+                              <div class="optIcon icon-40 icon-voucher-view"></div> 
+                              <p class="optTag optTag--blue">查看</p> 
+                            </div>
+                          </template>
                           <div class="button entryOpt ng-scope" ng-if="canEditRemark"
                                @click.stop="editVoucherRemark(v)">
                             <div class="optIcon icon-40 icon-voucher-remark"></div>
@@ -134,9 +142,9 @@
                       </div>
                       <div class="entryBar ng-scope" v-for="(e, idx) in v.voucherEntryList" v-if="v.showDetails"
                            @click.stop="showVoucherEditor(v)" :key="idx"><p class="col-name ng-binding" v-text="e.digest"></p>
-                        <p class="col-subNum ng-binding" v-text="e.course.coding"></p>
+                        <p class="col-subNum ng-binding" v-text="e.course ? e.course.coding : ''"></p>
                         <p class="col- ng-binding col-subName"
-                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'" v-text="e.course.courseName"></p>
+                           ng-class="(e.isForeign || e.isAmount) ? 'col-subName-f' : 'col-subName'" v-text="e.course ? e.course.courseName : ''"></p>
                         <div class="col-cur ng-hide" ng-show="e.isForeign || e.isAmount">
                           <p ng-show="e.isAmount" class="ng-binding ng-hide">数量: 1.00</p>
                           <p ng-show="e.isAmount" class="ng-binding ng-hide">单价: 0.00CNY</p>
@@ -156,12 +164,12 @@
                       <div class="remarkBar" v-if="v.isStartPostil == 1">
                         <p class="remark-label">批注：</p>
                         <div class="remark-content ng-binding" title="">
-                          <input type="text" class="ng-pristine ng-untouched ng-valid ng-scope" v-model="e.postil" @blur="updateVoucherDataByStatusAndRemark(v, 'remark')">
+                          <input type="text" class="ng-pristine ng-untouched ng-valid ng-scope" v-model="v.postil" @blur="updateVoucherDataByStatusAndRemark(v, 'remark')">
                         </div>
                       </div>
                     </div>
                     <div class="v-col-audit">
-                      <div class="button icon-25 icon-audited auditIndicator icon-unaudited" data-toggle="tooltip"
+                      <div class="button icon-25 icon-audited auditIndicator" data-toggle="tooltip"
                            :title="v.status == 0 ? '确认审核' : '取消审核'" :class="v.status == 0 ? 'icon-unaudited' : 'icon-audited'"
                            @click.stop="updateVoucherDataByStatusAndRemark(v, 'examine')">
                         </div>
@@ -269,9 +277,9 @@
       <div id="ui-ve" class="site-popup popupContainer ng-isolate-scope site-popup--expand"
            style="transform-style: preserve-3d; transition: all 50ms ease 0s;">
         <div class="button popupExit icon-25 g-icon-close" @click.stop="close"></div>
-        <p class="popupTitle ng-binding" v-text="cacheEntry.status == 'create' ? '新建凭证' : '编辑凭证'"></p>
+        <p class="popupTitle ng-binding" v-text="cacheEntry.status == 'create' ? '新建凭证' : cacheEntry.status == 'edit' ? '编辑凭证' : '查看凭证'"></p>
         <div class="disableEditTips ng-hide" ng-show="isAdmin">管理员仅拥有查看权限，无法修改！</div>
-        <div class="disableEditTips ng-hide" ng-show="!isAdmin && freeze">凭证已审核，数据不允许编辑！</div>
+        <div class="disableEditTips" v-if="voucher.status == 1">凭证已审核，数据不允许编辑！</div>
         <div class="popupContent">
           <p class="entryTitle ng-binding">记-000&nbsp;&nbsp;凭证名称：{{voucher.voucherEntryList[0].digest}} </p>
           <div class="entryContainer">
@@ -286,7 +294,7 @@
               <div class="ui-et ng-isolate-scope ps-theme-default" id="ui-et-807744" style="overflow-y: auto;">
                 <div class="entrysContainer">
                   <div class="entryBar ng-scope" v-for="(e, index) in voucher.voucherEntryList" :key="index">
-                    <div class="button insert icon-16 g-icon-insert-line ng-scope" title="下方插入行"
+                    <div class="button insert icon-16 g-icon-insert-line ng-scope" title="下方插入行" v-if="voucher.status != 1"
                          @click.stop="insertEntry(index)"></div>
                      <!-- 摘要 -->     
                      <div class="col-summary">
@@ -294,22 +302,23 @@
                         <p class="ng-binding" v-text="e.digest"></p>
                       </label>
                       <input class="tbInput ng-pristine ng-valid ng-empty ng-touched" :id="forId(index, 0)" type="text"
-                             ng-change="entrySummaryOnChanged(e)" @focus="inputBlur(index)" v-model="e.digest" />
+                             ng-change="entrySummaryOnChanged(e)" @focus="inputBlur(index)" v-model="e.digest" v-if="voucher.status != 1" />
                      </div>
                     <!-- 科目编号 -->
                     <div class="col-subNum">
-                      <label class="tbLabel ng-binding" :for="forId(index, 1)" v-text="e.course.coding"></label>
+                      <label class="tbLabel ng-binding" :for="forId(index, 1)" v-text="e.course ? e.course.coding : ''"></label>
                     </div>
                     <!-- 科目名称 -->
                     <div class="col-subName-c">
                       <label class="tbLabel" :for="forId(index, 1)">
-                        <p class="ng-binding" v-text="e.course.courseName"></p>
+                        <p class="ng-binding" v-text="e.course ? e.course.courseName : ''"></p>
                       </label>
                     </div>
                     <!-- 科目下拉选项 -->
                     <div class="col-subject-c" :class="e.canShowSelectFlag?'col-subject-on' : ''">
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-empty"
                              type="text" v-model="e.course.coding" :id="forId(index, 1)"
+                             v-if="voucher.status != 1"
                              @focus="inputFocus(index, $event)" ng-change="entrySubjectOnChange($event)">
                     </div>
 
@@ -326,20 +335,20 @@
                     </div>
 
                     <div class="col-debit">
-                      <label class="tbLabel ng-binding" :for="forId(index, 6)">{{e.borrow == 0 ? '' : e.borrow}}</label>
+                      <label class="tbLabel ng-binding" :for="forId(index, 6)">{{e.borrow == 0 ? '' : e.borrow | moneyFilter}}</label>
                       <input class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
-                             :id="forId(index, 6)" v-model="e.borrow"
+                             :id="forId(index, 6)" v-model="e.borrow" v-if="voucher.status != 1"
                              @change="entryAmountOnChange(e, 'debit')"
                              @focus="cellFocusOnClick($event)">
                     </div>
                     <div class="col-credit">
-                      <label class="tbLabel ng-binding" :for="forId(index, 7)">{{e.loan == 0 ? '' : e.loan}}</label>
-                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number"
+                      <label class="tbLabel ng-binding" :for="forId(index, 7)">{{e.loan == 0 ? '' : e.loan | moneyFilter}}</label>
+                      <input class="tbInput ng-pristine ng-untouched ng-valid ng-not-empty" type="number" v-if="voucher.status != 1"
                              :id="forId(index, 7)" v-model="e.loan" @focus="cellFocusOnClick($event)"
                              @change="entryAmountOnChange(e, 'lender')">
                     </div>
                     <div class="button delete icon-16 g-icon-delte-line ng-scope" data-toggle="tooltip" title="删除行"
-                         @click.stop="deleteEntry(index)" ng-if="!freeze"></div>
+                         @click.stop="deleteEntry(index)" ng-if="!freeze" v-if="voucher.status != 1"></div>
                   </div>
 
                   <div class="accAttrContainer" v-if="1 != 1">
@@ -370,7 +379,7 @@
               </div>
             </div>
             <!-- 弹层下拉框 Begin -->
-            <div v-if="cacheEntry.on" class="ng-isolate-scope" id="ui-sub-871971" style="position: fixed; z-index: 1; top: 0px; left: 0px; width: 0px; height: 0px;"> 
+            <div v-if="cacheEntry.on  && voucher.status != 1" class="ng-isolate-scope" id="ui-sub-871971" style="position: fixed; z-index: 1; top: 0px; left: 0px; width: 0px; height: 0px;"> 
               <div id="ui-ss-container" class="ng-isolate-scope" style="left: 230.225px; width: 507px; height: 59px;" :style="{'top': ((cacheEntry.index - 1) * 60 + 210) + 'px'}"> 
                 <ul> 
                   <li  ng-click="createSub()" class="hide">新建此科目</li> 
@@ -400,12 +409,14 @@
               <div class="button item use" ng-click="useTemplate()">使用模板</div>
             </div>
           </div>
-          <div class="footBtn save com-button anime ng-isolate-scope com-button--ok" @click.stop="saveVoucher('save')">
-            <div><span class="ng-scope">保存</span></div>
-          </div>
-          <div class="footBtn continue com-button anime ng-isolate-scope com-button--ok" @click.stop="saveAndCreate">
-            <div><span class="ng-scope">保存并新建</span></div>
-          </div>
+          <template v-if="voucher.status != 1">
+            <div class="footBtn save com-button anime ng-isolate-scope com-button--ok" @click.stop="saveVoucher('save')">
+              <div><span class="ng-scope">保存</span></div>
+            </div>
+            <div class="footBtn continue com-button anime ng-isolate-scope com-button--ok" @click.stop="saveAndCreate">
+              <div><span class="ng-scope">保存并新建</span></div>
+            </div>
+          </template>
         </div>
         <div></div>
       </div>
@@ -931,6 +942,8 @@ export default {
             this.voucherData = array
             if (this.voucherData.totalCount && this.voucherData.totalCount > 0 && this.voucherData.totalCount == this.voucherData.checkedCount) {
               this.isAllAudited = true
+            } else {
+              this.isAllAudited = false
             }
             console.log("显示list:", this.voucherData);
           }
@@ -986,7 +999,7 @@ export default {
     },
     // 显示更新凭证弹层
     showVoucherEditor(v) {
-      this.voucher.voucherEntryList = v.voucherEntryList
+      this.voucher = v
       if (this.voucher.voucherEntryList.length < 5) {
         let length = 5 - this.voucher.voucherEntryList.length
         console.log("显示更新凭证弹层", v, length)
@@ -994,7 +1007,12 @@ export default {
           this.createVoucherEntryList()
         }
       }
-      this.cacheEntry.status = 'edit'
+      if (v.status == 0) {
+        this.cacheEntry.status = 'edit'
+      } else if (v.status == 1) {
+        this.cacheEntry.status = 'show'
+      }
+      
       this.showVoucherFlag = true
     },
     createVoucherEntryList() {
@@ -1055,9 +1073,40 @@ export default {
     },
     //
     switchVouchersState() {
-      if (this.isAllAudited) {
-        console.log("批量审核")
+      let params = {
+        token: this.token
       }
+      let arr = []
+      console.log(2008, this.isAllAudited)
+      if (this.isAllAudited) {
+        this.voucherData.voucherList.forEach(el => {
+          if (el) {
+            arr.push({
+              id: el.id,
+              status: 0
+            })
+          }
+        })
+      } else {
+        this.voucherData.voucherList.forEach(el => {
+          if (el) {
+            arr.push({
+              id: el.id,
+              status: 1
+            })
+          }
+        })
+      }
+      params.voucherStatusList = arr
+      api.batchVoucherStatus(params).then(res => {
+        console.log("批量更新审批状态结果：", res.body)
+        if (res.body.result == 0) {
+          this.queryVoucherList()
+        } else {
+          this.queryVoucherList()
+          this.$emit("error", res.body.msg)
+        }
+      })
     },
     updateVoucherDataByStatusAndRemark(opt, type){
       if (type == 'remark') {
@@ -1068,7 +1117,16 @@ export default {
           opt.status = 0
         }
       }
-      this.realUpdate()
+      console.log("更新状态和批注：", opt)
+      opt.token = this.token
+      api.updateVoucher(opt).then(res => {
+        console.log("更新信息结果：", res.body)
+        if (res.body.result == 0) {
+          this.queryVoucherList()
+        } else {
+          this.$emit('error', res.body.msg)
+        }
+      })
     },
   },
   //生命周期钩子：组件实例渲染完成时调用

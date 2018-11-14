@@ -148,5 +148,9 @@ export default {
   // 更新凭证列表信息数据
   updateVoucher: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/update', params)
+  },
+  // 批量更新状态
+  batchVoucherStatus: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/batchUpdateStatus', params)
   }
 }
