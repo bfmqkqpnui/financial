@@ -3,7 +3,7 @@
     <!-- 二级目录 -->
     <div class="topnav">
       <ul class="">
-        <li v-for="(item,idx) in secondMenuList" @click="selMenu(item)" v-text="item.value" :key="item.index"
+        <li v-for="item in secondMenuList" @click="selMenu(item)" v-text="item.value" :key="item.index"
             :class="item.isSelect?'focus':''"></li>
       </ul>
     </div>
@@ -84,7 +84,9 @@
           {index: 7, value: '历史数据', isSelect: false, type: "accounts"},
           {index: 8, value: '自动配置', isSelect: false, type: "accounts"},
         ],
-        userSecondMenu: [],
+        userSecondMenu: [{
+          index: 1, value: '用户管理', isSelect: true, type: 'user'
+        }],
         dataSecondMenu: [],
         contractSecondMenu: [],
         accountsDefaultSecondMenu: [{index: 1, value: '账套列表', isSelect: true, type: "accounts"}],
@@ -163,6 +165,7 @@
           if (utils.isExist(opt.type)) {
             if (opt.type == "user") {
               this.secondMenuList = this.userSecondMenu
+              this.$router.push({name: 'userManager'})
             } else if (opt.type == "data") {
               this.secondMenuList = this.dataSecondMenu
             } else if (opt.type == "contract") {

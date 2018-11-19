@@ -57,7 +57,18 @@ export default [{
         needLogin: true
       },
       component: r => require.ensure([], () => r(require('../../components/setofbooks/bookSettings.vue')), 'bookSettings')
-    }
+    },
+    /**账套列表*/
+    {
+      path: 'user',
+      name: 'userManager',
+      meta: {
+        title: '账套列表',
+        notLoading: true,
+        needLogin: true
+      },
+      component: r => require.ensure([], () => r(require('../../components/user/userManager.vue')), 'userManager')
+    },
   ]
 }
 ]

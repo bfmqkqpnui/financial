@@ -68,8 +68,6 @@
             </div>
           </div>
         </div>
-        <!--<div class="btn-scrollTopBox anime ng-hide" ng-click="scrollBarTop()" ng-style="scrollBarTopStyle()"
-             ng-show="show.scrollTopBtn" title="回到顶部" style="bottom: 11px;"></div>-->
       </div>
     </div>
 
