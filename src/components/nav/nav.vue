@@ -165,7 +165,7 @@
           if (utils.isExist(opt.type)) {
             if (opt.type == "user") {
               this.secondMenuList = this.userSecondMenu
-              this.$router.push({name: 'userManager'})
+              this.$router.push({name: 'user'})
             } else if (opt.type == "data") {
               this.secondMenuList = this.dataSecondMenu
             } else if (opt.type == "contract") {
