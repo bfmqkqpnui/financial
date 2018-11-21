@@ -23,7 +23,7 @@
                             </div> 
                             <div class="sheetOperate" ng-hide="currentMenu.type == 'finance' "> 
                                 <div class="operate_wrapper"> 
-                                    <div class="icon-operate" title="打印" ng-click="print(currentMenu)"></div> 
+                                    <div class="icon-operate" title="打印" ng-click="print(currentMenu)" v-if="1 != 1"></div> 
                                     <div class="btn-operate" ng-click="clickPopup()">导出选择</div> 
                                     <div class="btn-operate viewMode" ng-show="currentMenu.type == 'asset'"> 
                                         <select click-auth="" class="select-item ng-pristine ng-untouched ng-valid ng-not-empty" ng-model="default.type" ng-options="x.type as x.name for x in assetModels" ng-change="selectModel(default.type)">
@@ -51,7 +51,7 @@
                                 <p class="col-balance span-13">期末余额</p> 
                                 <p class="col-balance span-12">年初余额</p> 
                             </div> 
-                            <div class="contentPage ps-container ps-theme-default" id="assetConTable" data-ps-id="e98ad079-23ca-953e-b596-c96f806671b4"> 
+                            <div class="contentPage ps-theme-default" id="assetConTable" data-ps-id="e98ad079-23ca-953e-b596-c96f806671b4"> 
                                 <div class="searchBreak" ng-show="0===sheet.asset.length"> 
                                     <p class="ng-binding">财税通提醒您：资产负债表不存在</p> 
                                 </div> 
@@ -776,5 +776,135 @@ export default {
     border-bottom: 5px solid #5fbbfc;
 }
 
+.sheetTitle .sheetOperate {
+    width: 40%;
+    height: 100%;
+    float: right;
+    padding-top: 10px;
+}
 
+.operate_wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.operate_wrapper .icon-operate {
+    width: 30px;
+    height: 30px;
+    background: url(./i/print.png) 50% no-repeat;
+    float: right;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.operate_wrapper .btn-operate {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #5fbbfc;
+    border-radius: 4px;
+    float: right;
+    margin-left: 10px;
+    color: #5fbbfc;
+}
+
+.operate_wrapper .btn-operate:hover {
+    cursor: pointer;
+    color: #fff;
+    background: #5fbbfc;
+}
+
+.operate_wrapper .viewMode {
+    width: 135px;
+    position: relative;
+}
+
+.viewMode .select-item {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.viewMode .checkDomBox {
+    position: absolute;
+    border: 1px solid #a9a9a9;
+    background: #fff;
+    color: #a9a9a9;
+    width: 18px;
+    line-height: 16px;
+    border-radius: 50%;
+    font-size: 12px;
+    top: -8px;
+    right: -8px;
+    cursor: pointer;
+}
+/**表单主体*/
+.sheetContent {
+    height: 100%;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    border-radius: 3px;
+}
+.sheetTableTitle {
+    min-height: 40px;
+    color: #fff;
+    background: #5fbbfd;
+    border: 1px solid #dadfe8;
+    font-weight: 400;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+}
+.sheetRow, .sheetTableTitle {
+    display: table;
+    width: 100%;
+}
+.sheetTableTitle p {
+    line-height: 40px;
+}
+.sheetContent [class|=col] {
+    display: table-cell;
+    border-right: 1px solid #dadfe8;
+    border-bottom: 1px solid #dadfe8;
+}
+.sheetTableTitle [class|=col] {
+    position: relative;
+    text-align: center;
+}
+.sheetContent .contentPage {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    position: relative;
+    overflow-y: hidden;
+    border: 1px solid #dadfe8;
+    border-radius: 0 0 3px 3px;
+    border-top: none;
+}
+.searchBreak {
+    margin: 50px auto;
+    background: url(./i/notFound.png) 50% no-repeat;
+    padding-top: 200px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.sheetBody {
+    position: absolute;
+    width: 100%;
+    font-size: 12px;
+}
 </style>
