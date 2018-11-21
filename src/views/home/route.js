@@ -62,6 +62,17 @@ export default [{
       },
       component: r => require.ensure([], () => r(require('../../components/setofbooks/bookSettings.vue')), 'bookSettings')
     },
+    /**财务报表*/
+    {
+      path: 'accounts/sheets',
+      name: 'sheets',
+      meta: {
+        title: '账套设置',
+        notLoading: true,
+        needLogin: true
+      },
+      component: r => require.ensure([], () => r(require('../../components/setofbooks/financialStatements.vue')), 'financialStatements')
+    },
     /**用户列表*/
     {
       path: 'user',
@@ -96,5 +107,4 @@ export default [{
       component: r => require.ensure([], () => r(require('../../components/data/dataManager.vue')), 'dataManager')
     },
   ]
-}
-]
+}]

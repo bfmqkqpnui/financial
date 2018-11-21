@@ -123,7 +123,7 @@
         <div class="site-mask anime site-mask--shade" v-if="showUserPassWord">
             <div class="site-popup anime pop-container site-popup--expand"><p>更新登录密码</p>
                 <div class="btn-closePop" title="关闭" @click.stop="toggleShowUserPassWord('hide')"></div>
-                <div class="messageBox">
+                <div class="messageBox" v-if="1 != 1">
                     <div class="message-title">原密码</div>
                     <div class="message-input">
                         <input type="password" v-model.trim="pwd.old" maxlength="18">
@@ -388,6 +388,10 @@ export default {
         this.pwdhint = ''
         if (type) {
             if (type == 'show') {
+                this.pwd = {
+                    old: '',
+                    new: ''
+                }
                 this.showUserPassWord = true
             } else {
                 this.showUserPassWord = false
@@ -403,11 +407,10 @@ export default {
     },
     // 更新登录密码
     changePwd() {
-        if (this.checkPwd(this.pwd)) {
+        if (this.checkPwd(this.pwd, 'onlyNew')) {
             let params = {
                 id: this.submitAddAccInfo.id,
                 token: this.token,
-                oldPassWord: this.pwd.old,
                 newPassWord: this.pwd.new
             }
             console.log("更新登录密码入参：", JSON.stringify(params))
@@ -423,17 +426,35 @@ export default {
         }
     },
     // 更新密码前置校验
-    checkPwd(pwd) {
+    checkPwd(pwd, type) {
         let flag = false
         if (pwd) {
-            if (pwd.old.length > 0) {
-                if (pwd.old == pwd.new) {
-                    this.pwdhint = '新密码不能跟原密码相同'
-                } else {
-                    flag = true
+            if (type == 'default') {
+                if (pwd.old.length > 0) {
+                    if (pwd.old == pwd.new) {
+                        this.pwdhint = '新密码不能跟原密码相同'
+                    } else {
+                        if (this.pwd.new == '') {
+                            this.pwdhint = '新密码不能为空'
+                        } else {
+                            if (this.pwd.new.length < 6) {
+                                this.pwdhint = '新密码长度不能小于6位'
+                            } else {
+                                flag = true
+                            }
+                        }
+                    }
                 }
             } else {
-                this.pwdhint = '原密码不能为空'
+                if (this.pwd.new == '') {
+                    this.pwdhint = '新密码不能为空'
+                } else {
+                    if (this.pwd.new.length < 6) {
+                        this.pwdhint = '新密码长度不能小于6位'
+                    } else {
+                        flag = true
+                    }
+                }
             }
         }
         return flag

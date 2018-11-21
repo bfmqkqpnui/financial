@@ -133,7 +133,7 @@
               this.$router.push({name: 'books'})
               break;
             case 4:
-              this.$router.push("/home")
+              this.$router.push({name: 'sheets'})
               break;
             case 5:
               this.$router.push({name: 'bookSettings'})
