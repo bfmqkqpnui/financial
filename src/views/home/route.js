@@ -62,7 +62,7 @@ export default [{
       },
       component: r => require.ensure([], () => r(require('../../components/setofbooks/bookSettings.vue')), 'bookSettings')
     },
-    /**账套列表*/
+    /**用户列表*/
     {
       path: 'user',
       name: 'user',
@@ -72,6 +72,28 @@ export default [{
         needLogin: true
       },
       component: r => require.ensure([], () => r(require('../../components/user/userManager.vue')), 'userManager')
+    },
+    /**合同列表*/
+    {
+      path: 'contract',
+      name: 'contract',
+      meta: {
+        title: '账套列表',
+        notLoading: true,
+        needLogin: true
+      },
+      component: r => require.ensure([], () => r(require('../../components/contract/contractManager.vue')), 'contractManager')
+    },
+    /**数据列表*/
+    {
+      path: 'data',
+      name: 'data',
+      meta: {
+        title: '账套列表',
+        notLoading: true,
+        needLogin: true
+      },
+      component: r => require.ensure([], () => r(require('../../components/data/dataManager.vue')), 'dataManager')
     },
   ]
 }

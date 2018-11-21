@@ -4,7 +4,7 @@
         <div class="module-content_wrapper">
             <div class="module-content_page page-vouchers">
             <div class="page-title">
-                <p class="title" :class="{'title--on': tabType === 'list'}" @click="chooseTabType('list')">用户列表</p>
+                <p class="title" :class="{'title--on': tabType === 'list'}" @click="chooseTabType('list')">合同列表</p>
                 <div class="title-gap"></div>
             </div>
             <!-- 列表-->
@@ -13,13 +13,13 @@
                 <div class="page-tools">
                     <div class="title-gap"></div>
                     <div class="searchInput">
-                        <input class="search" type="text" placeholder="搜索用户..." v-model.trim="userFilter" @keyup.enter="searchByKey" @keyup="searchByKey"> 
+                        <input class="search" type="text" placeholder="搜索合同..." v-model.trim="userFilter" @keyup.enter="searchByKey" @keyup="searchByKey"> 
                         <i class="search-icon icon-search icon-30" v-if="userFilter === ''"></i>
                         <i class="search-icon g-icon-close icon-30" v-if="userFilter.length > 0"
                         @click.stop="clearFilter"></i>
                     </div>
                     <div class="funcBtn com-button anime ng-isolate-scope com-button--hollow" @click.stop="createUser">
-                        <div><span class="ng-scope">添加用户</span></div>
+                        <div><span class="ng-scope">添加合同</span></div>
                     </div>
                 </div>
                 <!-- 表单主体 -->
@@ -28,15 +28,15 @@
                         <div class="accBody-tableHead-2">
                             <div class="tabHeadBox">
                                 <div class="ng-scope span-25">
-                                    <div  class="ng-binding">用户名称</div>
+                                    <div  class="ng-binding">合同名称</div>
                                 </div> 
-                                <div  class="ng-scope span-20">
+                                <div  class="ng-scope span-25">
                                     <div class="ng-binding">手机号码</div>
                                 </div> 
                                 <div  class="ng-scope span-35">
                                     <div class="ng-binding">电子邮箱</div>
                                 </div> 
-                                <div class="ng-scope span-20">
+                                <div class="ng-scope span-15">
                                     <div class="ng-binding">操作</div>
                                 </div> 
                             </div>
@@ -44,9 +44,9 @@
                         <div class="accBody-tabBody ps-theme-default" id="defaultComponent">
                             <div  class="tabBodyBox accTabBody ng-scope" v-for="item in userData.result" :key="item.id">
                                 <div class="ng-binding span-25" v-text="item.adminName"></div> 
-                                <div title="test" class="ng-binding span-20" v-text="item.phone"></div> 
+                                <div title="test" class="ng-binding span-25" v-text="item.phone"></div> 
                                 <div class="ng-binding span-35" v-text="item.email"></div> 
-                                <div class="span-20">
+                                <div class="span-15">
                                             <div class="entryOptsBox">
                                                 <div class="button entryOpt ng-scope" ng-if="!v.vAudited && canDeleteVoucher(v)"
                                                 @click.stop="showDeleteUser(item)">
@@ -58,7 +58,7 @@
                                                     <div class="optIcon icon-40 icon-voucher-edit"></div>
                                                     <p class="optTag optTag--blue">编辑</p>
                                                 </div>
-                                                <div class="button entryOpt ng-scope" @click.stop="showEditorUserPwd(item)">
+                                                <div class="button entryOpt ng-scope" @click.stop="showEditorUserPwd(item)" v-if="1 != 1">
                                                     <div class="optIcon icon-40 icon-voucher-edit"></div> 
                                                     <p class="optTag optTag--blue">改密</p> 
                                                 </div>
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                     <pageComponent :resultCount="userData.resultCount" :currentPage='pageNum' :pageSize="pageSize" @handleCurrentChange="handleCurrentChange" @handleSizeChange="handleSizeChange" v-if="userData.result && userData.result.length > 0" style="position: fixed;bottom:2rem;left:310px;"></pageComponent>
-                                    <div class="dataIsNull" v-if="!userData.result || userData.result.length == 0">暂无用户信息</div>
+                                    <div class="dataIsNull" v-if="!userData.result || userData.result.length == 0">暂无合同信息</div>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
             <div class="site-popup anime pop-container site-popup--expand"><p v-text="maskTitle"></p>
                 <div class="btn-closePop" title="关闭" @click.stop="toggleAddAccountPop('hide')"></div>
                 <div class="messageBox">
-                    <div class="message-title">用户名称</div>
+                    <div class="message-title">合同名称</div>
                     <div class="message-input">
                         <input type="text" v-model.trim="submitAddAccInfo.adminName" maxlength="30">
                         <div class="icon-required"></div>
@@ -114,36 +114,6 @@
                     <div class="message-input">
                         <div class="btn-submit anime" @click.stop="addUser">确定</div>
                         <div class="size-hint ng-binding" v-text="hint"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 更新用户登录密码弹层 -->
-        <div class="site-mask anime site-mask--shade" v-if="showUserPassWord">
-            <div class="site-popup anime pop-container site-popup--expand"><p>更新登录密码</p>
-                <div class="btn-closePop" title="关闭" @click.stop="toggleShowUserPassWord('hide')"></div>
-                <div class="messageBox">
-                    <div class="message-title">原密码</div>
-                    <div class="message-input">
-                        <input type="password" v-model.trim="pwd.old" maxlength="18">
-                        <div class="icon-required"></div>
-                    </div>
-                </div>
-                <div class="messageBox">
-                    <div class="message-title">新密码</div>
-                    <div class="message-input">
-                        <input type="password" v-model.trim="pwd.new" maxlength="18">
-                        <div class="icon-required"></div>
-                    </div>
-                </div>
-                <div class="messageBox submitBox">
-                    <div class="message-title">
-                        <div class="btn-cancel" @click.stop="toggleShowUserPassWord('hide')">取消</div>
-                    </div>
-                    <div class="message-input">
-                        <div class="btn-submit anime" @click.stop="changePwd">确定</div>
-                        <div class="size-hint ng-binding" v-text="pwdhint"></div>
                     </div>
                 </div>
             </div>
@@ -374,14 +344,14 @@ export default {
     },
     // 搜索
     searchByKey() {
-    this.pageNum = 1
-    let params = {
+        this.pageNum = 1
+        let params = {
         search: this.userFilter,
         pageIndex: this.pageNum,
         pageSize: this.pageSize,
         token: this.token
       }
-    this.queryData(params)
+    this.queryData(params);
     },
     // 展示修改密码弹层
     toggleShowUserPassWord(type) {
@@ -440,7 +410,7 @@ export default {
     }
   },
   created() {
-    this.$emit("sel", { index: 1, type: "user" });
+    this.$emit("sel", { index: 1, type: "contract" });
     let params = {
         pageIndex: this.pageNum,
         pageSize: this.pageSize,
@@ -582,7 +552,7 @@ export default {
   right: 50%;
   top: 0;
   display: block;
-  margin: 0 -98px 0;
+  margin: 0 -65px 0;
 }
 .page-content .entryOpt {
   position: relative;
@@ -642,7 +612,6 @@ export default {
     padding-top: 160px;
     background: url(./i/notFound.png) no-repeat center 0;
   }
-
   /**隐藏滚动条*/
   #defaultComponent::-webkit-scrollbar, #ui-et-807744::-webkit-scrollbar {
     width: 0 !important;

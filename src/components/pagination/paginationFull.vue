@@ -4,8 +4,8 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[10, 20]"
-      :page-size="10"
+      :page-sizes="[10, 15, 20]"
+      :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="resultCount">
     </el-pagination>
@@ -17,11 +17,21 @@
   export default {
     //组件私有数据（必须是function，而且要return对象类型）
     props: {
-      resultCount : 0,
+      resultCount : {
+        type: Number,
+        default: 0
+      },
+      currentPage: {
+        type: Number,
+        default: 1
+      },
+      pageSize: {
+        type: Number,
+        default: 10
+      },
     },
     data() {
       return {
-        currentPage:1,
       }
     },
     //计算属性

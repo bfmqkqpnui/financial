@@ -469,7 +469,7 @@
         let params = {}
         params.Type = 'accounts'
         this.menuType = params
-        this.$router.push({path: '/home'})
+        this.$router.push({name: 'accounts'})
       },
       // 用户管理
       defaultUsersMenuConfig() {
@@ -480,7 +480,7 @@
         let params = {}
         params.Type = 'user'
         this.menuType = params
-        this.$router.push({path: '/home/user'})
+        this.$router.push({name: 'user'})
       },
       // 数据管理
       defaultDatasMenuConfig() {
@@ -491,6 +491,7 @@
         let params = {}
         params.Type = 'data'
         this.menuType = params
+        this.$router.push({name: 'data'})
       },
       // 合同管理
       defaultContractsMenuConfig() {
@@ -501,6 +502,7 @@
         let params = {}
         params.Type = 'contract'
         this.menuType = params
+        this.$router.push({name: 'contract'})
       },
       // 批量导入账套
       showBatchPop() {

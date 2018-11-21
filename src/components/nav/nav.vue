@@ -87,8 +87,8 @@
         userSecondMenu: [{
           index: 1, value: '用户管理', isSelect: true, type: 'user'
         }],
-        dataSecondMenu: [],
-        contractSecondMenu: [],
+        dataSecondMenu: [{index: 1, value: '数据列表', isSelect: true, type: "data"}],
+        contractSecondMenu: [{index: 1, value: '合同列表', isSelect: true, type: "contract"}],
         accountsDefaultSecondMenu: [{index: 1, value: '账套列表', isSelect: true, type: "accounts"}],
         isBooksList: true,  // 是否账套
         secondMenuList: [], // 二级目录
@@ -168,8 +168,10 @@
               this.$router.push({name: 'user'})
             } else if (opt.type == "data") {
               this.secondMenuList = this.dataSecondMenu
+              this.$router.push({name: 'data'})
             } else if (opt.type == "contract") {
               this.secondMenuList = this.contractSecondMenu
+              this.$router.push({name: 'contract'})
             }
           }
         }
