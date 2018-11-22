@@ -7,32 +7,19 @@
                         <div class="sheetTitle"> 
                             <div class="sheetMenus"> 
                                 <ul> 
-                                <!-- ngRepeat: menu in menus -->
-                                    <li class="text ng-binding ng-scope setHeadMenuOn" ng-repeat="menu in menus" ng-class="menu.title == currentMenu.title? 'setHeadMenuOn': ''" ng-click="selectSheet(menu)"> 资产负债表 </li>
-                                    <!-- end ngRepeat: menu in menus -->
-                                    <li class="text ng-binding ng-scope" ng-repeat="menu in menus" ng-class="menu.title == currentMenu.title? 'setHeadMenuOn': ''" ng-click="selectSheet(menu)"> 利润表 </li>
-                                    <!-- end ngRepeat: menu in menus -->
-                                    <li class="text ng-binding ng-scope" ng-repeat="menu in menus" ng-class="menu.title == currentMenu.title? 'setHeadMenuOn': ''" ng-click="selectSheet(menu)"> 利润季表 </li>
-                                    <!-- end ngRepeat: menu in menus -->
-                                    <li class="text ng-binding ng-scope" ng-repeat="menu in menus" ng-class="menu.title == currentMenu.title? 'setHeadMenuOn': ''" ng-click="selectSheet(menu)"> 现金流量表 </li>
-                                    <!-- end ngRepeat: menu in menus -->
-                                    <li class="text ng-binding ng-scope" ng-repeat="menu in menus" ng-class="menu.title == currentMenu.title? 'setHeadMenuOn': ''" ng-click="selectSheet(menu)"> 现金流量季表 </li>
-                                    <!-- end ngRepeat: menu in menus --> 
+                                    <li class="text ng-binding ng-scope" v-for="menu in menus" :class="menu.isSelected ? 'setHeadMenuOn': ''" @click.stop="selectSheet(menu)" :key="menu.index" v-text="menu.title"></li>
                                     <span class="hover_bar"></span> 
                                 </ul> 
                             </div> 
-                            <div class="sheetOperate" ng-hide="currentMenu.type == 'finance' "> 
+                            <div class="sheetOperate"> 
                                 <div class="operate_wrapper"> 
                                     <div class="icon-operate" title="打印" ng-click="print(currentMenu)" v-if="1 != 1"></div> 
-                                    <div class="btn-operate" ng-click="clickPopup()">导出选择</div> 
-                                    <div class="btn-operate viewMode" ng-show="currentMenu.type == 'asset'"> 
-                                        <select click-auth="" class="select-item ng-pristine ng-untouched ng-valid ng-not-empty" ng-model="default.type" ng-options="x.type as x.name for x in assetModels" ng-change="selectModel(default.type)">
-                                            <option label="默认模式" value="string:default" selected="selected">默认模式</option>
-                                            <option label="一级科目模式Ⅰ" value="string:balance">一级科目模式Ⅰ</option>
-                                            <option label="一级科目模式 Ⅱ" value="string:assign">一级科目模式 Ⅱ</option>
-                                            <option label="明细科目模式" value="string:child">明细科目模式</option>
+                                    <div class="btn-operate" @click.stop="exportReport">导出选择</div> 
+                                    <div class="btn-operate viewMode" v-if="isAsset"> 
+                                        <select class="select-item" v-model="assetDefault.type">
+                                            <option :value="item.value" v-for="item in assetDefault.types" :key="item.index" v-text="item.title"></option>
                                         </select> 
-                                        <div class="checkDomBox" data-toggle="tooltip" title="查看说明文档" ng-click="checkDomPdf()">?</div> 
+                                        <div class="checkDomBox" data-toggle="tooltip" title="查看说明文档" ng-click="checkDomPdf()" v-if="1 != 1">?</div> 
                                     </div> 
                                 </div> 
                             </div> 
@@ -40,7 +27,7 @@
                     </div> 
                     <div class="page-content">
                         <!-- 资产负债表 -->
-                        <div class="sheetContent" ng-show="currentMenu.title == '资产负债表'"> 
+                        <div class="sheetContent" v-if="currentMenu.type === 'balance'"> 
                             <div class="sheetTableTitle"> 
                                 <p class="col-asset span-20">资产</p> 
                                 <p class="col-row span-5">行次</p> 
@@ -51,23 +38,18 @@
                                 <p class="col-balance span-13">期末余额</p> 
                                 <p class="col-balance span-12">年初余额</p> 
                             </div> 
-                            <div class="contentPage ps-theme-default" id="assetConTable" data-ps-id="e98ad079-23ca-953e-b596-c96f806671b4"> 
+                            <div class="contentPage ps-theme-default" id="assetConTable"> 
                                 <div class="searchBreak" ng-show="0===sheet.asset.length"> 
                                     <p class="ng-binding">财税通提醒您：资产负债表不存在</p> 
                                 </div> 
                                 <div class="sheetBody"> 
                                     <!-- ngRepeat: row in sheet.asset --> 
                                 </div> 
-                                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-                                    <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                </div>
-                                <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
-                                    <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                                </div>
                             </div> 
                         </div>
+
                         <!-- 利润表 -->
-                        <div class="sheetContent ng-hide" ng-show="currentMenu.title == '利润表'"> 
+                        <div class="sheetContent" v-if="currentMenu.type === 'income'"> 
                             <div class="sheetTableTitle"> 
                                 <p class="col-item span-65">项目</p> 
                                 <p class="col-row span-5">行次</p> 
@@ -81,7 +63,7 @@
                             </div> 
                             <div class="contentPage" id="incomeConTable"> 
                                 <div class="searchBreak" ng-show="0===sheet.income.length"> 
-                                    <p class="ng-binding">财税通提醒您：资产负债表不存在</p> 
+                                    <p class="ng-binding">财税通提醒您：利润表不存在</p> 
                                 </div> 
                                 <div class="sheetBody"> 
                                     <!-- ngRepeat: row in sheet.income --> 
@@ -89,7 +71,8 @@
                             </div> 
                         </div>
 
-                        <div class="sheetContent incomeQuarterTable ng-hide" ng-show="currentMenu.title == '利润季表'"> 
+                        <!-- 利润季表 -->
+                        <div class="sheetContent incomeQuarterTable" v-if="currentMenu.type === 'incomeByQuarter'"> 
                             <div class="sheetTableTitle"> 
                                 <p class="col-item span-40">项目</p> 
                                 <p class="col-row span-5">行次</p> 
@@ -100,8 +83,8 @@
                                 <p class="col-quarter span-10">第四季度</p> 
                             </div> 
                             <div class="contentPage" id="incomeQuarter"> 
-                                <div class="searchBreak ng-hide" ng-show="0===sheet.incomeQuarter.length"> 
-                                    <p class="ng-binding">财税通提醒您：资产负债表不存在</p> 
+                                <div class="searchBreak" ng-show="0===sheet.incomeQuarter.length" v-if="1 != 1"> 
+                                    <p class="ng-binding">财税通提醒您：利润季表不存在</p> 
                                 </div> 
                                 <div class="sheetBody"> 
                                     <!-- ngRepeat: row in sheet.incomeQuarter -->
@@ -429,7 +412,7 @@
                                 </div> 
                             </div>
                             <!-- 现金流量表 -->
-                            <div class="sheetContent ng-hide" ng-show="currentMenu.title == '现金流量表'"> 
+                            <div class="sheetContent" v-if="currentMenu.type == 'cash'"> 
                                 <div class="sheetTableTitle"> <p class="col-item span-65">项目</p> 
                                 <p class="col-row span-5">行次</p> 
                                 <!-- ngIf: sheetYearAfter --> <!-- ngIf: sheetYearAfter --> <!-- ngIf: !sheetYearAfter -->
@@ -448,8 +431,10 @@
                                     <!-- ngRepeat: row in sheet.cash --> 
                                 </div> 
                             </div> 
-                        </div> 
-                        <div class="sheetContent incomeQuarterTable ng-hide" ng-show="currentMenu.title == '现金流量季表'"> 
+                        </div>
+
+                        <!-- 现金流量季表 -->
+                        <div class="sheetContent incomeQuarterTable" v-if="currentMenu.type === 'cashByQuarter'"> 
                             <div class="sheetTableTitle"> 
                                 <p class="col-item span-32">项目</p> 
                                 <p class="col-row span-5">行次</p> 
@@ -460,9 +445,6 @@
                                 <p class="col-quarter span-12">第四季度</p> 
                             </div> 
                             <div class="contentPage" id="cashQuarter"> 
-                                <div class="searchBreak ng-hide" ng-show="0===sheet.cashQuarter.length"> 
-                                    <p class="ng-binding">财税通提醒您：资产负债表不存在</p> 
-                                </div> 
                                 <div class="sheetBody"> 
                                     <!-- ngRepeat: row in sheet.cashQuarter -->
                                     <div class="sheetRow ng-scope" ng-repeat="row in sheet.cashQuarter"> 
@@ -728,7 +710,26 @@
 export default {
     data() {
         return {
-
+            // 头部tab菜单
+            menus: [
+                {index: 1, title: '资产负债表', isSelected: true, type: 'balance'},
+                {index: 2, title: '利润表', isSelected: false, type: 'income'},
+                {index: 3, title: '利润季表', isSelected: false, type: 'incomeByQuarter'},
+                {index: 4, title: '现金流量表', isSelected: false, type: 'cash'},
+                {index: 5, title: '现金流量季表', isSelected: false, type: 'cashByQuarter'}
+            ],
+            // 资产负债表选中标识
+            isAsset: true,
+            currentMenu: {index: 1, title: '资产负债表', isSelected: true, type: 'balance'},
+            assetDefault: {
+                types : [
+                    {index: 1, title: '默认模式', value: 'default'},
+                    {index: 2, title: '一级科目模式 Ⅰ', value: 'balance'},
+                    {index: 3, title: '一级科目模式 Ⅱ', value: 'assign'},
+                    {index: 4, title: '明细科目模式', value: 'child'},
+                ],
+                type: 'default'
+            },
         }
     },
     created() {
@@ -738,7 +739,26 @@ export default {
 
     },
     methods: {
-
+        // tab切换
+        selectSheet(opt) {
+            console.log("tab切换:", opt)
+            opt.isSelected = true
+            this.currentMenu = opt
+            if (opt.type == 'balance') {
+                this.isAsset = true
+            } else {
+                this.isAsset = false
+            }
+            for (let menu of this.menus) {
+                if (opt.type != menu.type) {
+                    menu.isSelected = false
+                }
+            }
+        },
+        // select
+        exportReport() {
+            console.log("导出：", this.assetDefault.type)
+        }
     }
 }
 </script>
@@ -906,5 +926,71 @@ export default {
     position: absolute;
     width: 100%;
     font-size: 12px;
+}
+
+/**利润表*/
+.sheetTableTitle .col-balance-switch:before, .sheetTableTitle .col-balance-switch span {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 10px;
+    right: -10px;
+    background-color: #5fbbfc;
+    cursor: pointer;
+}
+
+.sheetTableTitle .col-balance-switch span {
+    display: block;
+    opacity: .6;
+    background-image: url(./i/interactive.png);
+    z-index: 1;
+    transition: .3s;
+}
+
+/**利润季表*/
+.sheetRow p {
+    height: 30px;
+    padding: 5px 0;
+    line-height: 20px;
+    background: #fff;
+    white-space: pre;
+}
+.sheetBody .sheetRow:hover p {
+    background: rgba(255,232,136,.5);
+}
+.sheetContent [class|=col] {
+    display: table-cell;
+    border-right: 1px solid #dadfe8;
+    border-bottom: 1px solid #dadfe8;
+}
+.sheetBody p:first-child, .sheetBody p:nth-child(5) {
+    padding-left: 8px;
+}
+.incomeQuarterTable .sheetBody p:first-child {
+    white-space: pre-wrap;
+}
+.sheetBody .col-row {
+    text-align: center;
+}
+.sheetBody .col-balance, .sheetBody .col-quarter {
+    text-align: right;
+}
+.sheetBody p:nth-child(3), .sheetBody p:nth-child(4), .sheetBody p:nth-child(7) {
+    padding-right: 8px;
+}
+.sheetRow:nth-child(2n) p {
+    background: #ebf4ff;
+}
+
+
+/**隐藏滚动条*/
+#incomeQuarter::-webkit-scrollbar, #assetConTable::-webkit-scrollbar, #incomeConTable::-webkit-scrollbar, #incomeConTable::-webkit-scrollbar, #cash::-webkit-scrollbar, #cashQuarter::-webkit-scrollbar {
+  width: 0 !important;
+}
+#incomeQuarter, #assetConTable, #incomeConTable, #incomeConTable, #cash, #cashQuarter{
+  -ms-overflow-style: none !important;
+  overflow: -moz-scrollbars-none !important;
+  overflow: auto;
 }
 </style>
