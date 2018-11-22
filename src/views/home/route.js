@@ -73,6 +73,17 @@ export default [{
       },
       component: r => require.ensure([], () => r(require('../../components/setofbooks/financialStatements.vue')), 'financialStatements')
     },
+    /**自动配置*/
+    {
+      path: 'accounts/automation',
+      name: 'automation',
+      meta: {
+        title: '账套设置',
+        notLoading: true,
+        needLogin: true
+      },
+      component: r => require.ensure([], () => r(require('../../components/setofbooks/autoSetting.vue')), 'autoSetting')
+    },
     /**用户列表*/
     {
       path: 'user',

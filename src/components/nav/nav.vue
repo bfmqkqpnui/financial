@@ -145,19 +145,7 @@
               this.$router.push({name: 'histories'})
               break;
             case 8:
-              this.$router.push("/home")
-              break;
-            case 9:
-              this.$router.push("/home")
-              break;
-            case 10:
-              this.$router.push("/home")
-              break;
-            case 11:
-              this.$router.push("/home")
-              break;
-            case 12:
-              this.$router.push("/home")
+              this.$router.push({name: 'automation'})
               break;
           }
         } else {
