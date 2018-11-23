@@ -152,5 +152,21 @@ export default {
   // 批量更新状态
   batchVoucherStatus: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/batchUpdateStatus', params)
-  }
+  },
+  /*** 自动配置 1.新增 */
+  insertSalary: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/salary/insert', params)
+  },
+  /*** 自动配置 2.删除 */
+  deleteSalary: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/salary/delete', params)
+  },
+  /*** 自动配置 3.修改 */
+  updateSalary: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/salary/update', params)
+  },
+  /*** 自动配置 4.查询 */
+  queryAllSalary: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/salary/queryAll', params)
+  },
 }

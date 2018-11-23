@@ -302,11 +302,22 @@ const valPhone = (phone) => {
 }
 
 // 验证邮箱
-const checkEmail = (email) => {
-  if (email == null || email == "") {
+const checkEmail = (mail) => {
+  if (mail == null || mail == "") {
     return false;
-  } else if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(email)) {
+  } else if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(mail)) {
     return false;
+  } else {
+    return true;
+  }
+}
+
+// 验证身份证号码
+const checkCardByPerson = (card) => {
+  if (card == null || card == "") {
+    return false;
+  } else if (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(card)) {
+    return false
   } else {
     return true;
   }
@@ -378,5 +389,6 @@ export default {
   isExist,
   giveCardCountDown,
   checkEmail,
-  checkNumOrStr
+  checkNumOrStr,
+  checkCardByPerson
 }

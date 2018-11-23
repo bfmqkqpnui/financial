@@ -29,7 +29,7 @@
                                     </div> 
                                 </div>
                                 <!-- end ngIf: isMyAccount && isCurrentIssue --> <!-- ngIf: isMyAccount && isCurrentIssue -->
-                                <div class="com-button anime com-button--hollow" @click.stop="toggleCreateEmp('show')"> 
+                                <div class="com-button anime com-button--hollow" @click.stop="createSalary"> 
                                     <div>
                                         <span class="ng-scope">添加人员</span>
                                     </div> 
@@ -39,7 +39,7 @@
                                 <input id="salary" type="file" accept=".xls,.xlsx" file-model="" keep-file="false" v-if="1 != 1"> 
                             </div> 
                             <div class="page-content"> 
-                                <div class="pageWrapper ps-container ps-theme-default"> 
+                                <div class="pageWrapper ps-theme-default" id="componentSalaries"> 
                                     <div class="tableContainer"> 
                                         <table> 
                                             <thead> 
@@ -111,82 +111,82 @@
         </div>
 
         <!-- 创建或更新弹层 -->
-        <div class="site-mask anime site-mask--shade"> 
+        <div class="site-mask anime site-mask--shade" v-if="showEmpMaskFlag"> 
             <div class="site-popup anime popup-salary ng-isolate-scope site-popup--expand" style="transform-style: preserve-3d; transition: all 50ms ease 0s;"> 
                 <div class="site-popup_head"> 
-                    <p class="ng-binding">添加人员</p> 
-                    <div class="site-popup_close g-icon-close" ng-click="hide()"></div> 
+                    <p class="ng-binding" v-text="salaryTitle"></p> 
+                    <div class="site-popup_close g-icon-close" @click.stop="toggleAddSalaryPop('hide')"></div> 
                 </div> 
                 <div class="site-popup_body"> 
                     <div class="entry-container"> 
-                        <div class="container_scroll ps-container ps-theme-default ps-active-y"> 
+                        <div class="container_scroll ps-theme-default" id="componentSalary"> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">姓名</p> 
-                                <input class="grid-content" type="text" ng-model="salary.name"> 
+                                <input class="grid-content" type="text" v-model.trim="salary.name"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">身份证号码</p> 
-                                <input class="grid-content" type="text" ng-model="salary.certificates"> 
+                                <input class="grid-content" type="text" v-model.trim="salary.identityCardNumber"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">是否雇员</p> 
-                                <select ng-model="salary.isEmployee" class="grid-content" ng-options="s for s in employeeSelects">
-                                    <option label="是" value="string:是" selected="selected">是</option>
-                                    <option label="否" value="string:否">否</option>
+                                <select v-model="salary.isEmployee" class="grid-content">
+                                    <option label="是" value="1">是</option>
+                                    <option label="否" value="0">否</option>
                                 </select> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">手机号码</p> 
-                                <input class="grid-content" type="text" ng-model="salary.phone"> 
+                                <input class="grid-content" type="text" v-model.trim="salary.cellPhoneNumber"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">收入额</p> 
-                                <input class="grid-content" type="number" ng-model="salary.basic" ng-change="basicOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.revenuePosition" ng-change="basicOnChange()"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人社保-养老</p> 
-                                <input class="grid-content" type="number" ng-model="salary.annuity" ng-change="annuityOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.endowmentInsurance" ng-change="annuityOnChange()"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人社保-医疗</p> 
-                                <input class="grid-content" type="number" ng-model="salary.medicare" ng-change="medicareOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.medicalInsurance" ng-change="medicareOnChange()"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人社保-失业</p> 
-                                <input class="grid-content" type="number" ng-model="salary.unemployment" ng-change="unemploymentOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.unemploymentInsurance" ng-change="unemploymentOnChange()"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人公积金</p> 
-                                <input class="grid-content" type="number" ng-model="salary.accumulationFundPersonal" ng-change="accumulationFundPersonalOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.accumulationFund" ng-change="accumulationFundPersonalOnChange()"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人所得税</p> 
-                                <input class="grid-content" type="number" ng-model="salary.taxPersonal" ng-change="taxPersonalOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.individualIncomeTax" ng-change="taxPersonalOnChange()"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">实发工资</p> 
-                                <input class="grid-content" type="number" ng-model="salary.actual"  disabled="disabled"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.netPayroll"  disabled="disabled"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">单位社保</p> 
-                                <input class="grid-content" type="number" ng-model="salary.socialSecurityCompany"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.socialSecurity"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">单位公积金</p> 
-                                <input class="grid-content" type="number" ng-model="salary.accumulationFundCompany" ng-change="accumulationFundCompanyOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.unitAccumulationFund" ng-change="accumulationFundCompanyOnChange()"> 
                             </div> 
                         </div> 
                     </div> 
                 </div> 
                 <div class="site-popup_footer"> 
-                    <p class="popup-error ng-binding"></p> 
+                    <p class="popup-error ng-binding" v-text="errMsg"></p> 
                     <div class="entry-row"> 
-                        <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" ng-click="hide() ;click();"> 
+                        <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="toggleAddSalaryPop('hide')"> 
                             <div>
                                 <span class="ng-scope">取消</span>
                             </div> 
                         </div> 
-                        <div class="btn-ok com-button anime ng-isolate-scope com-button--ok" ng-click="ok() ;click();"> 
+                        <div class="btn-ok com-button anime ng-isolate-scope com-button--ok" @click.stop="confirmAddSalary"> 
                             <div>
                                 <span class="ng-scope">确定</span>
                             </div> 
@@ -225,24 +225,36 @@
     </div>
 </template>
 <script>
+import api from "./api/index"
+import utils from "../../utils"
 export default {
     data() {
         return {
+            token: utils.dbGet("userInfo").token,
+            adminId: utils.dbGet("userInfo").id,
+            accountId: utils.dbGet("account").id,
             // 新建更新弹层
             showEmpMaskFlag: false,
             delFlag: false,
-            employee: {}
+            // 工资对象
+            salary: {},
+            // 弹层标题
+            salaryTitle: '',
+            // 工资列表
+            salaryList: [],
+            // 错误信息
+            errMsg: '',
         }
     },
     created() {
-
+        this.querySalarys()
     },
     filters: {
 
     },
     methods: {
         // 显示添加弹层
-        toggleCreateEmp(type) {
+        toggleAddSalaryPop(type) {
             if (type && type == 'show') {
                 this.showEmpMaskFlag = true
             } else {
@@ -264,10 +276,107 @@ export default {
                 this.toggleDeletEmp('show')
             }
         },
-        // 确认删除职员
+        // 创建薪水
+        createSalary() {
+            this.salaryTitle = '添加人员'
+            this.configSalary()
+            this.toggleAddSalaryPop('show')
+        },
+        // 编辑薪水
+        updateSalary(opt) {
+            this.salaryTitle = '编辑人员'
+            this.salary = opt
+            this.toggleAddSalaryPop('show')
+        },
+        // 查询薪水列表
+        querySalarys() {
+            console.log("查询薪水列表")
+            this.salaryList = []
+            if (this.accountId) {
+                let params = {
+                    accountSetId: this.accountId,
+                    token: this.token
+                }
+                console.log("查询薪水列表入参：", JSON.stringify(params))
+                api.queryAllSalary(params).then(res => {
+                    console.log("查询薪水列表结果：", res.body)
+                    if (res.body.result == 0) {
+                        this.salaryList = res.body.data
+                    }
+                })
+            }
+        },
+        // 确认删除职员薪水
         confirmDelteEmp() {
             console.log("确认删除职员")
         },
+        // 确认添加职员薪水
+        confirmAddSalary() {
+            console.log("确认添加职员薪水")
+            if (this.checkData()) {
+                let params = this.salary
+                params.accountSetId = this.accountId
+                params.token = this.token
+                console.log("确认添加职员薪水入参：", JSON.stringify(params))
+                api.insertSalary(params).then(res => {
+                    console.log("确认添加职员薪水结果：", res.body)
+                    if (res.body.result == 0) {
+                        this.$emit("success", res.body.msg)
+                    } else {
+                        this.$emit("error", res.body.msg)
+                    }
+                })
+            }
+        },
+        // 初始化薪水
+        configSalary() {
+            this.salary = {
+                // 姓名
+                name: '',
+                // 身份证号码
+                identityCardNumber: '',
+                // 是否雇员(0否，1是)
+                isEmployee: 1,
+                // 手机号码
+                cellPhoneNumber: '',
+                // 收入额
+                revenuePosition: 0,
+                // 养老保险
+                endowmentInsurance: 0,
+                // 医疗保险
+                medicalInsurance: 0,
+                // 失业保险
+                unemploymentInsurance: 0,
+                // 公积金
+                accumulationFund: 0,
+                // 个人所得税
+                individualIncomeTax: 0,
+                // 实发工资
+                netPayroll: 0,
+                // 单位社保
+                socialSecurity: 0,
+                // 单位公积金
+                unitAccumulationFund: 0
+            }
+        },
+        checkData() {
+            if (this.salary.name && this.salary.name.length > 0) {
+                if (utils.checkCardByPerson(this.salary.identityCardNumber)) {
+                    if (utils.valPhone(this.salary.cellPhoneNumber)) {
+                        return true
+                    } else {
+                        this.errMsg = '请填写正确的手机号码'
+                        return false  
+                    }
+                } else {
+                    this.errMsg = '请填写正确的身份证号'
+                    return false 
+                }
+            } else {
+                this.errMsg = '请填写员工姓名'
+                return false
+            }
+        }
     }
 }
 </script>
@@ -419,14 +528,81 @@ export default {
 .page-automation tbody tr:hover {
     background-color: rgba(255,232,136,.5);
 }
+/**添加弹层样式*/
+.popup-salary {
+    width: 460px;
+}
+.popup-salary .site-popup_head>p {
+    line-height: 60px;
+    font-size: 18px;
+    text-align: center;
+}
+.popup-salary .entry-container {
+    width: 100%;
+    padding: 35px 15px 25px 25px;
+}
+.popup-salary .container_scroll {
+    position: relative;
+    height: 480px;
+}
+.popup-salary .entry-row {
+    padding-right: 10px;
+    width: 100%;
+    height: 30px;
+    margin-top: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.popup-salary .entry-row:first-child {
+    margin-top: 0;
+}
+.popup-salary .grid-label {
+    width: 120px;
+}
+.popup-salary .popup-label {
+    display: inline-block;
+    text-align: right;
+    font-size: 14px;
+    line-height: 30px;
+    padding: 0 8px;
+}
+.popup-salary input {
+    font-size: 13px;
+    color: rgba(42,51,59,.8);
+}
+.popup-salary .grid-content {
+    max-width: 250px;
+}
+.popup-salary .site-popup_footer {
+    padding: 0 25px 25px;
+}
+.popup-salary .popup-error {
+    color: red;
+    font-size: 12px;
+    padding-left: 130px;
+    height: 30px;
+}
+.popup-salary .site-popup_footer .entry-row {
+    margin: 0;
+}
+.popup-salary .btn-cancel {
+    width: 60px;
+    margin: 0 30px;
+}
+.popup-salary .btn-ok {
+    width: 250px;
+}
 /**隐藏滚动条*/
-#incomeQuarter::-webkit-scrollbar, #assetConTable::-webkit-scrollbar, #incomeConTable::-webkit-scrollbar, #incomeConTable::-webkit-scrollbar, #cash::-webkit-scrollbar, #cashQuarter::-webkit-scrollbar {
+#componentSalary::-webkit-scrollbar, #componentSalaries::-webkit-scrollbar {
   width: 0 !important;
 }
-#incomeQuarter, #assetConTable, #incomeConTable, #incomeConTable, #cash, #cashQuarter{
+#componentSalary, #componentSalaries{
   -ms-overflow-style: none !important;
   overflow: -moz-scrollbars-none !important;
   overflow: auto;
 }
 </style>
-
