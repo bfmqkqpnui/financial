@@ -66,24 +66,38 @@
                                             </thead> 
                                             <tbody> 
                                                 <!-- ngRepeat: s in salaryList -->
-                                                <tr ng-repeat="s in salaryList"> 
-                                                    <td class="col-index ng-binding">1</td> 
-                                                    <td class="col-name ng-binding">张三</td> 
-                                                    <td class="col-number ng-binding">513432198104105117</td> 
-                                                    <td class="col-isEmployee ng-binding">是</td> 
-                                                    <td class="col-phone ng-binding">15000657221</td> 
-                                                    <td class="col-basic ng-binding">11,000.00</td> 
-                                                    <td class="col-annuity ng-binding">800.00</td> 
-                                                    <td class="col-medicare ng-binding">500.00</td> 
-                                                    <td class="col-unemployment ng-binding">200.00</td> 
-                                                    <td class="col-accumulationFundPersonal ng-binding">2,400.00</td> 
-                                                    <td class="col-tax ng-binding">850.00</td> 
-                                                    <td class="col-actual ng-binding">6,250.00</td> 
-                                                    <td class="col-socialSecurityCompany ng-binding">0.00</td> 
-                                                    <td class="col-accumulationFundCompany ng-binding">2,400.00</td> 
+                                                <tr ng-repeat="(s, index) in salaryList" :key="index" v-if="salaryList.length > 0">
+                                                    <!-- 序号 -->
+                                                    <td class="col-index ng-binding" v-text="s.index"></td>
+                                                    <!-- 姓名 -->
+                                                    <td class="col-name ng-binding" v-text="s.name"></td>
+                                                    <!-- 身份证号码 -->
+                                                    <td class="col-number ng-binding" v-text="s.identityCardNumber"></td>
+                                                    <!-- 是否雇员 -->
+                                                    <td class="col-isEmployee ng-binding" v-text="s.isEmployee == 1 ? '是' : '否'"></td>
+                                                    <!-- 手机号码 -->
+                                                    <td class="col-phone ng-binding" v-text="s.cellPhoneNumber"></td>
+                                                    <!-- 收入额 -->
+                                                    <td class="col-basic ng-binding">{{s.revenuePosition | moneyFilter}}</td>
+                                                    <!-- 养老 -->
+                                                    <td class="col-annuity ng-binding">{{s.endowmentInsurance | moneyFilter}}</td>
+                                                    <!-- 医疗 -->
+                                                    <td class="col-medicare ng-binding">{{s.medicalInsurance | moneyFilter}}</td>
+                                                    <!-- 失业 -->
+                                                    <td class="col-unemployment ng-binding">{{s.unemploymentInsurance | moneyFilter}}</td>
+                                                    <!-- 个人公积金 -->
+                                                    <td class="col-accumulationFundPersonal ng-binding">{{s.accumulationFund | moneyFilter}}</td>
+                                                    <!-- 个人所得税 -->
+                                                    <td class="col-tax ng-binding">{{s.individualIncomeTax | moneyFilter}}</td>
+                                                    <!-- 实发工资 -->
+                                                    <td class="col-actual ng-binding">{{s.netPayroll | moneyFilter}}</td>
+                                                    <!-- 单位社保 -->
+                                                    <td class="col-socialSecurityCompany ng-binding">{{s.socialSecurity | moneyFilter}}</td>
+                                                    <!-- 单位公积金 -->
+                                                    <td class="col-accumulationFundCompany ng-binding">{{s.unitAccumulationFund | moneyFilter}}</td> 
                                                     <td class="col-operation"> 
                                                         <span ng-click="edit(s)">-编辑-</span> 
-                                                        <div class="icon-delete basic-icon g-icon-delte-line" title="删除" @click.stop="deleteEmp('s')"></div> 
+                                                        <div class="icon-delete basic-icon g-icon-delte-line" title="删除" @click.stop="deleteEmp(s)"></div> 
                                                     </td> 
                                                 </tr>
                                                 <tr> 
@@ -250,7 +264,20 @@ export default {
         this.querySalarys()
     },
     filters: {
-
+        moneyFilter(value) {
+            if (utils.isExist(value)) {
+                let hasPoint = value.toString().split(".");
+                if (hasPoint.length == 1) {
+                return value + ".00";
+                } else if (hasPoint.length > 1) {
+                if (hasPoint[1].length < 2) {
+                    return value + "0";
+                } else {
+                    return value;
+                }
+                }
+            }
+        }
     },
     methods: {
         // 显示添加弹层

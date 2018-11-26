@@ -738,7 +738,20 @@ export default {
 
     },
     filters: {
-
+        moneyFilter(value) {
+            if (utils.isExist(value)) {
+                let hasPoint = value.toString().split(".");
+                if (hasPoint.length == 1) {
+                return value + ".00";
+                } else if (hasPoint.length > 1) {
+                if (hasPoint[1].length < 2) {
+                    return value + "0";
+                } else {
+                    return value;
+                }
+                }
+            }
+        }
     },
     methods: {
         // tab切换
