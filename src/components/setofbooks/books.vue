@@ -98,26 +98,7 @@
                         </div> 
 
                         <div class="page-content"> 
-                            <div class="site-mask anime" ng-class="{'site-mask--shade': showBlanceMask}"> 
-                                <div class="site-popup anime foreignCurrencyWrap" ng-class="{'site-popup--expand': showBlanceMask}"> 
-                                    <div class="foreignPopupTitle"> 
-                                        <p class="ng-binding"></p> 
-                                        <div class="icon-amountExport" title="下载" ng-click="export()" ng-hide="showAssist"></div> 
-                                        <div class="icon-amountPrint" title="打印" ng-click="printBook()" ng-hide="showAssist"></div> 
-                                        <div class="buttonPopupExit" ng-click="closeAmountPopup(false)"></div> 
-                                    </div> 
-                                    <div class="foreignContentPopup"> 
-                                        <div class="bookTableTitle"> 
-                                        </div> 
-                                        <div class="contentPage ps-container ps-theme-default" scroll-behavior="top"> 
-                                            <table class="bookTable amountTableBodyWrap"> 
-                                                <tbody class="bookBody"> 
-                                                </tbody> 
-                                            </table> 
-                                        </div> 
-                                    </div> 
-                                </div> 
-                            </div> 
+
                             <div class="bookContent ng-scope" ng-if="menu.type == 'balances'"> 
                                 <div class="bookTableTitle balanceTitle"> 
                                     <table> 
@@ -142,7 +123,7 @@
                                         </thead> 
                                     </table> 
                                 </div> 
-                                <div class="contentPage ps-container ps-theme-default"> 
+                                <div class="contentPage ps-theme-default"> 
                                     <table class="bookTable balanceTable"> 
                                         <tbody class="bookBody"> 
                                             <tr class="bookRow ng-scope" ng-repeat="row in book.balances.balances | filter: filterBalance" ng-if="(showChild || row[0].length === 4 || row[1] === '合计') && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
@@ -618,5 +599,30 @@ export default {
 }
 .balanceTable tr td:first-child, .balanceTable tr td:nth-child(2) {
     background: none;
+}
+.bookTable .bookRow:hover {
+    background: rgba(255,232,136,.5);
+    cursor: default;
+}
+.col-balance-subject .borderPic {
+    width: 100%;
+    padding-left: 4px;
+    border-left: 1px dashed #b7b8b9;
+}
+.contentPage .balanceTable .borderNone {
+    border-left: none;
+}
+.icon-assist, .subjectText {
+    float: left;
+}
+.col-balance-subject .icon-detail {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBT…hQ/B1Wx0IaMrDLYOUq+v9zDskHPuRGqitu0DKH4qlu2vwFxbO+45HbX+cAAAAASUVORK5CYII=) no-repeat 50%;
+    cursor: pointer;
 }
 </style>

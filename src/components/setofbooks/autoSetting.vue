@@ -66,9 +66,9 @@
                                             </thead> 
                                             <tbody> 
                                                 <!-- ngRepeat: s in salaryList -->
-                                                <tr ng-repeat="(s, index) in salaryList" :key="index" v-if="salaryList.length > 0">
+                                                <tr v-for="(s, index) in salaryData.salaryList" :key="index" v-if="salaryData && salaryData.salaryList && salaryData.salaryList.length > 0">
                                                     <!-- 序号 -->
-                                                    <td class="col-index ng-binding" v-text="s.index"></td>
+                                                    <td class="col-index ng-binding" v-text="index + 1"></td>
                                                     <!-- 姓名 -->
                                                     <td class="col-name ng-binding" v-text="s.name"></td>
                                                     <!-- 身份证号码 -->
@@ -96,21 +96,30 @@
                                                     <!-- 单位公积金 -->
                                                     <td class="col-accumulationFundCompany ng-binding">{{s.unitAccumulationFund | moneyFilter}}</td> 
                                                     <td class="col-operation"> 
-                                                        <span ng-click="edit(s)">-编辑-</span> 
+                                                        <span @click.stop="updateSalary(s)">-编辑-</span> 
                                                         <div class="icon-delete basic-icon g-icon-delte-line" title="删除" @click.stop="deleteEmp(s)"></div> 
                                                     </td> 
                                                 </tr>
                                                 <tr> 
-                                                    <td colspan="5" style="text-align:center">合计</td> 
-                                                    <td class="ng-binding">0.00</td> 
-                                                    <td class="ng-binding">0.00</td> 
-                                                    <td class="ng-binding">0.00</td> 
-                                                    <td class="ng-binding">0.00</td> 
-                                                    <td class="ng-binding">0.00</td> 
-                                                    <td class="ng-binding">0.00</td> 
-                                                    <td class="ng-binding">0.00</td> 
-                                                    <td class="ng-binding">0.00</td> 
-                                                    <td class="ng-binding">0.00</td> 
+                                                    <td colspan="5" style="text-align:center">合计</td>
+                                                    <!-- 收入额 -->
+                                                    <td class="ng-binding">{{salaryData.totalRevenuePosition ? salaryData.totalRevenuePosition : 0 | moneyFilter}}</td>
+                                                    <!-- 养老 -->
+                                                    <td class="ng-binding">{{salaryData.totalEndowmentInsurance ? salaryData.totalEndowmentInsurance : 0 | moneyFilter}}</td>
+                                                    <!-- 医疗 -->
+                                                    <td class="ng-binding">{{salaryData.totalMedicalInsurance ? salaryData.totalMedicalInsurance : 0 | moneyFilter}}</td>
+                                                    <!-- 失业 -->
+                                                    <td class="ng-binding">{{salaryData.totalUnemploymentInsurance ? salaryData.totalUnemploymentInsurance : 0 | moneyFilter}}</td>
+                                                    <!-- 个人公积金 -->
+                                                    <td class="ng-binding">{{salaryData.totalAccumulationFund ? salaryData.totalAccumulationFund : 0 | moneyFilter}}</td>
+                                                    <!-- 个人所得税 -->
+                                                    <td class="ng-binding">{{salaryData.totalIndividualIncomeTax ? salaryData.totalIndividualIncomeTax : 0 | moneyFilter}}</td>
+                                                    <!-- 实发工资 -->
+                                                    <td class="ng-binding">{{salaryData.totalNetPayroll ? salaryData.totalNetPayroll : 0 | moneyFilter}}</td>
+                                                    <!-- 单位社保 -->
+                                                    <td class="ng-binding">{{salaryData.totalSocialSecurity ? salaryData.totalSocialSecurity : 0 | moneyFilter}}</td>
+                                                    <!-- 单位公积金 -->
+                                                    <td class="ng-binding">{{salaryData.totalUnitAccumulationFund ? salaryData.totalUnitAccumulationFund : 0 | moneyFilter}}</td>
                                                     <td></td> 
                                                 </tr> 
                                             </tbody> 
@@ -155,31 +164,31 @@
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">收入额</p> 
-                                <input class="grid-content" type="number" v-model.trim="salary.revenuePosition" ng-change="basicOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.revenuePosition" @keyup="salaryOnChange"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人社保-养老</p> 
-                                <input class="grid-content" type="number" v-model.trim="salary.endowmentInsurance" ng-change="annuityOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.endowmentInsurance" @keyup="salaryOnChange"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人社保-医疗</p> 
-                                <input class="grid-content" type="number" v-model.trim="salary.medicalInsurance" ng-change="medicareOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.medicalInsurance" @keyup="salaryOnChange"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人社保-失业</p> 
-                                <input class="grid-content" type="number" v-model.trim="salary.unemploymentInsurance" ng-change="unemploymentOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.unemploymentInsurance" @keyup="salaryOnChange"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人公积金</p> 
-                                <input class="grid-content" type="number" v-model.trim="salary.accumulationFund" ng-change="accumulationFundPersonalOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.accumulationFund" @keyup="accumulationFundOnChange"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">个人所得税</p> 
-                                <input class="grid-content" type="number" v-model.trim="salary.individualIncomeTax" ng-change="taxPersonalOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.individualIncomeTax" @keyup="salaryOnChange"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">实发工资</p> 
-                                <input class="grid-content" type="number" v-model.trim="salary.netPayroll"  disabled="disabled"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.netPayroll" disabled="disabled"> 
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">单位社保</p> 
@@ -187,7 +196,7 @@
                             </div> 
                             <div class="entry-row"> 
                                 <p class="grid-label popup-label">单位公积金</p> 
-                                <input class="grid-content" type="number" v-model.trim="salary.unitAccumulationFund" ng-change="accumulationFundCompanyOnChange()"> 
+                                <input class="grid-content" type="number" v-model.trim="salary.unitAccumulationFund"> 
                             </div> 
                         </div> 
                     </div> 
@@ -219,7 +228,7 @@
                 <div class="site-popup_body"> 
                     <div class="site-popup_type"> 
                         <div class="typeIcon g-icon-warn"></div> 
-                        <p class="typeTitle typeTitle--warn ng-binding">是否删除“张三”条目？</p> 
+                        <p class="typeTitle typeTitle--warn ng-binding">是否删除“{{salary.name}}”条目？</p> 
                     </div> 
                 </div> 
                 <div class="site-popup_footer"> 
@@ -255,7 +264,7 @@ export default {
             // 弹层标题
             salaryTitle: '',
             // 工资列表
-            salaryList: [],
+            salaryData: {},
             // 错误信息
             errMsg: '',
         }
@@ -299,7 +308,7 @@ export default {
         // 删除对象赋值
         deleteEmp(opt) {
             if (opt) {
-                this.employee = opt
+                this.salary = opt
                 this.toggleDeletEmp('show')
             }
         },
@@ -328,7 +337,7 @@ export default {
                 api.queryAllSalary(params).then(res => {
                     console.log("查询薪水列表结果：", res.body)
                     if (res.body.result == 0) {
-                        this.salaryList = res.body.data
+                        this.salaryData = res.body.data
                     }
                 })
             }
@@ -336,23 +345,54 @@ export default {
         // 确认删除职员薪水
         confirmDelteEmp() {
             console.log("确认删除职员")
-        },
-        // 确认添加职员薪水
-        confirmAddSalary() {
-            console.log("确认添加职员薪水")
-            if (this.checkData()) {
-                let params = this.salary
-                params.accountSetId = this.accountId
-                params.token = this.token
-                console.log("确认添加职员薪水入参：", JSON.stringify(params))
-                api.insertSalary(params).then(res => {
-                    console.log("确认添加职员薪水结果：", res.body)
+            let params = this.salary
+            params.accountSetId = this.accountId
+            params.token = this.token
+            if (params.id) {
+                this.toggleDeletEmp('hide')
+                console.log("确认删除职员薪水入参：", JSON.stringify(params))
+                api.deleteSalary(params).then(res => {
+                    console.log("确认删除职员薪水结果：", JSON.stringify(params))
                     if (res.body.result == 0) {
                         this.$emit("success", res.body.msg)
+                        this.querySalarys()
                     } else {
                         this.$emit("error", res.body.msg)
                     }
                 })
+            }
+        },
+        // 确认添加职员薪水
+        confirmAddSalary() {
+            console.log("确认添加或者更新职员薪水")
+            if (this.checkData()) {
+                this.toggleAddSalaryPop('hide')
+                let params = this.salary
+                params.accountSetId = this.accountId
+                params.token = this.token
+                if (params.id) {
+                    console.log("确认更新职员薪水入参：", JSON.stringify(params))
+                    api.updateSalary(params).then(res => {
+                        console.log("确认更新职员薪水结果：", res.body)
+                        if (res.body.result == 0) {
+                            this.$emit("success", res.body.msg)
+                            this.querySalarys()
+                        } else {
+                            this.$emit("error", res.body.msg)
+                        }
+                    })
+                } else {
+                    console.log("确认添加职员薪水入参：", JSON.stringify(params))
+                    api.insertSalary(params).then(res => {
+                        console.log("确认添加职员薪水结果：", res.body)
+                        if (res.body.result == 0) {
+                            this.$emit("success", res.body.msg)
+                            this.querySalarys()
+                        } else {
+                            this.$emit("error", res.body.msg)
+                        }
+                    })
+                }
             }
         },
         // 初始化薪水
@@ -403,7 +443,15 @@ export default {
                 this.errMsg = '请填写员工姓名'
                 return false
             }
-        }
+        },
+        salaryOnChange() {
+            // 实发工资 = 收入额 - 养老 - 医疗 - 失业 - 公积金 - 个人所得税
+            this.salary.netPayroll = Number(this.salary.revenuePosition) - Number(this.salary.endowmentInsurance) - Number(this.salary.medicalInsurance) - Number(this.salary.unemploymentInsurance) - Number(this.salary.accumulationFund) - Number(this.salary.individualIncomeTax)
+        },
+        accumulationFundOnChange() {
+            this.salary.unitAccumulationFund = this.salary.accumulationFund
+            this.salaryOnChange()
+        },
     }
 }
 </script>

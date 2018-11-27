@@ -34,7 +34,7 @@ export default [{
       path: 'accounts/books',
       name: 'books',
       meta: {
-        title: '历史数据',
+        title: '会计账簿',
         notLoading: true,
         needLogin: true
       },
@@ -67,7 +67,7 @@ export default [{
       path: 'accounts/sheets',
       name: 'sheets',
       meta: {
-        title: '账套设置',
+        title: '财务报表',
         notLoading: true,
         needLogin: true
       },
@@ -78,7 +78,7 @@ export default [{
       path: 'accounts/automation',
       name: 'automation',
       meta: {
-        title: '账套设置',
+        title: '自动配置',
         notLoading: true,
         needLogin: true
       },
@@ -89,7 +89,7 @@ export default [{
       path: 'user',
       name: 'user',
       meta: {
-        title: '账套列表',
+        title: '用户列表',
         notLoading: true,
         needLogin: true
       },
@@ -100,7 +100,7 @@ export default [{
       path: 'contract',
       name: 'contract',
       meta: {
-        title: '账套列表',
+        title: '合同列表',
         notLoading: true,
         needLogin: true
       },
@@ -111,7 +111,7 @@ export default [{
       path: 'data',
       name: 'data',
       meta: {
-        title: '账套列表',
+        title: '数据列表',
         notLoading: true,
         needLogin: true
       },
