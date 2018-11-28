@@ -275,15 +275,15 @@ export default {
     filters: {
         moneyFilter(value) {
             if (utils.isExist(value)) {
-                let hasPoint = value.toString().split(".");
+                let hasPoint = value.toString().split(".")
                 if (hasPoint.length == 1) {
-                return value + ".00";
+                    return value + ".00"
                 } else if (hasPoint.length > 1) {
-                if (hasPoint[1].length < 2) {
-                    return value + "0";
-                } else {
-                    return value;
-                }
+                    if (hasPoint[1].length < 2) {
+                        return value + "0"
+                    } else {
+                        return Number(value).toFixed(2)
+                    }
                 }
             }
         }
@@ -446,12 +446,16 @@ export default {
         },
         salaryOnChange() {
             // 实发工资 = 收入额 - 养老 - 医疗 - 失业 - 公积金 - 个人所得税
-            this.salary.netPayroll = Number(this.salary.revenuePosition) - Number(this.salary.endowmentInsurance) - Number(this.salary.medicalInsurance) - Number(this.salary.unemploymentInsurance) - Number(this.salary.accumulationFund) - Number(this.salary.individualIncomeTax)
+            let netPayroll = Number(this.salary.revenuePosition).toFixed(2) - Number(this.salary.endowmentInsurance).toFixed(2) - Number(this.salary.medicalInsurance).toFixed(2) - Number(this.salary.unemploymentInsurance).toFixed(2) - Number(this.salary.accumulationFund).toFixed(2) - Number(this.salary.individualIncomeTax).toFixed(2)
+            this.salary.netPayroll = netPayroll.toFixed(2)
         },
         accumulationFundOnChange() {
             this.salary.unitAccumulationFund = this.salary.accumulationFund
             this.salaryOnChange()
         },
+        changeMoney2Fen(money) {
+            return Number(money).toFixed(2)
+        }
     }
 }
 </script>

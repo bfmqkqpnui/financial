@@ -98,9 +98,10 @@
                         </div> 
 
                         <div class="page-content"> 
-
+                            <!-- 余额表 -->
                             <div class="bookContent ng-scope" ng-if="menu.type == 'balances'"> 
-                                <div class="bookTableTitle balanceTitle"> 
+                                <div class="bookTableTitle balanceTitle">
+                                    <!-- 余额表表头 -->
                                     <table> 
                                         <thead> 
                                             <tr> 
@@ -125,72 +126,51 @@
                                 </div> 
                                 <div class="contentPage ps-theme-default"> 
                                     <table class="bookTable balanceTable"> 
-                                        <tbody class="bookBody"> 
+                                        <tbody class="bookBody">
+                                            <!-- 余额表主体 -->
                                             <tr class="bookRow ng-scope" ng-repeat="row in book.balances.balances | filter: filterBalance" ng-if="(showChild || row[0].length === 4 || row[1] === '合计') && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
                                                 <td class="col-balance-subject span-9 ng-scope" ng-style="{'padding-left': (row[11].length ? ((row[11].length * 5) - 10) : ((row[0].length * 5) - 20)) + 'px'}" ng-if="row[1] !== '合计'" style="padding-left: 0px;"> 
                                                     <div class="borderPic borderNone" ng-style="{'height': '28px'}" ng-class="row[0].length === 4 && row[10] !== 'item' ? 'borderNone':''" style="height: 28px;"> 
-                                                        <div class="subjectText ng-binding">1601</div> 
+                                                        <div class="subjectText ng-binding">1001</div> 
                                                         <div class="icon-assist ng-hide" ng-show="row[10] === 'itemSubject'"></div> 
                                                     </div> 
                                                     <div class="icon-30 icon-detail" ng-click="viewSubDetail(row[0].trim())"></div> 
                                                 </td>
-                                                <td class="col-balance-name span-15 ng-binding ng-scope" title="固定资产" ng-if="row[1] !== '合计'">固定资产</td>
+                                                <td class="col-balance-name span-15 ng-binding ng-scope" title="库存现金" ng-if="row[1] !== '合计'">库存现金</td>
                                                 <td class="col-balance-debit span-9 ng-binding"> </td> 
                                                 <td class="col-balance-credit span-9 ng-binding"> </td> 
                                                 <td class="col-balance-debit span-9 ng-binding"> </td> 
-                                                <td class="col-balance-credit span-9 ng-binding">10,000.00</td> 
+                                                <td class="col-balance-credit span-9 ng-binding">100.00</td> 
                                                 <td class="col-balance-debit span-10 ng-binding"> </td> 
-                                                <td class="col-balance-credit span-10 ng-binding">10,000.00</td> 
+                                                <td class="col-balance-credit span-10 ng-binding">100.00</td> 
                                             </tr>
                                             <tr class="bookRow ng-scope" ng-repeat="row in book.balances.balances | filter: filterBalance" ng-if="(showChild || row[0].length === 4 || row[1] === '合计') && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
                                                 <td class="col-balance-subject span-9 ng-scope" ng-style="{'padding-left': (row[11].length ? ((row[11].length * 5) - 10) : ((row[0].length * 5) - 20)) + 'px'}" ng-if="row[1] !== '合计'" style="padding-left: 0px;"> 
                                                     <div class="borderPic borderNone" ng-style="{'height': '28px'}" ng-class="row[0].length === 4 && row[10] !== 'item' ? 'borderNone':''" style="height: 28px;"> 
-                                                        <div class="subjectText ng-binding">1602</div> 
+                                                        <div class="subjectText ng-binding">2001</div> 
                                                         <div class="icon-assist ng-hide" ng-show="row[10] === 'itemSubject'"></div> 
                                                     </div> 
                                                     <div class="icon-30 icon-detail" ng-click="viewSubDetail(row[0].trim())"></div> 
                                                 </td>
-                                                <td class="col-balance-name span-15 ng-binding ng-scope" title="累计折旧" ng-if="row[1] !== '合计'">累计折旧</td>
+                                                <td class="col-balance-name span-15 ng-binding ng-scope" title="短期借款" ng-if="row[1] !== '合计'">短期借款</td>
                                                 <td class="col-balance-debit span-9 ng-binding"> </td> 
                                                 <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                <td class="col-balance-debit span-9 ng-binding">8,000.00</td> 
+                                                <td class="col-balance-debit span-9 ng-binding">100.00</td> 
                                                 <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                <td class="col-balance-debit span-10 ng-binding">8,000.00</td> 
-                                                <td class="col-balance-credit span-10 ng-binding"> </td> 
-                                            </tr>
-                                            <tr class="bookRow ng-scope" ng-repeat="row in book.balances.balances | filter: filterBalance" ng-if="(showChild || row[0].length === 4 || row[1] === '合计') && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
-                                                <td class="col-balance-subject span-9 ng-scope" ng-style="{'padding-left': (row[11].length ? ((row[11].length * 5) - 10) : ((row[0].length * 5) - 20)) + 'px'}" ng-if="row[1] !== '合计'" style="padding-left: 0px;"> 
-                                                    <div class="borderPic borderNone" ng-style="{'height': '28px'}" ng-class="row[0].length === 4 && row[10] !== 'item' ? 'borderNone':''" style="height: 28px;"> 
-                                                        <div class="subjectText ng-binding">1606</div> 
-                                                        <div class="icon-assist ng-hide" ng-show="row[10] === 'itemSubject'"></div> 
-                                                    </div> 
-                                                    <div class="icon-30 icon-detail" ng-click="viewSubDetail(row[0].trim())"></div> 
-                                                </td>
-                                                <td class="col-balance-name span-15 ng-binding ng-scope" title="固定资产清理" ng-if="row[1] !== '合计'">固定资产清理</td>
-                                                <td class="col-balance-debit span-9 ng-binding"> </td> 
-                                                <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                <td class="col-balance-debit span-9 ng-binding">2,000.00</td> 
-                                                <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                <td class="col-balance-debit span-10 ng-binding">2,000.00</td> 
+                                                <td class="col-balance-debit span-10 ng-binding">100.00</td> 
                                                 <td class="col-balance-credit span-10 ng-binding"> </td> 
                                             </tr>
                                             <tr class="bookRow ng-scope" ng-repeat="row in book.balances.balances | filter: filterBalance" ng-if="(showChild || row[0].length === 4 || row[1] === '合计') && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
                                                 <td class="col-total span-28 ng-binding ng-scope" colspan="2" ng-if="row[1] === '合计'">合计</td>
                                                 <td class="col-balance-debit span-9 ng-binding"> </td> 
                                                 <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                <td class="col-balance-debit span-9 ng-binding">10,000.00</td> 
-                                                <td class="col-balance-credit span-9 ng-binding">10,000.00</td> 
-                                                <td class="col-balance-debit span-10 ng-binding">10,000.00</td> 
-                                                <td class="col-balance-credit span-10 ng-binding">10,000.00</td> 
+                                                <td class="col-balance-debit span-9 ng-binding">100.00</td> 
+                                                <td class="col-balance-credit span-9 ng-binding">100.00</td> 
+                                                <td class="col-balance-debit span-10 ng-binding">100.00</td> 
+                                                <td class="col-balance-credit span-10 ng-binding">100.00</td> 
                                             </tr>
                                         </tbody> 
                                     </table> 
-                                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-                                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                    </div>
-                                    <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
-                                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                                    </div>
                                 </div> 
                             </div>
                             <div class="printBox ng-scope"> 
@@ -233,61 +213,46 @@
                                                 <tr class="bookRow ng-scope" ng-repeat="row in balance" ng-if="(showChild || (row[0].length === 4 || row[1] === '合计')) && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
                                                     <!-- ngIf: row[1] !== '合计' -->
                                                     <td class="col-balance-subject span-9 ng-scope padingA" ng-class="row[0].length === 4 ? 'padingA':(row[0].length === 7? 'padingB':'padingC')" ng-if="row[1] !== '合计'"> 
-                                                        <p class="borderPic ng-binding borderNone" ng-class="row[0].length === 4 ? 'borderNone':''">1601</p> 
+                                                        <p class="borderPic ng-binding borderNone" ng-class="row[0].length === 4 ? 'borderNone':''">1001</p> 
                                                     </td>
                                                     <!-- end ngIf: row[1] !== '合计' --> <!-- ngIf: row[1] !== '合计' -->
-                                                    <td class="col-balance-name span-17 ng-binding ng-scope" ng-if="row[1] !== '合计'">固定资产</td>
+                                                    <td class="col-balance-name span-17 ng-binding ng-scope" ng-if="row[1] !== '合计'">库存现金</td>
                                                     <!-- end ngIf: row[1] !== '合计' --> <!-- ngIf: row[1] === '合计' --> 
                                                     <td class="col-balance-debit span-9 ng-binding"> </td> 
                                                     <td class="col-balance-credit span-9 ng-binding"> </td> 
                                                     <td class="col-balance-debit span-9 ng-binding"> </td> 
-                                                    <td class="col-balance-credit span-9 ng-binding">10,000.00</td> 
+                                                    <td class="col-balance-credit span-9 ng-binding">100.00</td> 
                                                     <!-- ngIf: showYearTotal --> <!-- ngIf: showYearTotal --> 
                                                     <td class="col-balance-debit span-9 ng-binding"> </td> 
-                                                    <td class="col-balance-credit span-9 ng-binding">10,000.00</td> 
+                                                    <td class="col-balance-credit span-9 ng-binding">100.00</td> 
                                                 </tr>
                                                 <tr class="bookRow ng-scope" ng-repeat="row in balance" ng-if="(showChild || (row[0].length === 4 || row[1] === '合计')) && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
                                                     <!-- ngIf: row[1] !== '合计' -->
                                                     <td class="col-balance-subject span-9 ng-scope padingA" ng-class="row[0].length === 4 ? 'padingA':(row[0].length === 7? 'padingB':'padingC')" ng-if="row[1] !== '合计'"> 
-                                                        <p class="borderPic ng-binding borderNone" ng-class="row[0].length === 4 ? 'borderNone':''">1602</p> 
+                                                        <p class="borderPic ng-binding borderNone" ng-class="row[0].length === 4 ? 'borderNone':''">2001</p> 
                                                     </td>
                                                     <!-- end ngIf: row[1] !== '合计' --> <!-- ngIf: row[1] !== '合计' -->
-                                                    <td class="col-balance-name span-17 ng-binding ng-scope" ng-if="row[1] !== '合计'">累计折旧</td>
+                                                    <td class="col-balance-name span-17 ng-binding ng-scope" ng-if="row[1] !== '合计'">短期借款</td>
                                                     <!-- end ngIf: row[1] !== '合计' --> <!-- ngIf: row[1] === '合计' --> 
                                                     <td class="col-balance-debit span-9 ng-binding"> </td> 
                                                     <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                    <td class="col-balance-debit span-9 ng-binding">8,000.00</td> 
+                                                    <td class="col-balance-debit span-9 ng-binding">100.00</td> 
                                                     <td class="col-balance-credit span-9 ng-binding"> </td> 
                                                     <!-- ngIf: showYearTotal --> <!-- ngIf: showYearTotal --> 
-                                                    <td class="col-balance-debit span-9 ng-binding">8,000.00</td> 
+                                                    <td class="col-balance-debit span-9 ng-binding">100.00</td> 
                                                     <td class="col-balance-credit span-9 ng-binding"> </td> 
                                                 </tr>
-                                                <tr class="bookRow ng-scope" ng-repeat="row in balance" ng-if="(showChild || (row[0].length === 4 || row[1] === '合计')) && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
-                                                <!-- ngIf: row[1] !== '合计' -->
-                                                    <td class="col-balance-subject span-9 ng-scope padingA" ng-class="row[0].length === 4 ? 'padingA':(row[0].length === 7? 'padingB':'padingC')" ng-if="row[1] !== '合计'"> 
-                                                        <p class="borderPic ng-binding borderNone" ng-class="row[0].length === 4 ? 'borderNone':''">1606</p> 
-                                                    </td>
-                                                    <!-- end ngIf: row[1] !== '合计' --> <!-- ngIf: row[1] !== '合计' -->
-                                                    <td class="col-balance-name span-17 ng-binding ng-scope" ng-if="row[1] !== '合计'">固定资产清理</td>
-                                                    <!-- end ngIf: row[1] !== '合计' --> <!-- ngIf: row[1] === '合计' --> 
-                                                    <td class="col-balance-debit span-9 ng-binding"> </td> 
-                                                    <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                    <td class="col-balance-debit span-9 ng-binding">2,000.00</td> 
-                                                    <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                    <!-- ngIf: showYearTotal --> <!-- ngIf: showYearTotal --> 
-                                                    <td class="col-balance-debit span-9 ng-binding">2,000.00</td> 
-                                                    <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                </tr>
+                                                <!-- 余额表合计 -->
                                                 <tr class="bookRow ng-scope" ng-repeat="row in balance" ng-if="(showChild || (row[0].length === 4 || row[1] === '合计')) && (showEmptyValue || '' !== row[4].trim() || '' !== row[5].trim())"> 
                                                     <td class="col-total span-26 ng-binding ng-scope" colspan="2" ng-if="row[1] === '合计'">合计</td>
                                                     <!-- end ngIf: row[1] === '合计' --> 
                                                     <td class="col-balance-debit span-9 ng-binding"> </td> 
                                                     <td class="col-balance-credit span-9 ng-binding"> </td> 
-                                                    <td class="col-balance-debit span-9 ng-binding">10,000.00</td> 
-                                                    <td class="col-balance-credit span-9 ng-binding">10,000.00</td> 
+                                                    <td class="col-balance-debit span-9 ng-binding">100.00</td> 
+                                                    <td class="col-balance-credit span-9 ng-binding">100.00</td> 
                                                     <!-- ngIf: showYearTotal --> <!-- ngIf: showYearTotal --> 
-                                                    <td class="col-balance-debit span-9 ng-binding">10,000.00</td> 
-                                                    <td class="col-balance-credit span-9 ng-binding">10,000.00</td> 
+                                                    <td class="col-balance-debit span-9 ng-binding">100.00</td> 
+                                                    <td class="col-balance-credit span-9 ng-binding">100.00</td> 
                                                 </tr>
                                             </tbody>
                                         </table> 
