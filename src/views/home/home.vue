@@ -6,10 +6,10 @@
         <div class="customerService-pop">
           <div class="customerService_item">
             <div class="customerService_item_left">
-              <div class="customerService_title">在线客服：</div> <!-- ngRepeat: qq in qqList -->
+              <div class="customerService_title">在线客服：</div>
               <div class="btn--basic customerService_item-qq ng-binding ng-scope" ng-click="openQQ(qq.number)"
                    ng-repeat="qq in qqList">财税通客服
-              </div><!-- end ngRepeat: qq in qqList -->
+              </div>
               <div class="customerService_content"></div>
               <div class="customerService_footer ng-binding"> 09:00-18:00</div>
             </div>
@@ -31,18 +31,18 @@
         </div>
       </div>
 
-      <div class="site-aside anime" ng-class="{'site-aside--shrink': isShrinked}">
+      <div class="site-aside anime">
         <div class="site-aside_logoBox icon-logo">
           <span>财税通</span>
           <div class="aside_flipper">
             <div class="flipper anime"></div>
           </div>
-          <div class="asite_group" ng-class="userGroupIcon"></div>
+          <div class="asite_group"></div>
         </div>
 
         <div class="site-aside_menuBox ps-container ps-theme-default">
           <div class="com-nadata-ps-id=de3f4491-8f0a-0ec7-abc2-903474880cd9">
-            <div
+            <div v-if="user.phone == 'admin'"
               class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand com-navMenu_menu--1"
               :class="defaultMenu.userManager ? 'com-navMenu_menu--focus' : ''" @click="navTo('user')">
               <div class="menu_icon menu_icon--focus menu_icon--accounts" ng-class="getIcon(menu)"></div>
@@ -51,25 +51,27 @@
             </div>
 
             <div
-              class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand com-navMenu_menu--2"
-              :class="defaultMenu.booksManager ? 'com-navMenu_menu--focus' : ''" @click="navTo('books')">
+              class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand"
+              :class="[defaultMenu.booksManager ? 'com-navMenu_menu--focus' : '', user.phone == 'admin' ? 'com-navMenu_menu--2' : 'com-navMenu_menu--1']" 
+              @click="navTo('books')">
               <div class="menu_icon menu_icon--focus menu_icon--accounts"></div>
               <div class="menu_name ng-binding">账套管理</div>
               <p class="menu_tag anime ng-binding ng-hide" ng-show="menuTag">账套管理</p>
             </div>
 
-            <div
+            <div v-if="user.phone == 'admin'"
               class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand com-navMenu_menu--3"
               :class="defaultMenu.dataManager ? 'com-navMenu_menu--focus' : ''" @click="navTo('data')">
-              <div class="menu_icon menu_icon--focus menu_icon--accounts" ng-class="getIcon(menu)"></div>
+              <div class="menu_icon menu_icon--focus menu_icon--accounts"></div>
               <div class="menu_name ng-binding">数据管理</div>
               <p class="menu_tag anime ng-binding ng-hide" ng-show="menuTag">数据管理</p>
             </div>
 
             <div
-              class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand com-navMenu_menu--4"
-              :class="defaultMenu.contractManager ? 'com-navMenu_menu--focus' : ''" @click="navTo('contract')">
-              <div class="menu_icon menu_icon--focus menu_icon--accounts" ng-class="getIcon(menu)"></div>
+              class="com-navMenu_menu anime ng-scope com-navMenu_menu--expand"
+              :class="[defaultMenu.contractManager ? 'com-navMenu_menu--focus' : '', user.phone == 'admin' ? 'com-navMenu_menu--4' : 'com-navMenu_menu--2']" 
+              @click="navTo('contract')">
+              <div class="menu_icon menu_icon--focus menu_icon--accounts"></div>
               <div class="menu_name ng-binding">合同管理</div>
               <p class="menu_tag anime ng-binding ng-hide" ng-show="menuTag">合同管理</p>
             </div>
@@ -549,6 +551,9 @@
     },
     components: {},
     mounted() {
+      
+    },
+    created() {
       this.copyUserConfig()
       this.defaultBooksMenuConfig()
     }

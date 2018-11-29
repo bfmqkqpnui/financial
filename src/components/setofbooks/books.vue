@@ -13,7 +13,7 @@
                                 </ul> 
                             </div> 
                             <div class="bookOperate"> 
-                                <div class="book-search_wrapper" ng-show="menu.type !== 'itemBalance'"> 
+                                <div class="book-search_wrapper" v-if="menu.name !== 'assistBalances'"> 
                                     <div class="selectedIssue beginIssue ng-binding" ng-click="issuePicker.beginIssue.show = true"> 
                                         <div class="com-issue ng-isolate-scope"> 
                                             <div class="com-issue_display ng-hide" ng-show="iShowTitle === 'true'" ng-click="showPicker()"> 
@@ -192,6 +192,73 @@
                             </div> 
                         </div>
                         <!-- 明细账 -->
+                        <div class="bookContent ng-scope" v-if="menu.name == 'subsidiary'"> 
+                            <div class="bookTableTitle"> 
+                                <table> 
+                                    <thead> 
+                                        <tr> 
+                                            <th class="col-breakdown-subject span-10">科目编号</th> 
+                                            <th class="col-breakdown-name span-20">科目名称</th> 
+                                            <th class="col-breakdown-issue span-10">期号</th> 
+                                            <th class="col-breakdown-number span-8">凭证编号</th> 
+                                            <th class="col-breakdown-brief span-9">摘要</th> 
+                                            <th class="col-breakdown-debit span-12">借方金额</th> 
+                                            <th class="col-breakdown-credit span-12">贷方金额</th> 
+                                            <th class="col-breakdown-direction span-7">方向</th> 
+                                            <th class="col-breakdown-balance span-12">余额</th> 
+                                        </tr> 
+                                    </thead> 
+                                </table> 
+                            </div> 
+                            <div class="contentPage" id="breakdownConTable"> 
+                                <div class="searchBreak ng-scope" ng-if="hasBreakdown"> 
+                                    <p class="ng-binding">财税通提醒您：请输入检索条件</p> 
+                                </div>
+                                <table class="bookTable"> 
+                                    <tbody class="bookBody"> 
+                                        <!-- ngRepeat: row in book.breakdown --> 
+                                    </tbody> 
+                                </table> 
+                            </div> 
+                            <div class="site-mask anime" ng-class="{'site-mask--shade': showDetail}"> 
+                                <div class="site-popup anime booksDetailContainer" ng-class="{'site-popup--expand': showDetail}"> 
+                                    <div class="voucherTop"> 
+                                        <p>明细账详细</p> 
+                                        <div class="vouDelBtn" ng-click="closeDetail()"></div> 
+                                    </div> 
+                                    <div class="voucherTableWrap"> 
+                                        <div class="voucherCenter" id="voucherPro"> 
+                                            <div class="bookTableTitle"> 
+                                                <table> 
+                                                    <thead> 
+                                                        <tr> 
+                                                            <th class="col-breakdown-subject span-10">科目编号</th> 
+                                                            <th class="col-breakdown-name span-20">科目名称</th> 
+                                                            <th class="col-breakdown-issue span-10">期号</th> 
+                                                            <th class="col-breakdown-number span-8">凭证编号</th> 
+                                                            <th class="col-breakdown-brief span-21">摘要</th> 
+                                                            <th class="col-breakdown-debit span-9">借方金额</th> 
+                                                            <th class="col-breakdown-credit span-9">贷方金额</th> 
+                                                            <th class="col-breakdown-direction span-4">方向</th> 
+                                                            <th class="col-breakdown-balance span-9">余额</th> 
+                                                        </tr> 
+                                                    </thead> 
+                                                </table> 
+                                            </div> 
+                                            <div class="contentPage voucherDetail" id="breakdownDetailPopup"> 
+                                                <div class="searchBreak" ng-show="book.detail.length == 0"> 
+                                                    <p>财税通提醒您：系统未找到您要检索的明细账详细！</p> 
+                                                </div> 
+                                                <table class="bookTable"> 
+                                                    <tbody class="bookBody"> 
+                                                    </tbody> 
+                                                </table> 
+                                            </div> 
+                                        </div> 
+                                    </div> 
+                                </div> 
+                            </div> 
+                        </div>
                         <!-- 余额表 -->
                         <div class="bookContent ng-scope" v-if="menu.name == 'balances'"> 
                             <div class="bookTableTitle balanceTitle">
@@ -268,8 +335,170 @@
                             </div> 
                         </div>
                         <!-- 序时簿 -->
+                        <div class="bookContent ng-scope" v-if="menu.name == 'chronological'"> 
+                            <div class="bookTableTitle"> 
+                                <table> 
+                                    <thead> 
+                                        <tr> 
+                                            <th class="col- span-10">凭证编号</th> 
+                                            <th class="col- span-10">期间</th> 
+                                            <th class="col- span-20">摘要</th> 
+                                            <th class="col- span-10">科目编号</th> 
+                                            <th class="col- span-30">科目名称</th> 
+                                            <th class="col- span-10">借方金额</th> 
+                                            <th class="col- span-10">贷方金额</th> 
+                                        </tr> 
+                                    </thead> 
+                                </table> 
+                            </div> 
+                            <div class="contentPage ps-theme-default" id="chronological"> 
+                                <table class="bookTable vorcherTable"> 
+                                    <tbody class="bookBody"> 
+                                        <tr class="bookRow ng-scope" ng-repeat="row in book.voucher"> 
+                                            <td class="col-voucher-subject span-10 ng-binding" rowspan="2" ng-show="row.first"> 1 </td> 
+                                            <td class="col-voucher-period span-10 ng-binding" rowspan="2" ng-show="row.first"> 2018-10 </td> 
+                                            <td class="col-voucher-digest span-20 ng-binding">测试</td> 
+                                            <td class="col-voucher-number span-10 ng-binding">1001</td> 
+                                            <td class="col-voucher-name span-30 ng-binding">库存现金</td> 
+                                            <td class="col-voucher-debit span-10 ng-binding"> 100.00 </td> 
+                                            <td class="col-voucher-credit span-10 ng-binding"> — </td> 
+                                        </tr>
+                                        <tr class="bookRow ng-scope" ng-repeat="row in book.voucher"> 
+                                            <td class="col-voucher-subject span-10 ng-binding ng-hide" rowspan="2" ng-show="row.first"> 1 </td> 
+                                            <td class="col-voucher-period span-10 ng-binding ng-hide" rowspan="2" ng-show="row.first"> 2018-10 </td> 
+                                            <td class="col-voucher-digest span-20 ng-binding">测试2</td> 
+                                            <td class="col-voucher-number span-10 ng-binding">2001</td> 
+                                            <td class="col-voucher-name span-30 ng-binding">短期借款</td> 
+                                            <td class="col-voucher-debit span-10 ng-binding"> — </td> 
+                                            <td class="col-voucher-credit span-10 ng-binding"> 100.00 </td> 
+                                        </tr>
+                                    </tbody> 
+                                </table> 
+                            </div> 
+                        </div>
                         <!-- 辅助核算明细账 -->
+                        <div class="bookContent itemBreakdownContent ng-scope" v-if="menu.name == 'assistSubsidiary'"> 
+                            <div class="bookTableTitle"> 
+                                <table> 
+                                    <thead> 
+                                        <tr> 
+                                            <th class="col-breakdown-itemCode span-6 ng-binding">客户编号</th> 
+                                            <th class="col-breakdown-itemName span-10 ng-binding">客户名称</th> 
+                                            <th class="col-breakdown-issue span-10">期号</th> 
+                                            <th class="col-breakdown-subject span-10">科目编码</th> 
+                                            <th class="col-breakdown-name span-14">科目名称</th> 
+                                            <th class="col-breakdown-number span-5">凭证编号</th> 
+                                            <th class="col-breakdown-brief span-10">摘要</th> 
+                                            <th class="col-breakdown-debit span-10">借方金额</th>
+                                            <th class="col-breakdown-credit span-10">贷方金额</th> 
+                                            <th class="col-breakdown-direction span-5">方向</th> 
+                                            <th class="col-breakdown-balance span-10">余额</th> 
+                                        </tr> 
+                                    </thead> 
+                                </table> 
+                            </div> 
+                            <div class="navMenuBox"> 
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope menuOn"> 客户 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 供应商 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 部门 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 员工 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 存货 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 项目 </div>
+                            </div> 
+                            <div class="contentPage ps-theme-default" id="itemBreakdownConTable"> 
+                                <div class="searchBreak ng-scope" ng-if="0 === book.itemBreakdown[assistMenu.cur.type].length"> 
+                                    <p class="ng-binding">财税通提醒您：辅助核算明细账不存在</p> 
+                                </div>
+                                <table class="bookTable"> 
+                                    <tbody class="bookBody"> 
+                                        <!-- ngRepeat: row in book.itemBreakdown[assistMenu.cur.type] --> 
+                                    </tbody> 
+                                </table> 
+                            </div> 
+                            <div class="site-mask anime" ng-class="{'site-mask--shade': showDetail}"> 
+                                <div class="site-popup anime booksDetailContainer" ng-class="{'site-popup--expand': showDetail}"> 
+                                    <div class="voucherTop"> 
+                                        <p>明细账详细</p> 
+                                        <div class="vouDelBtn" ng-click="closeDetail()"></div> 
+                                    </div> 
+                                    <div class="voucherTableWrap"> 
+                                        <div class="voucherCenter" id="voucherPro"> 
+                                            <div class="bookTableTitle"> 
+                                                <table> 
+                                                    <thead> 
+                                                        <tr> 
+                                                            <th class="col-breakdown-subject span-10">科目编号</th> 
+                                                            <th class="col-breakdown-name span-20">科目名称</th> 
+                                                            <th class="col-breakdown-issue span-10">期号</th> 
+                                                            <th class="col-breakdown-number span-8">凭证编号</th> 
+                                                            <th class="col-breakdown-brief span-21">摘要</th> 
+                                                            <th class="col-breakdown-debit span-9">借方金额</th> 
+                                                            <th class="col-breakdown-credit span-9">贷方金额</th> 
+                                                            <th class="col-breakdown-direction span-4">方向</th> 
+                                                            <th class="col-breakdown-balance span-9">余额</th> 
+                                                        </tr> 
+                                                    </thead> 
+                                                </table> 
+                                            </div> 
+                                            <div class="contentPage voucherDetail" id="breakdownDetailPopup"> 
+                                                <div class="searchBreak" ng-show="book.detail.length == 0"> 
+                                                    <p>财税通提醒您：系统未找到您要检索的明细账详细！</p> 
+                                                </div> 
+                                                <table class="bookTable"> 
+                                                    <tbody class="bookBody"> 
+                                                        <!-- ngRepeat: row in book.detail --> 
+                                                    </tbody> 
+                                                </table> 
+                                            </div> 
+                                        </div> 
+                                    </div> 
+                                </div> 
+                            </div> 
+                        </div>
                         <!-- 辅助核算余额表 -->
+                        <div class="bookContent itemBalanceContent ng-scope" v-if="menu.name == 'assistBalances'"> 
+                            <div class="bookTableTitle balanceTitle"> 
+                                <table> 
+                                    <thead> 
+                                        <tr> 
+                                            <th rowspan="2" class="col-balance-subject span-9 ng-binding">客户编码</th> 
+                                            <th rowspan="2" class="col-balance-name span-15 ng-binding">客户名称</th> 
+                                            <th colspan="2" class="col-balance-issue span-18">期初余额</th> 
+                                            <th colspan="2" class="col-balance-issue span-18">本期发生额</th> 
+                                            <th colspan="2" class="col-balance-issue span-20">期末余额</th> 
+                                        </tr> 
+                                        <tr> 
+                                            <th class="col-debit span-9">借方</th> 
+                                            <th class="col-lender span-9">贷方</th> 
+                                            <th class="col-debit span-9">借方</th> 
+                                            <th class="col-lender span-9">贷方</th> 
+                                            <th class="col-debit span-10">借方</th> 
+                                            <th class="col-lender span-10">贷方</th> 
+                                        </tr> 
+                                    </thead> 
+                                </table> 
+                            </div> 
+                            <div class="navMenuBox"> 
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope menuOn"> 客户 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 供应商 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 部门 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 员工 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 存货 </div>
+                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 项目 </div>
+                            </div> 
+                            <div class="contentPage ps-theme-default" id="itemBalanceConTable"> 
+                                <!-- ngIf: 0 === book.itemBalance.itemBalances[assistMenu.cur.type].length -->
+                                <div class="searchBreak ng-scope" ng-if="0 === book.itemBalance.itemBalances[assistMenu.cur.type].length"> 
+                                    <p class="ng-binding">财税通提醒您：辅助核算余额表不存在</p> 
+                                </div>
+                                <!-- end ngIf: 0 === book.itemBalance.itemBalances[assistMenu.cur.type].length --> 
+                                <table class="bookTable balanceTable"> 
+                                    <tbody class="bookBody"> 
+                                        <!-- ngRepeat: row in book.itemBalance.itemBalances[assistMenu.cur.type] --> 
+                                    </tbody> 
+                                </table> 
+                            </div> 
+                        </div>
                     </div>
                 </div> 
             </div> 
@@ -277,6 +506,8 @@
     </div>
 </template>
 <script>
+import api from './api/accountBook'
+import utils from "../../utils"
 export default {
   data() {
     return {
@@ -290,12 +521,19 @@ export default {
             {index: 6, name: 'assistBalances', value: '辅助核算余额表'}
         ],
         menu: {index: 3, name: 'balances', value: '余额表'},
+        assistMenu: {
+            list: [],
+        },
+        navMenu: {
+            type: ''
+        }
     };
   },
   methods: {
       // 选择tab菜单
       chooseMenu(opt) {
           this.menu = opt
+          this.queryDataByMenu(this.menu)
           for (let menu of this.bookMenus) {
               if (menu && menu.index == opt.index) {
                 menu.isSelected = true
@@ -303,9 +541,42 @@ export default {
                 menu.isSelected = false
               }
           }
+      },
+      // 根据菜单类型查询数据
+      queryDataByMenu(opt) {
+          if (opt && opt.name) {
+            switch (opt.name) {
+                case 'general':
+                // 总账
+                console.log("查询总账")
+                break
+                case 'subsidiary':
+                // 明细账
+                console.log("查询明细账")
+                break
+                case 'balances':
+                // 余额表
+                console.log("查询余额表")
+                break
+                case 'chronological':
+                // 序时簿
+                console.log("查询序时簿")
+                break
+                case 'assistSubsidiary':
+                // 辅助核算明细账
+                console.log("查询辅助核算明细账")
+                break
+                case 'assistBalances':
+                // 辅助核算余额表
+                console.log("查询辅助核算余额表")
+                break
+            }
+          }
       }
   },
-  create() {},
+  created() {
+      this.queryDataByMenu(this.menu)
+  },
   filters: {}
 };
 </script>
@@ -611,10 +882,7 @@ export default {
 .balanceTable tr td:nth-child(2) {
   background: none;
 }
-.bookTable .bookRow:hover {
-  background: rgba(255, 232, 136, 0.5);
-  cursor: default;
-}
+
 .col-balance-subject .borderPic {
   width: 100%;
   padding-left: 4px;
@@ -634,8 +902,94 @@ export default {
   top: 50%;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBT…hQ/B1Wx0IaMrDLYOUq+v9zDskHPuRGqitu0DKH4qlu2vwFxbO+45HbX+cAAAAASUVORK5CYII=)
+  background: url(./i/searchBook.png)
     no-repeat 50%;
   cursor: pointer;
+}
+.searchBreak {
+    margin: 50px auto;
+    background: url(./i/notFound.png) 50% no-repeat;
+    padding-top: 200px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+/**辅助核算右侧菜单*/
+.itemBalanceContent, .itemBreakdownContent {
+    padding-right: 30px;
+}
+.itemBalanceContent .navMenuBox {
+    top: 60px;
+}
+.navMenuBox {
+    width: 30px;
+    color: #5fbbfc;
+    text-align: center;
+    position: absolute;
+    right: 0;
+}
+.itemBreakdownContent .navMenuBox {
+    top: 40px;
+}
+.navMenuBox>div {
+    padding: 10px 4px;
+    border-right: 1px solid #5fbbfc;
+    border-bottom: 1px solid #5fbbfc;
+    cursor: pointer;
+}
+.navMenuBox .menuOn, .navMenuBox>div:hover {
+    color: #fff;
+    background: #5fbbfc;
+}
+.navMenuBox .menuOn {
+    cursor: default;
+}
+.navMenuBox>div:first-child {
+    border-top-right-radius: 4px;
+    border-top: 1px solid #5fbbfc;
+}
+.navMenuBox .menuOn, .navMenuBox>div:hover {
+    color: #fff;
+    background: #5fbbfc;
+}
+
+/**总账*/
+
+.bookContent [class|=col] {
+    display: table-cell;
+    border-right: 1px solid #dadfe8;
+    border-bottom: 1px solid #dadfe8;
+}
+.bookTable tr td:first-child, .bookTable tr td:nth-child(2) {
+    text-align: left;
+    padding-left: 6px;
+    background: #fff;
+}
+.bookTable .bookRow:nth-child(2n) {
+    background: #ebf4ff;
+}
+.bookTable .bookRow:hover {
+  background: rgba(255, 232, 136, 0.5);
+  cursor: default;
+}
+.balanceTable tr td:first-child, .balanceTable tr td:nth-child(2) {
+    background: none;
+}
+.bookTable .directionLend {
+    color: #00bc16;
+}
+.bookTable .directionLoan {
+    color: rgba(255,0,0,.8);
+}
+.vorcherTable tr td:first-child, .vorcherTable tr td:nth-child(2) {
+    text-align: center;
+}
+/**隐藏滚动条*/
+#ledgerConTable::-webkit-scrollbar, #chronological::-webkit-scrollbar, #itemBreakdownConTable::-webkit-scrollbar, #itemBalanceConTable::-webkit-scrollbar {
+  width: 0 !important;
+}
+#ledgerConTable, #chronological, #itemBreakdownConTable, #itemBalanceConTable {
+  -ms-overflow-style: none !important;
+  overflow: -moz-scrollbars-none !important;
 }
 </style>
