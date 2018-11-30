@@ -201,9 +201,9 @@
                         </div> 
                     </div> 
                 </div> 
-                <div class="site-popup_footer"> 
-                    <p class="popup-error ng-binding" v-text="errMsg"></p> 
-                    <div class="entry-row"> 
+                <div class="site-popup_footer">
+                    <p class="popup-error ng-binding" v-text="errMsg"></p>
+                    <div class="entry-row">
                         <div class="btn-cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="toggleAddSalaryPop('hide')"> 
                             <div>
                                 <span class="ng-scope">取消</span>

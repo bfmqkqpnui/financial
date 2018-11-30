@@ -398,12 +398,7 @@
                                 </table> 
                             </div> 
                             <div class="navMenuBox"> 
-                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope menuOn"> 客户 </div>
-                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 供应商 </div>
-                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 部门 </div>
-                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 员工 </div>
-                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 存货 </div>
-                                <div ng-repeat="navMenu in assistMenu.list" ng-class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope"> 项目 </div>
+                                <div v-for="navMenu in assistMenu.list" :class="navMenu.type === assistMenu.cur.type ? 'menuOn' : ''" ng-click="selectNavMenu(navMenu)" class="ng-binding ng-scope" :key="navMenu.index" v-text="navMenu.value"></div>
                             </div> 
                             <div class="contentPage ps-theme-default" id="itemBreakdownConTable"> 
                                 <div class="searchBreak ng-scope" ng-if="0 === book.itemBreakdown[assistMenu.cur.type].length"> 
@@ -522,7 +517,15 @@ export default {
         ],
         menu: {index: 3, name: 'balances', value: '余额表'},
         assistMenu: {
-            list: [],
+            list: [
+                {index: 1, type: 'customer', value: '客户'},
+                {index: 1, type: 'supplier', value: '供应商'},
+                {index: 1, type: 'department', value: '部门'},
+                {index: 1, type: 'employee', value: '员工'},
+                {index: 1, type: 'stock', value: '存货'},
+                {index: 1, type: 'project', value: '项目'},
+            ],
+            cur: {index: 1, type: 'customer', value: '客户'},
         },
         navMenu: {
             type: ''
