@@ -14,32 +14,9 @@
                             </div> 
                             <div class="bookOperate"> 
                                 <div class="book-search_wrapper" v-if="menu.name !== 'assistBalances'"> 
-                                    <div class="selectedIssue beginIssue ng-binding" ng-click="issuePicker.beginIssue.show = true"> 
-                                        <div class="com-issue ng-isolate-scope"> 
-                                            <div class="com-issue_display ng-hide" ng-show="iShowTitle === 'true'" ng-click="showPicker()"> 
-                                                <div class="display_icon icon-40"></div> 
-                                                <div class="display_tag ng-binding">2018-08期</div> 
-                                            </div> 
-                                            <div class="com-issue_container anime com-issue_container--hidden" ng-class="{'com-issue_container--hidden': !show}"> 
-                                                <div click-test="" listen="clicktest" onmouselost="hidePicker()" class="ng-isolate-scope" essfhzzl=""> 
-                                                </div> 
-                                            </div> 
-                                        </div> 2018-08 
-                                    </div> 
-                                    <hr class="split" />
-                                    <div class="selectedIssue endIssue ng-binding" ng-click="issuePicker.endIssue.show = true"> 
-                                        <div class="com-issue ng-isolate-scope"> 
-                                            <div class="com-issue_display ng-hide" ng-show="iShowTitle === 'true'" ng-click="showPicker()"> 
-                                                <div class="display_icon icon-40"></div> 
-                                                <div class="display_tag ng-binding">2018-08期</div> 
-                                            </div> 
-                                            <div class="com-issue_container anime com-issue_container--hidden" ng-class="{'com-issue_container--hidden': !show}"> 
-                                                <div onmouselost="hidePicker()" class="ng-isolate-scope"></div> 
-                                            </div> 
-                                        </div> 2018-08 
-                                    </div> 
-                                    <input class="subjects ng-pristine ng-untouched ng-valid ng-isolate-scope ng-empty" on-enter="searching()" type="text" ng-model="query.subject" placeholder="多个搜索条件用逗号隔开"> 
-                                    <div class="searchButton" ng-click="searching()">检索</div> 
+                                    <el-date-picker v-model="query.yearMonth" type="month" placeholder="选择年月" format="yyyy-MM" value-format="yyyyMM"></el-date-picker>
+                                    <input class="subjects" on-enter="searching()" type="text" v-model="query.search" placeholder="请输入搜索条件"> 
+                                    <div class="searchButton" @click.stop="searching">检索</div> 
                                 </div> 
                                 <div class="btn-options ng-hide" ng-show="menu.type === 'ledger' || menu.type === 'breakdown'" v-if="1 != 1"> 
                                     <div class="option-title"> 显示选项 </div> 
@@ -53,7 +30,7 @@
                                             <div>显示空值</div> 
                                         </div> 
                                     </div> 
-                                </div> 
+                                </div>
                                 <div class="book-balance_wrapper ng-scope" ng-if="menu.type === 'balances'  || menu.type === 'itemBalance'"> 
                                     <div class="selectSheetType selectBox ng-hide" ng-show="isShowAdditions"> 
                                         <div ng-click="showList()" class="ng-binding">其他余额表 
@@ -114,79 +91,45 @@
                             </div> 
                             <div class="contentPage ps-theme-default" id="ledgerConTable"> 
                                 <table class="bookTable"> 
-                                    <tbody class="bookBody"> 
-                                        <tr class="bookRow ng-scope" ng-repeat="row in book.ledger" ng-show="(!isAssist || showAssist) && (showEmptyValue || !row.isEmptyValueNeedHide)" ng-if="!row.isChild || showDetailed"> 
-                                            <td class="col-ledger-subject span-10" rowspan="3" ng-show="$index == row.lineNum"> 
-                                                <div class="subjectText ng-binding">1001</div> 
-                                            </td> 
-                                            <td class="col-ledger-name span-22 ng-binding" rowspan="3" title="库存现金" ng-show="$index == row.lineNum">库存现金 </td> 
-                                            <td class="col-ledger-issue span-10 ng-binding">2018-10</td> 
-                                            <td class="col-ledger-brief span-12 ng-binding">期初余额</td> 
-                                            <td class="col-ledger-debit span-12 ng-binding">0.00</td> 
-                                            <td class="col-ledger-credit span-12 ng-binding">0.00</td> 
-                                            <td class="col-ledger-direction fontColor span-7 ng-binding" ng-class="row.direction == 1? 'directionLend':(row.direction == -1 ? 'directionLoan':'fontColor')"> 平 </td> 
-                                            <td class="col-ledger-balance span-12 ng-binding">0.00</td> 
-                                        </tr>
-                                        <tr class="bookRow ng-scope" ng-repeat="row in book.ledger" ng-show="(!isAssist || showAssist) && (showEmptyValue || !row.isEmptyValueNeedHide)" ng-if="!row.isChild || showDetailed"> 
-                                            <td class="col-ledger-subject span-10 ng-hide" rowspan="" ng-show="$index == row.lineNum"> 
-                                                <div class="subjectText ng-binding"></div>
-                                            </td> 
-                                            <td class="col-ledger-name span-22 ng-binding ng-hide" rowspan="" title="" ng-show="$index == row.lineNum"> </td> 
-                                            <td class="col-ledger-issue span-10 ng-binding">2018-10</td> 
-                                            <td class="col-ledger-brief span-12 ng-binding">本期合计</td> 
-                                            <td class="col-ledger-debit span-12 ng-binding">100.00</td> 
-                                            <td class="col-ledger-credit span-12 ng-binding">0.00</td> 
-                                            <td class="col-ledger-direction fontColor span-7 ng-binding directionLend" ng-class="row.direction == 1? 'directionLend':(row.direction == -1 ? 'directionLoan':'fontColor')"> 借 </td> 
-                                            <td class="col-ledger-balance span-12 ng-binding">100.00</td> 
-                                        </tr>
-                                        <tr class="bookRow ng-scope" ng-repeat="row in book.ledger" ng-show="(!isAssist || showAssist) && (showEmptyValue || !row.isEmptyValueNeedHide)" ng-if="!row.isChild || showDetailed"> 
-                                            <td class="col-ledger-subject span-10 ng-hide" rowspan="" ng-show="$index == row.lineNum"> 
-                                                <div class="subjectText ng-binding"></div> 
-                                            </td> 
-                                            <td class="col-ledger-name span-22 ng-binding ng-hide" rowspan="" title="" ng-show="$index == row.lineNum"> </td> 
-                                            <td class="col-ledger-issue span-10 ng-binding">2018-10</td> 
-                                            <td class="col-ledger-brief span-12 ng-binding">本年累计</td> 
-                                            <td class="col-ledger-debit span-12 ng-binding">100.00</td> 
-                                            <td class="col-ledger-credit span-12 ng-binding">0.00</td> 
-                                            <td class="col-ledger-direction fontColor span-7 ng-binding directionLend" ng-class="row.direction == 1? 'directionLend':(row.direction == -1 ? 'directionLoan':'fontColor')"> 借 </td> 
-                                            <td class="col-ledger-balance span-12 ng-binding">100.00</td> 
-                                        </tr>
-                                        <tr class="bookRow ng-scope" ng-repeat="row in book.ledger" ng-show="(!isAssist || showAssist) && (showEmptyValue || !row.isEmptyValueNeedHide)" ng-if="!row.isChild || showDetailed"> 
-                                            <td class="col-ledger-subject span-10" rowspan="3" ng-show="$index == row.lineNum"> 
-                                                <div class="subjectText ng-binding">2001</div> 
-                                            </td> 
-                                            <td class="col-ledger-name span-22 ng-binding" rowspan="3" title="短期借款" ng-show="$index == row.lineNum">短期借款 </td> 
-                                            <td class="col-ledger-issue span-10 ng-binding">2018-10</td> 
-                                            <td class="col-ledger-brief span-12 ng-binding">期初余额</td> 
-                                            <td class="col-ledger-debit span-12 ng-binding">0.00</td> 
-                                            <td class="col-ledger-credit span-12 ng-binding">0.00</td> 
-                                            <td class="col-ledger-direction fontColor span-7 ng-binding" ng-class="row.direction == 1? 'directionLend':(row.direction == -1 ? 'directionLoan':'fontColor')"> 平 </td> 
-                                            <td class="col-ledger-balance span-12 ng-binding">0.00</td> 
-                                        </tr>
-                                        <tr class="bookRow ng-scope" ng-repeat="row in book.ledger" ng-show="(!isAssist || showAssist) && (showEmptyValue || !row.isEmptyValueNeedHide)" ng-if="!row.isChild || showDetailed"> 
-                                            <td class="col-ledger-subject span-10 ng-hide" rowspan="" ng-show="$index == row.lineNum"> 
-                                                <div class="subjectText ng-binding"></div> 
-                                            </td> 
-                                            <td class="col-ledger-name span-22 ng-binding ng-hide" rowspan="" title="" ng-show="$index == row.lineNum"> </td> 
-                                            <td class="col-ledger-issue span-10 ng-binding">2018-10</td> 
-                                            <td class="col-ledger-brief span-12 ng-binding">本期合计</td> 
-                                            <td class="col-ledger-debit span-12 ng-binding">0.00</td> 
-                                            <td class="col-ledger-credit span-12 ng-binding">100.00</td> 
-                                            <td class="col-ledger-direction fontColor span-7 ng-binding directionLoan" ng-class="row.direction == 1? 'directionLend':(row.direction == -1 ? 'directionLoan':'fontColor')"> 贷 </td> 
-                                            <td class="col-ledger-balance span-12 ng-binding">100.00</td> 
-                                        </tr>
-                                        <tr class="bookRow ng-scope" ng-repeat="row in book.ledger" ng-show="(!isAssist || showAssist) && (showEmptyValue || !row.isEmptyValueNeedHide)" ng-if="!row.isChild || showDetailed"> 
-                                            <td class="col-ledger-subject span-10 ng-hide" rowspan="" ng-show="$index == row.lineNum"> 
-                                                <div class="subjectText ng-binding"></div> 
-                                            </td> 
-                                            <td class="col-ledger-name span-22 ng-binding ng-hide" rowspan="" title="" ng-show="$index == row.lineNum"> </td> 
-                                            <td class="col-ledger-issue span-10 ng-binding">2018-10</td> 
-                                            <td class="col-ledger-brief span-12 ng-binding">本年累计</td> 
-                                            <td class="col-ledger-debit span-12 ng-binding">0.00</td> 
-                                            <td class="col-ledger-credit span-12 ng-binding">100.00</td> 
-                                            <td class="col-ledger-direction fontColor span-7 ng-binding directionLoan" ng-class="row.direction == 1? 'directionLend':(row.direction == -1 ? 'directionLoan':'fontColor')"> 贷 </td> 
-                                            <td class="col-ledger-balance span-12 ng-binding">100.00</td> 
-                                        </tr>
+                                    <tbody class="bookBody">
+                                        <template v-for="(row, index) in listData" v-if="listData && listData.length > 0">
+                                            <tr class="bookRow ng-scope" :key="index + '_one'"> 
+                                                <td class="col-ledger-subject span-10" rowspan="3"> 
+                                                    <div class="subjectText ng-binding" v-text="row.courseCoding"></div>
+                                                </td> 
+                                                <td class="col-ledger-name span-22 ng-binding" rowspan="3" :title="row.courseName" v-text="row.courseName"></td> 
+                                                <td class="col-ledger-issue span-10 ng-binding" v-text="row.issue"></td> 
+                                                <td class="col-ledger-brief span-12 ng-binding">期初余额</td> 
+                                                <td class="col-ledger-debit span-12 ng-binding">{{row.debite1 | moneyFilter}}</td> 
+                                                <td class="col-ledger-credit span-12 ng-binding">{{row.credit1 | moneyFilter}}</td> 
+                                                <td class="col-ledger-direction fontColor span-7 ng-binding" :class="row.direction1 == 0? 'directionLend': row.direction1 == 2 ? 'directionLoan':'fontColor'" v-text="row.direction1 == 0 ? '借' : row.direction1 == 2 ? '贷' : '平'"></td> 
+                                                <td class="col-ledger-balance span-12 ng-binding">{{row.residual1 | moneyFilter}}</td> 
+                                            </tr>
+                                            <tr class="bookRow ng-scope" :key="index + '_two'"> 
+                                                <td class="col-ledger-subject span-10 ng-hide" rowspan=""> 
+                                                    <div class="subjectText ng-binding" ></div>
+                                                </td> 
+                                                <td class="col-ledger-name span-22 ng-binding ng-hide" rowspan="" ></td>
+                                                <td class="col-ledger-issue span-10 ng-binding" v-text="row.issue"></td> 
+                                                <td class="col-ledger-brief span-12 ng-binding">本期合计</td> 
+                                                <td class="col-ledger-debit span-12 ng-binding">{{row.debite2 | moneyFilter}}</td> 
+                                                <td class="col-ledger-credit span-12 ng-binding">{{row.credit2 | moneyFilter}}</td> 
+                                                <td class="col-ledger-direction fontColor span-7 ng-binding" :class="row.direction2 == 0? 'directionLend': row.direction2 == 2 ? 'directionLoan':'fontColor'" v-text="row.direction2 == 0 ? '借' : row.direction2 == 2 ? '贷' : '平'"></td> 
+                                                <td class="col-ledger-balance span-12 ng-binding">{{row.residual2 | moneyFilter}}</td> 
+                                            </tr>
+                                            <tr class="bookRow ng-scope" :key="index + '_three'"> 
+                                                <td class="col-ledger-subject span-10 ng-hide" rowspan=""> 
+                                                    <div class="subjectText ng-binding" ></div>
+                                                </td> 
+                                                <td class="col-ledger-name span-22 ng-binding ng-hide" rowspan="" ></td>
+                                                <td class="col-ledger-issue span-10 ng-binding" v-text="row.issue"></td> 
+                                                <td class="col-ledger-brief span-12 ng-binding">本年累计</td> 
+                                                <td class="col-ledger-debit span-12 ng-binding">{{row.debite3 | moneyFilter}}</td> 
+                                                <td class="col-ledger-credit span-12 ng-binding">{{row.credit3 | moneyFilter}}</td> 
+                                                <td class="col-ledger-direction fontColor span-7 ng-binding" :class="row.direction3 == 0? 'directionLend': row.direction3 == 2 ? 'directionLoan':'fontColor'" v-text="row.direction3 == 0 ? '借' : row.direction3 == 2 ? '贷' : '平'"></td> 
+                                                <td class="col-ledger-balance span-12 ng-binding">{{row.residual3 | moneyFilter}}</td> 
+                                            </tr>
+                                        </template>
                                     </tbody> 
                                 </table> 
                             </div> 
@@ -506,6 +449,13 @@ import utils from "../../utils"
 export default {
   data() {
     return {
+        token: utils.dbGet("userInfo").token,
+        adminId: utils.dbGet("userInfo").id,
+        accountId: utils.dbGet("account").id,
+        query: {
+            yearMonth: '',
+            search: ''
+        },
         // 会计账簿tools
         bookMenus: [
             {index: 1, name: 'general', value: '总账'},
@@ -529,13 +479,19 @@ export default {
         },
         navMenu: {
             type: ''
-        }
+        },
+        listData: [],
     };
   },
   methods: {
+      // 检索数据
+      searching() {
+          this.chooseMenu(this.menu)
+      },
       // 选择tab菜单
       chooseMenu(opt) {
           this.menu = opt
+          this.listData = []
           this.queryDataByMenu(this.menu)
           for (let menu of this.bookMenus) {
               if (menu && menu.index == opt.index) {
@@ -552,6 +508,7 @@ export default {
                 case 'general':
                 // 总账
                 console.log("查询总账")
+                this.getGenCon()
                 break
                 case 'subsidiary':
                 // 明细账
@@ -575,12 +532,58 @@ export default {
                 break
             }
           }
+      },
+      // 查询总账
+      getGenCon() {
+          let params = {
+              accountSetId: this.accountId,
+              token: this.token,
+              yearMonth: this.getYearAndMonth(),
+              search: this.query.search
+          }
+          console.log('查询总账入参：', JSON.stringify(params))
+          api.queryAllByGenerals(params).then(res => {
+              console.log('查询总账结果：', res.body)
+              if (res.body.result == 0) {
+                  this.listData = res.body.data
+              }
+          })
+      },
+      getYearAndMonth() {
+        console.log(typeof this.query.yearMonth, this.query.yearMonth)
+        if (typeof this.query.yearMonth == 'object') {
+            let year = new Date(this.query.yearMonth).getFullYear()
+            let month = new Date(this.query.yearMonth).getMonth() + 1
+            if (month < 10) {
+                month = '0' + month
+            }
+            console.log(year + '' + month)
+            return year + '' + month
+        } else {
+            return this.query.yearMonth
+        }
       }
   },
   created() {
-      this.queryDataByMenu(this.menu)
+    this.queryDataByMenu(this.menu)
+    this.query.yearMonth = new Date()
   },
-  filters: {}
+  filters: {
+    moneyFilter(value) {
+        if (utils.isExist(value)) {
+            let hasPoint = value.toString().split(".")
+            if (hasPoint.length == 1) {
+                return value + ".00"
+            } else if (hasPoint.length > 1) {
+                if (hasPoint[1].length < 2) {
+                    return value + "0"
+                } else {
+                    return Number(value).toFixed(2)
+                }
+            }
+        }
+    }
+  }
 };
 </script>
 <style scoped>

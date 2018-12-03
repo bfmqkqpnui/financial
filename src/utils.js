@@ -146,9 +146,8 @@ const orderBy = (arrs, prop, sort = 1) => {
  * @DateTime 2017-05-18T10:02:36+0800
  * @return   {[String]}                 [时间戳]
  */
-const getTimeFormatToday = () => {
-  let today = new Date();
-
+const getTimeFormatToday = (date) => {
+  let today = new Date(date * 1000)
   let year = today.getFullYear() + '';
   let month = (today.getMonth() + 1) + '';
   month = (month.length === 1) ? '0' + month : month;
