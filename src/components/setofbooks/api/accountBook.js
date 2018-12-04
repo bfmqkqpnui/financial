@@ -6,7 +6,7 @@ export default {
     },
     // 查询明细表数据
     queryAllBySubsidiaries: params => {
-        return Vue.http.post(Vue.$SERVICE_BASE_URL + '/admin/updateAdminPassWord', params)
+        return Vue.http.post(Vue.$SERVICE_BASE_URL + '/gencon/getGenConDetail', params)
     },
     // 查询余额表数据
     queryAllByBalances: params => {

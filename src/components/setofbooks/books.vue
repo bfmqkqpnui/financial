@@ -486,11 +486,13 @@ export default {
   methods: {
       // 检索数据
       searching() {
-          this.chooseMenu(this.menu)
+        this.queryDataByMenu(this.menu)
       },
       // 选择tab菜单
       chooseMenu(opt) {
           this.menu = opt
+          this.query.yearMonth = new Date()
+          this.query.search = ''
           this.listData = []
           this.queryDataByMenu(this.menu)
           for (let menu of this.bookMenus) {
@@ -508,11 +510,12 @@ export default {
                 case 'general':
                 // 总账
                 console.log("查询总账")
-                this.getGenCon()
+                this.getGenCon(opt.name)
                 break
                 case 'subsidiary':
                 // 明细账
                 console.log("查询明细账")
+                this.getGenCon(opt.name)
                 break
                 case 'balances':
                 // 余额表
@@ -533,21 +536,34 @@ export default {
             }
           }
       },
-      // 查询总账
-      getGenCon() {
+      // 查询总账/明细账
+      getGenCon(type) {
           let params = {
               accountSetId: this.accountId,
               token: this.token,
               yearMonth: this.getYearAndMonth(),
               search: this.query.search
           }
-          console.log('查询总账入参：', JSON.stringify(params))
-          api.queryAllByGenerals(params).then(res => {
+          if (type == 'general') {
+              console.log('查询总账入参：', JSON.stringify(params))
+              api.queryAllByGenerals(params).then(res => {
               console.log('查询总账结果：', res.body)
               if (res.body.result == 0) {
                   this.listData = res.body.data
               }
           })
+          } else if (type == 'subsidiary') {
+              console.log('查询明细账入参：', JSON.stringify(params))
+              api.queryAllBySubsidiaries(params).then(res => {
+                console.log('查询明细账结果：', res.body)
+                if (res.body.result == 0) {
+                    this.listData = res.body.data
+                }
+            })
+          }
+      },
+      getGenConDetail() {
+
       },
       getYearAndMonth() {
         console.log(typeof this.query.yearMonth, this.query.yearMonth)
