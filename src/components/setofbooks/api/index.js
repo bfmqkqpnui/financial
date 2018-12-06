@@ -149,6 +149,10 @@ export default {
   updateVoucher: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/update', params)
   },
+  // 删除凭证数据
+  deleteVoucher: params => {
+    return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/delete', params)
+  },
   // 批量更新状态
   batchVoucherStatus: params => {
     return Vue.http.post(Vue.$SERVICE_BASE_URL + '/voucher/batchUpdateStatus', params)

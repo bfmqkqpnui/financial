@@ -119,7 +119,7 @@
                         <div class="entryOptsBox">
                           <template v-if="v.status == 0">
                             <div class="button entryOpt ng-scope" ng-if="!v.vAudited && canDeleteVoucher(v)"
-                               @click.stop="deleteVoucher(v)">
+                               @click.stop="preDelete(v)">
                             <div class="optIcon icon-40 icon-voucher-delete"></div>
                             <p class="optTag optTag--orange">删除</p></div>
                           <div class="button entryOpt ng-scope" ng-if="!v.vAudited && canEditVoucher(v)"
@@ -457,12 +457,39 @@
         </div> 
       </div> 
     </div>
+
+    <!-- 删除确认 -->
+    <div class="site-mask anime ng-isolate-scope site-mask--shade" v-if="canDeleted"> 
+      <div class="site-popup anime popup-confirm flex--column site-popup--expand"> 
+        <div class="site-popup_head"> 
+          <div class="site-popup_title">财税通提醒您：</div> 
+        </div> 
+        <div class="site-popup_body"> 
+          <div class="site-popup_type"> 
+            <div class="typeIcon g-icon-warn"></div> 
+            <p class="typeTitle typeTitle--warn ng-binding">您确定要删除该张凭证吗？</p> 
+          </div> 
+        </div> 
+        <div class="site-popup_footer"> 
+          <div class="btn--cancel com-button anime ng-isolate-scope com-button--cancel" @click.stop="toggleShowDelete('hide')"> 
+            <div>
+              <span class="ng-scope">否</span>
+            </div> 
+          </div> 
+          <div class="btn--ok com-button anime ng-isolate-scope com-button--ok" @click.stop="deleteVoucher"> 
+            <div>
+              <span class="ng-scope">是</span>
+            </div> 
+          </div> 
+        </div> 
+      </div> 
+    </div>
   </div>
 </template>
 
 <script>
-import api from "./api/index";
-import utils from "../../utils";
+import api from "./api/index"
+import utils from "../../utils"
 //Js部分尽量采用ES6语法，webpack babel插件会转义兼容
 export default {
   //组件私有数据（必须是function，而且要return对象类型）
@@ -573,6 +600,8 @@ export default {
       // 取消所有审核标识
       isAllAudited: false,
       isSelectAll: [],
+      // 是否显示删除弹层
+      canDeleted: false,
     };
   },
   //计算属性
@@ -610,10 +639,12 @@ export default {
     // 查询科目列表数据
     querySubject() {
       console.log("查询科目列表数据");
-      api.querySubjectListData({
+      api
+        .querySubjectListData({
           accountSetId: this.accountId,
           token: this.token
-        }).then(res => {
+        })
+        .then(res => {
           console.log("查询科目列表数据结果：", res.body);
           if (res.body.result == 0) {
             this.subjectList = res.body.data;
@@ -918,11 +949,12 @@ export default {
     },
     // 查询凭证列表
     queryVoucherList() {
-      this.loading("show")
-      api.queryVoucher({
+      api
+        .queryVoucher({
           accountSetId: this.accountId,
           token: this.token
-        }).then(res => {
+        })
+        .then(res => {
           console.log("查询凭证列表结果：", res.body);
           if (res.body.result == 0) {
             let array = res.body.data
@@ -944,7 +976,6 @@ export default {
             }
             console.log("显示list:", this.voucherData);
           }
-          this.loading("hide")
         });
     },
     chooseTabType(type) {
@@ -956,6 +987,24 @@ export default {
     },
     switchFolded(opt) {
       opt.showDetails = !opt.showDetails
+      /* if (opt.showDetails) {
+        this.isSelectAll.push(opt.id)
+        if (this.voucherData.voucherList.length == this.isSelectAll.length) {
+          this.voucherData.allShowDetails = true
+          this.voucherData.unAllShowDetails = false
+        } 
+      } else {
+        let index = this.voucherData.voucherList.indexOf(opt.id)
+        console.log(8888, index)
+        if (index >= 0) {
+          this.isSelectAll.splice(index, 1)
+          if (this.isSelectAll.length == 0) {
+            this.voucherData.allShowDetails = false
+            this.voucherData.unAllShowDetails = true
+          }
+        }
+      } */
+      // console.log(9999, this.isSelectAll)
     },
     switchFoldeds() {
       this.voucherData.allShowDetails = !this.voucherData.allShowDetails
@@ -992,6 +1041,7 @@ export default {
       } else if (v.status == 1) {
         this.cacheEntry.status = 'show'
       }
+      
       this.showVoucherFlag = true
     },
     createVoucherEntryList() {
@@ -1024,8 +1074,34 @@ export default {
         }
       }
     },
-    deleteVoucher(opt) {
-      console.log("删除：", opt)
+    toggleShowDelete(type) {
+      if (type && type == 'show') {
+        this.canDeleted = true
+      } else {
+        this.canDeleted = false
+      }
+    },
+    // 删除前置
+    preDelete(opt) {
+      this.voucher = opt
+      this.toggleShowDelete('show')
+    },
+    deleteVoucher() {
+      console.log("删除：")
+      let params = {}
+      params.id = this.voucher.id
+      params.token = this.token
+      params.accountSetId = this.accountId
+      console.log("删除凭证入参：", JSON.stringify(params))
+      this.toggleShowDelete('hide')
+      api.deleteVoucher(params).then(res => {
+        console.log("删除凭证结果：", res.body)
+        if (res.body.result == 0) {
+          this.queryVoucherList()
+        } else {
+          this.$emit("error", res.body.msg)
+        }
+      })
     },
     insertEntry(index) {
       let array = this.voucher.voucherEntryList
@@ -1106,14 +1182,6 @@ export default {
           this.$emit('error', res.body.msg)
         }
       })
-    },
-    // 加载中
-    loading(type) {
-      if (type) {
-        this.$emit("loading", type)
-      } else {
-        this.$emit("loading", "hide")
-      }
     },
   },
   //生命周期钩子：组件实例渲染完成时调用
