@@ -484,101 +484,112 @@ export default {
     };
   },
   methods: {
-      // 检索数据
-      searching() {
+    // 检索数据
+    searching() {
+    this.queryDataByMenu(this.menu)
+    },
+    // 选择tab菜单
+    chooseMenu(opt) {
+        this.menu = opt
+        this.query.yearMonth = new Date()
+        this.query.search = ''
+        this.listData = []
         this.queryDataByMenu(this.menu)
-      },
-      // 选择tab菜单
-      chooseMenu(opt) {
-          this.menu = opt
-          this.query.yearMonth = new Date()
-          this.query.search = ''
-          this.listData = []
-          this.queryDataByMenu(this.menu)
-          for (let menu of this.bookMenus) {
-              if (menu && menu.index == opt.index) {
-                menu.isSelected = true
-              } else {
-                menu.isSelected = false
-              }
-          }
-      },
-      // 根据菜单类型查询数据
-      queryDataByMenu(opt) {
-          if (opt && opt.name) {
-            switch (opt.name) {
-                case 'general':
-                // 总账
-                console.log("查询总账")
-                this.getGenCon(opt.name)
-                break
-                case 'subsidiary':
-                // 明细账
-                console.log("查询明细账")
-                this.getGenCon(opt.name)
-                break
-                case 'balances':
-                // 余额表
-                console.log("查询余额表")
-                break
-                case 'chronological':
-                // 序时簿
-                console.log("查询序时簿")
-                break
-                case 'assistSubsidiary':
-                // 辅助核算明细账
-                console.log("查询辅助核算明细账")
-                break
-                case 'assistBalances':
-                // 辅助核算余额表
-                console.log("查询辅助核算余额表")
-                break
+        for (let menu of this.bookMenus) {
+            if (menu && menu.index == opt.index) {
+            menu.isSelected = true
+            } else {
+            menu.isSelected = false
             }
-          }
-      },
-      // 查询总账/明细账
-      getGenCon(type) {
-          let params = {
-              accountSetId: this.accountId,
-              token: this.token,
-              yearMonth: this.getYearAndMonth(),
-              search: this.query.search
-          }
-          if (type == 'general') {
-              console.log('查询总账入参：', JSON.stringify(params))
-              api.queryAllByGenerals(params).then(res => {
-              console.log('查询总账结果：', res.body)
-              if (res.body.result == 0) {
-                  this.listData = res.body.data
-              }
-          })
-          } else if (type == 'subsidiary') {
-              console.log('查询明细账入参：', JSON.stringify(params))
-              api.queryAllBySubsidiaries(params).then(res => {
+        }
+    },
+    // 根据菜单类型查询数据
+    queryDataByMenu(opt) {
+        if (opt && opt.name) {
+        switch (opt.name) {
+            case 'general':
+            // 总账
+            console.log("查询总账")
+            this.getGenCon(opt.name)
+            break
+            case 'subsidiary':
+            // 明细账
+            console.log("查询明细账")
+            this.getGenCon(opt.name)
+            break
+            case 'balances':
+            // 余额表
+            console.log("查询余额表")
+            break
+            case 'chronological':
+            // 序时簿
+            console.log("查询序时簿")
+            break
+            case 'assistSubsidiary':
+            // 辅助核算明细账
+            console.log("查询辅助核算明细账")
+            break
+            case 'assistBalances':
+            // 辅助核算余额表
+            console.log("查询辅助核算余额表")
+            break
+        }
+        }
+    },
+    // 查询总账/明细账
+    getGenCon(type) {
+        this.loading("show")
+        let params = {
+            accountSetId: this.accountId,
+            token: this.token,
+            yearMonth: this.getYearAndMonth(),
+            search: this.query.search
+        }
+        if (type == 'general') {
+            console.log('查询总账入参：', JSON.stringify(params))
+            api.queryAllByGenerals(params).then(res => {
+                console.log('查询总账结果：', res.body)
+                if (res.body.result == 0) {
+                    this.listData = res.body.data
+                }
+                this.loading("hide")
+            })
+        } else if (type == 'subsidiary') {
+            console.log('查询明细账入参：', JSON.stringify(params))
+            api.queryAllBySubsidiaries(params).then(res => {
                 console.log('查询明细账结果：', res.body)
                 if (res.body.result == 0) {
                     this.listData = res.body.data
                 }
+                this.loading("hide")
             })
-          }
-      },
-      getGenConDetail() {
-
-      },
-      getYearAndMonth() {
-        console.log(typeof this.query.yearMonth, this.query.yearMonth)
-        if (typeof this.query.yearMonth == 'object') {
-            let year = new Date(this.query.yearMonth).getFullYear()
-            let month = new Date(this.query.yearMonth).getMonth() + 1
-            if (month < 10) {
-                month = '0' + month
-            }
-            console.log(year + '' + month)
-            return year + '' + month
-        } else {
-            return this.query.yearMonth
         }
-      }
+    },
+    getGenConDetail() {
+
+    },
+    getYearAndMonth() {
+    console.log(typeof this.query.yearMonth, this.query.yearMonth)
+    if (typeof this.query.yearMonth == 'object') {
+        let year = new Date(this.query.yearMonth).getFullYear()
+        let month = new Date(this.query.yearMonth).getMonth() + 1
+        if (month < 10) {
+            month = '0' + month
+        }
+        console.log(year + '' + month)
+        return year + '' + month
+    } else {
+        return this.query.yearMonth
+    }
+    },
+    // 加载中
+    loading(type) {
+        if (type) {
+            this.$emit("loading", type)
+        } else {
+            this.$emit("loading", "hide")
+        }
+    },
   },
   created() {
     this.queryDataByMenu(this.menu)

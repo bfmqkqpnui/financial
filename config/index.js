@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/apiPath': {
-        target: 'http://106.14.202.237:8080', // http://106.14.202.237:8080 http://jacky1983.wicp.net:24191
+        target: 'http://106.12.82.96:8080', // http://106.14.202.237:8080 http://jacky1983.wicp.net:24191
         changeOrigin: true,
         pathRewrite: {
           '^/apiPath': ''

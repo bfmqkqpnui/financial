@@ -773,7 +773,15 @@ export default {
         // select
         exportReport() {
             console.log("导出：", this.assetDefault.type)
-        }
+        },
+        // 加载中
+        loading(type) {
+            if (type) {
+                this.$emit("loading", type)
+            } else {
+                this.$emit("loading", "hide")
+            }
+        },
     }
 }
 </script>

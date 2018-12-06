@@ -1663,12 +1663,14 @@
       // 查询导航数据
       queryNavMenuData(url) {
         console.log(url, "<<<<")
+        this.loading("show")
         if (utils.isExist(url)) {
           api.queryAccountSet(url).then(res => {
             console.log(res.body)
             if (res.body.result == 0) {
               this.subjects = res.body.data
             }
+            this.loading("hide")
           })
         }
       },
@@ -1719,7 +1721,7 @@
                 accountSetId: this.accountId,
                 token: this.token
               }
-
+              this.loading("show")
               if (opt.index == 1) { // 客户
                 this.newAssist.assistAccountingType = 1
                 params.assistAccountingType = 1
@@ -1746,6 +1748,7 @@
                     this.assistTableData = res.body.data
                   }
                 }
+                this.loading("hide")
               })
             }
             break;
@@ -1764,6 +1767,7 @@
                 accountSetId: this.accountId,
                 token: this.token
               }
+              this.loading("show")
               if (opt.index == 1) { // 资产
                 params.courseType = 1;
               } else if (opt.index == 2) { // 负债
@@ -1783,6 +1787,7 @@
                 } else {
                   this.$emit('error', res.body.msg)
                 }
+                this.loading("hide")
               })
             }
             break;
@@ -1824,6 +1829,7 @@
       },
       // 根据账套编号查询账套信息
       queryAccountInfo() {
+        this.loading("show")
         console.log("根据账套编号查询账套信息", this.accountId, this.token)
         if (utils.isExist(this.accountId) && utils.isExist(this.token)) {
           api.queryAccountById({id: this.accountId, token: this.token}).then(res => {
@@ -1831,6 +1837,7 @@
             if (res.body.result == 0) {
               this.accountInfo = res.body.data
             }
+            this.loading("hide")
           })
         }
       },
@@ -2100,6 +2107,7 @@
       },
       // 查询固定资产
       queryFixedAssets() {
+        this.loading("show")
         api.queryFixedAssets({accountSetId: this.accountId, token: this.token}).then(res => {
           console.log("查询固定资产:", res.body)
           if (res.body.result == 0) {
@@ -2111,6 +2119,7 @@
             })
             this.assetTableList = array
           }
+          this.loading("hide")
         })
       },
       // 确认添加固定资产
@@ -2307,11 +2316,13 @@
       // 查询待摊费用
       queryAmortiseData() {
         console.log("查询待摊费用")
+        this.loading("show")
         api.queryUnamortizedexpense({accountSetId: this.accountId, token: this.token}).then(res => {
           console.log("查询结果：", res.body)
           if (res.body.result == 0) {
             this.amortiseTableList = res.body.data
           }
+          this.loading("hide")
         })
       },
       // 查询待摊科目

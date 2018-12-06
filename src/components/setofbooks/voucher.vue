@@ -610,12 +610,10 @@ export default {
     // 查询科目列表数据
     querySubject() {
       console.log("查询科目列表数据");
-      api
-        .querySubjectListData({
+      api.querySubjectListData({
           accountSetId: this.accountId,
           token: this.token
-        })
-        .then(res => {
+        }).then(res => {
           console.log("查询科目列表数据结果：", res.body);
           if (res.body.result == 0) {
             this.subjectList = res.body.data;
@@ -920,12 +918,11 @@ export default {
     },
     // 查询凭证列表
     queryVoucherList() {
-      api
-        .queryVoucher({
+      this.loading("show")
+      api.queryVoucher({
           accountSetId: this.accountId,
           token: this.token
-        })
-        .then(res => {
+        }).then(res => {
           console.log("查询凭证列表结果：", res.body);
           if (res.body.result == 0) {
             let array = res.body.data
@@ -947,6 +944,7 @@ export default {
             }
             console.log("显示list:", this.voucherData);
           }
+          this.loading("hide")
         });
     },
     chooseTabType(type) {
@@ -958,24 +956,6 @@ export default {
     },
     switchFolded(opt) {
       opt.showDetails = !opt.showDetails
-      /* if (opt.showDetails) {
-        this.isSelectAll.push(opt.id)
-        if (this.voucherData.voucherList.length == this.isSelectAll.length) {
-          this.voucherData.allShowDetails = true
-          this.voucherData.unAllShowDetails = false
-        } 
-      } else {
-        let index = this.voucherData.voucherList.indexOf(opt.id)
-        console.log(8888, index)
-        if (index >= 0) {
-          this.isSelectAll.splice(index, 1)
-          if (this.isSelectAll.length == 0) {
-            this.voucherData.allShowDetails = false
-            this.voucherData.unAllShowDetails = true
-          }
-        }
-      } */
-      // console.log(9999, this.isSelectAll)
     },
     switchFoldeds() {
       this.voucherData.allShowDetails = !this.voucherData.allShowDetails
@@ -1012,7 +992,6 @@ export default {
       } else if (v.status == 1) {
         this.cacheEntry.status = 'show'
       }
-      
       this.showVoucherFlag = true
     },
     createVoucherEntryList() {
@@ -1127,6 +1106,14 @@ export default {
           this.$emit('error', res.body.msg)
         }
       })
+    },
+    // 加载中
+    loading(type) {
+      if (type) {
+        this.$emit("loading", type)
+      } else {
+        this.$emit("loading", "hide")
+      }
     },
   },
   //生命周期钩子：组件实例渲染完成时调用

@@ -169,7 +169,15 @@ export default {
             } else {
                 this.tabType = "ledger"
             }
-        }
+        },
+        // 加载中
+        loading(type) {
+            if (type) {
+                this.$emit("loading", type)
+            } else {
+                this.$emit("loading", "hide")
+            }
+        },
     }
 }
 </script>

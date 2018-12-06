@@ -329,6 +329,7 @@ export default {
             console.log("查询薪水列表")
             this.salaryList = []
             if (this.accountId) {
+                this.loading("show")
                 let params = {
                     accountSetId: this.accountId,
                     token: this.token
@@ -339,6 +340,7 @@ export default {
                     if (res.body.result == 0) {
                         this.salaryData = res.body.data
                     }
+                    this.loading("hide")
                 })
             }
         },
@@ -455,7 +457,15 @@ export default {
         },
         changeMoney2Fen(money) {
             return Number(money).toFixed(2)
-        }
+        },
+        // 加载中
+        loading(type) {
+            if (type) {
+                this.$emit("loading", type)
+            } else {
+                this.$emit("loading", "hide")
+            }
+        },
     }
 }
 </script>
