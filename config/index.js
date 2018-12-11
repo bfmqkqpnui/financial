@@ -18,6 +18,14 @@ module.exports = {
           '^/apiPath': ''
         }
       },
+      '/h5_gateway': {
+        target: 'https://mh5.st.bl.com/h5_gateway', // http://106.14.202.237:8080 http://jacky1983.wicp.net:24191 http://106.12.82.96:8080
+        changeOrigin: true,
+        'secure': false,
+        pathRewrite: {
+          '^/h5_gateway': ''
+        }
+      },
     },
 
     // Various Dev Server settings
