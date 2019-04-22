@@ -143,7 +143,6 @@
         <div class="btn-go-on anime" @click.stop="showAddAccPop"> 继续添加</div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -209,17 +208,14 @@
       // 查询所有账套
       queryAllAccounts() {
         console.log("查询所有账套",this.adminId, this.token)
-        this.loading("show")
         if (utils.isExist(this.adminId) && utils.isExist(this.token)) {
           api.queryAccounts({adminId: this.adminId, token: this.token}).then(res => {
             console.log("》", res.body)
             if (res.body.result == 0) {
               this.show.tableList = res.body.data
               this.show.dataIsNull = false
-              this.loading("hide")
             }else {
               this.show.dataIsNull = true
-              this.loading("hide")
             }
           })
         }
@@ -257,14 +253,6 @@
           this.hideAddAccountPop()
         } else {
           this.show.hint = '请填写账套企业名称.'
-        }
-      },
-      // 加载中
-      loading(type) {
-        if (type) {
-          this.$emit("loading", type)
-        } else {
-          this.$emit("loading", "hide")
         }
       },
     },
